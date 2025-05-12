@@ -2,6 +2,7 @@
 import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from './components/TheWelcome.vue'
 import demo1 from './example/demo1.vue'
+import demo2 from './example/demo2.vue'
 </script>
 
 <template>
@@ -19,6 +20,7 @@ import demo1 from './example/demo1.vue'
 
   <div>
     <demo1 />
+    <demo2 />
   </div>
 </template>
 

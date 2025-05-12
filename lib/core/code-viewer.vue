@@ -1,5 +1,23 @@
+<template>
+  <div class="code-viewer">
+    <div class="code-viewer-gutters" ref="codeViewerGuttersRef">
+      <!-- 插件可以在这里添加内容，例如行号 -->
+      <div v-for="gutter in gutterComponents" :key="gutter.name">
+        <component :is="gutter.component" :context="pluginContext" />
+      </div>
+    </div>
+    <div class="code-viewer-content" ref="codeViewerContentRef">
+      <div class="view-lines">
+        <div v-for="line in code" :key="line.id" :data-line-id="line.id" class="view-line">
+          {{ line.content }}
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
 <script setup lang="ts">
-import { markRaw, onBeforeUnmount, onMounted, provide, reactive, ref, shallowRef, type Component } from 'vue'
+import { markRaw, onBeforeUnmount, onMounted, provide, reactive, shallowRef, type Component } from 'vue'
 import type { CodeLine, Plugin, PluginContext } from './types'
 import { eventBus } from './event-bus'
 import { installPlugin, uninstallPlugin } from './api'
@@ -10,7 +28,7 @@ const props = withDefaults(
     // language: string
     // theme: string
     // size: number
-    plugins: Plugin[]
+    plugins?: Plugin[]
   }>(),
   {
     code: () => [],
@@ -23,7 +41,7 @@ const props = withDefaults(
 // const displayedCode = ref<CodeLine[]>([]) // 代码行信息
 
 const registeredPlugins = shallowRef<Map<string, Plugin>>(new Map()) // 已注册的插件列表
-const gutterComponents = shallowRef<Array<{ name: string; component: Component }>>([])
+const gutterComponents = shallowRef<{ name: string; component: Component }[]>([]) // 插件组件列表
 
 // 创建响应式的插件上下文
 const pluginContext = reactive<PluginContext>({
@@ -61,14 +79,3 @@ onBeforeUnmount(() => {
 
 provide('pluginContext', pluginContext)
 </script>
-
-<template>
-  <div class="code-viewer">
-    <div class="code-viewer-gutters" ref="codeViewerGuttersRef"></div>
-    <div class="code-viewer-content" ref="codeViewerContentRef">
-      <div class="view-lines">
-        <div class="view-line"></div>
-      </div>
-    </div>
-  </div>
-</template>
