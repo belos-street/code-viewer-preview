@@ -12,7 +12,6 @@ class EventBus {
    */
   on(eventName: string, handler: Handler) {
     if (!this.handlers[eventName]) this.handlers[eventName] = []
-    debugger
     this.handlers[eventName].push(handler)
   }
   /**

@@ -1,15 +1,17 @@
 <template>
   <div class="code-viewer">
-    <div class="code-viewer-gutters" ref="codeViewerGuttersRef">
-      <!-- 插件可以在这里添加内容，例如行号 -->
-      <div v-for="gutter in gutterComponents" :key="gutter.name">
-        <component :is="gutter.component" :context="pluginContext" />
-      </div>
-    </div>
     <div class="code-viewer-content" ref="codeViewerContentRef">
       <div class="view-lines">
-        <div v-for="line in code" :key="line.id" :data-line-id="line.id" class="view-line">
-          {{ line.content }}
+        <div v-for="(line, number) in code" :key="line.id" :data-line-id="line.id" class="view-line">
+          <div class="code-line-gutters">
+            <slot name="gutter-left" />
+            <span class="code-line-gutters__index">{{ number + 1 }}</span>
+            <slot name="gutter-right" />
+            <span class="code-line-gutters__index"></span>
+          </div>
+          <div class="code-line-content">
+            {{ line.content }}
+          </div>
         </div>
       </div>
     </div>
@@ -21,6 +23,7 @@ import { markRaw, onBeforeUnmount, onMounted, provide, reactive, shallowRef, typ
 import type { CodeLine, Plugin, PluginContext } from './types'
 import { eventBus } from './event-bus'
 import { installPlugin, uninstallPlugin } from './api'
+import '../styles/index.css'
 
 const props = withDefaults(
   defineProps<{

@@ -1,0 +1,59 @@
+@import url('./var.css');
+
+.code-viewer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.code-viewer-content {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.code-viewer-content .view-line {
+  display: flex;
+  white-space: pre;
+  gap: 6px;
+}
+
+.code-viewer-content .code-line-gutters {
+  display: flex;
+  flex-direction: column;
+  padding-right: 6px;
+  overflow: hidden;
+  user-select: none;
+  flex-shrink: 0;
+
+  position: sticky; /* 新增 sticky 定位 */
+  left: 0; /* 固定在左侧 */
+  z-index: 1; /* 确保在内容上方 */
+}
+
+.code-line-content {
+  flex: 1;
+}
+
+/* Webkit 浏览器滚动条样式 */
+.code-viewer-content::-webkit-scrollbar {
+  width: 8px; /* 滚动条宽度 */
+  height: 8px; /* 滚动条高度，用于水平滚动条 */
+}
+
+.code-viewer-content::-webkit-scrollbar-track {
+  background: var(--code-viewer-scrollbar-bg); /* 使用变量定义轨道背景颜色 */
+}
+
+.code-viewer-content::-webkit-scrollbar-thumb {
+  background-color: var(--code-viewer-scrollbar-thumb-color); /* 使用变量定义滑块默认颜色 */
+  border-radius: 4px; /* 滑块圆角 */
+}
+
+.code-viewer-content::-webkit-scrollbar-thumb:hover {
+  background-color: var(--code-viewer-scrollbar-thumb-hover-color); /* 使用变量定义滑块悬停颜色 */
+}
+
+.code-viewer-content::-webkit-scrollbar-corner {
+  background: var(--code-viewer-scrollbar-bg); /* 使用变量定义右下角交汇处背景颜色 */
+}

@@ -21,8 +21,15 @@ const initialCode: CodeList = [
 </script>
 
 <template>
-  <div>
-    <h1>Event Bus Demo</h1>
+  <div class="container">
+    <h1>Simple Code Demo</h1>
     <CodeViewer :code="initialCode" />
   </div>
 </template>
+
+<style lang="css" scoped>
+.container {
+  width: 100%;
+  height: 100px;
+}
+</style>

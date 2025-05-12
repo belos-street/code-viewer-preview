@@ -1,0 +1,6 @@
+/* 滚动条样式变量 */
+:root {
+  --code-viewer-scrollbar-bg: transparent; /* 轨道背景颜色 */
+  --code-viewer-scrollbar-thumb-color: rgba(100, 100, 100, 0.4); /* 滑块默认颜色 */
+  --code-viewer-scrollbar-thumb-hover-color: rgba(100, 100, 100, 0.7); /* 滑块悬停颜色 */
+}
