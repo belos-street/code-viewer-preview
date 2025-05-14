@@ -2,12 +2,11 @@
   <div class="code-viewer">
     <div class="code-viewer-content" ref="codeViewerContentRef">
       <div class="view-lines">
-        <div v-for="(line, number) in code" :key="line.id" :data-line-id="line.id" class="view-line">
+        <div v-for="(line, number) in props.code" :key="line.id" :data-line-id="line.id" class="view-line">
           <div class="code-line-gutters">
             <slot name="gutter-left" />
             <span class="code-line-gutters__index">{{ number + 1 }}</span>
             <slot name="gutter-right" />
-            <span class="code-line-gutters__index"></span>
           </div>
           <div class="code-line-content">
             {{ line.content }}
@@ -19,18 +18,14 @@
 </template>
 
 <script setup lang="ts">
-import { markRaw, onBeforeUnmount, onMounted, provide, reactive, shallowRef, type Component } from 'vue'
-import type { CodeLine, Plugin, PluginContext } from './types'
-import { eventBus } from './event-bus'
-import { installPlugin, uninstallPlugin } from './api'
+import type { CodeLine, Plugin } from './types'
+import { pluginManager } from './plugin'
+import { onMounted } from 'vue';
 import '../styles/index.css'
 
 const props = withDefaults(
   defineProps<{
     code: CodeLine[]
-    // language: string
-    // theme: string
-    // size: number
     plugins?: Plugin[]
   }>(),
   {
@@ -39,46 +34,25 @@ const props = withDefaults(
   }
 )
 
-// const codeViewerContentRef = ref<HTMLElement | null>(null) // 容器 content 的 ref
-// const codeViewerGuttersRef = ref<HTMLElement | null>(null) // 容器 gutters 的 ref
-// const displayedCode = ref<CodeLine[]>([]) // 代码行信息
 
-const registeredPlugins = shallowRef<Map<string, Plugin>>(new Map()) // 已注册的插件列表
-const gutterComponents = shallowRef<{ name: string; component: Component }[]>([]) // 插件组件列表
+// 初始化插件
+const initPlugins = () => {
+  props.plugins?.map(plugin => pluginManager.registerPlugin(plugin))
+}
 
-// 创建响应式的插件上下文
-const pluginContext = reactive<PluginContext>({
-  eventBus,
-  getCodeData: () => props.code,
-  // 核心API：注册Gutter组件，用于行号等插件
-  registerGutterComponent: (name: string, component: any) => {
-    const rawComponent = markRaw(component)
-    if (!gutterComponents.value.find((gc) => gc.name === name)) {
-      gutterComponents.value.push({ name, component: rawComponent })
-      // 按名称排序以确保一致性，或者可以根据插件加载顺序
-      gutterComponents.value.sort((a, b) => a.name.localeCompare(b.name))
-    }
-  },
-  unregisterGutterComponent: (name: string) => {
-    gutterComponents.value = gutterComponents.value.filter((gc) => gc.name !== name)
+// 渲染代码行数（通过插件）
+const renderLineNumbers = () => {
+  const lineNumberPlugin = pluginManager.getPlugins().find(plugin => plugin.name === 'line-number-plugin')
+  if (lineNumberPlugin && lineNumberPlugin['renderLineNumbers']) {
+    // const gutters = document.querySelectorAll('.code-line-gutters')
+    // gutters.forEach((gutter, index) => {
+    //   lineNumberPlugin.renderLineNumbers([props.code[index]], gutter)
+    // })
   }
-})
+}
 
-// 初始插件加载
 onMounted(() => {
-  props.plugins.forEach((plugin) => {
-    if (!registeredPlugins.value.has(plugin.name)) installPlugin(plugin, pluginContext, registeredPlugins)
-  })
-  eventBus.emit('codeviewer:mounted')
+  initPlugins()
+  renderLineNumbers()
 })
-
-// 卸载所有插件
-onBeforeUnmount(() => {
-  registeredPlugins.value.forEach((plugin) => {
-    uninstallPlugin(plugin.name, pluginContext, registeredPlugins)
-  })
-  eventBus.emit('codeviewer:beforeUnmount')
-})
-
-provide('pluginContext', pluginContext)
 </script>

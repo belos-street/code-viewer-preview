@@ -1,3 +1,5 @@
+import type { EventBusType } from './event-bus'
+
 /**
  * 单行代码数据结构
  */
@@ -13,11 +15,7 @@ export type CodeList = CodeLine[]
  * 插件上下文，包含核心API和事件总线实例
  */
 export type PluginContext = {
-  eventBus: {
-    on: (eventName: string, handler: (payload?: any) => void) => void
-    off: (eventName: string, handler: (payload?: any) => void) => void
-    emit: (eventName: string, payload?: any) => void
-  }
+  eventBus: EventBusType
 } & Record<string, any> // 允许插件上下文扩展
 
 /**

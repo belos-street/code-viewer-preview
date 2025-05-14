@@ -36,3 +36,6 @@ class EventBus {
 }
 
 export const eventBus = new EventBus()
+
+//EventBus 类型
+export type EventBusType = Omit<EventBus, 'handlers'>
