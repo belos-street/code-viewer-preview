@@ -1,7 +1,8 @@
-<!-- 测试 简单渲染 -->
+<!-- 测试 主题 -->
 
 <script setup lang="ts">
 import { CodeViewer, type CodeList } from 'lib/index'
+import { lineNumberPlugin } from 'lib/plugin';
 
 const initialCode: CodeList = [
   { id: 'line1', content: 'const greet = (name: string) => {' },
@@ -24,7 +25,7 @@ const initialCode: CodeList = [
 <template>
   <div class="container">
     <h1>Simple Code Demo</h1>
-    <CodeViewer :code="initialCode" />
+    <CodeViewer :code="initialCode" :plugins="[lineNumberPlugin]" />
   </div>
 </template>
 

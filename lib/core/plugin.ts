@@ -5,7 +5,7 @@ import { eventBus } from './event-bus'
  * 插件管理器
  * @description管理插件的安装和卸载，并提供插件的注册和获取功能。
  */
-class PluginManager {
+export class PluginManager {
   private plugins: Map<string, Plugin> = new Map()
 
   /**
@@ -50,6 +50,3 @@ class PluginManager {
     return Array.from(this.plugins.values())
   }
 }
-
-// 导出插件管理器实例
-export const pluginManager = new PluginManager()

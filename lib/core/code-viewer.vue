@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import type { CodeLine, Plugin } from './types'
-import { pluginManager } from './plugin'
+import { PluginManager } from './plugin'
 import { onMounted } from 'vue';
 import '../styles/index.css'
 
@@ -34,8 +34,8 @@ const props = withDefaults(
   }
 )
 
-
 // 初始化插件
+const pluginManager = new PluginManager()
 const initPlugins = () => {
   props.plugins?.map(plugin => pluginManager.registerPlugin(plugin))
 }
