@@ -1,9 +1,9 @@
 <template>
   <div class="code-viewer">
     <div class="code-viewer-gutters">
-      <div class="code-line-gutters" v-for="(line, number) in props.code" :key="line.id">
+      <div class="code-gutters-item" v-for="(line, number) in props.code" :key="line.id">
         <slot name="gutter-left" />
-        <span class="code-line-gutters__index">{{ number + 1 }}</span>
+        <span class="code-gutters__index">{{ number + 1 }}</span>
         <slot name="gutter-right" />
       </div>
     </div>
