@@ -1,9 +1,10 @@
 <!-- 测试 event bus -->
 
 <script setup lang="ts">
-import { eventBus } from 'lib/core/event-bus'
+import { EventBus } from 'lib/core/event-bus'
 import { onMounted } from 'vue'
 
+const eventBus = new EventBus()
 // 定义事件处理函数
 const handleEvent = (message: string) => {
   console.log('Received message:', message)

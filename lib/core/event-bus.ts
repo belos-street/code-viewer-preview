@@ -2,7 +2,7 @@
 
 type Handler = (payload?: any) => void
 
-class EventBus {
+export class EventBus {
   private handlers: { [eventName: string]: Handler[] } = {}
 
   /**
@@ -34,8 +34,6 @@ class EventBus {
     this.handlers[eventName].map((handler) => handler(payload))
   }
 }
-
-export const eventBus = new EventBus()
 
 //EventBus 类型
 export type EventBusType = Omit<EventBus, 'handlers'>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import demo1 from './example/demo1.vue'
 import demo2 from './example/demo2.vue'
+import demo3 from './example/demo3.vue'
 </script>
 
 <template>
@@ -9,6 +10,7 @@ import demo2 from './example/demo2.vue'
   <div>
     <demo1 />
     <demo2 />
+    <demo3 />
   </div>
 
 </template>

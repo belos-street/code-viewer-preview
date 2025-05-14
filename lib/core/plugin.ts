@@ -1,12 +1,17 @@
 import type { Plugin, PluginContext } from './types'
-import { eventBus } from './event-bus'
+import { EventBus } from './event-bus'
 
 /**
  * 插件管理器
  * @description管理插件的安装和卸载，并提供插件的注册和获取功能。
+ * @param eventBus 事件总线实例
  */
 export class PluginManager {
   private plugins: Map<string, Plugin> = new Map()
+
+  constructor(private eventBus: EventBus) {
+    this.eventBus = eventBus
+  }
 
   /**
    * 注册插件
@@ -19,7 +24,7 @@ export class PluginManager {
     }
     this.plugins.set(plugin.name, plugin)
     const context: PluginContext = {
-      eventBus
+      eventBus: this.eventBus
     }
     plugin.install(context)
     console.log(`Plugin "${plugin.name}" registered and installed.`)
@@ -36,7 +41,7 @@ export class PluginManager {
       return
     }
     const context: PluginContext = {
-      eventBus
+      eventBus: this.eventBus
     }
     plugin.uninstall(context)
     this.plugins.delete(pluginName)
