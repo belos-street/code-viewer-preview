@@ -15,14 +15,15 @@
   flex: 1;
 }
 
-.code-viewer-content .view-line {
-  display: flex;
-  white-space: pre;
-  gap: 6px;
-}
-
-.code-viewer-content .code-lines {
+/* line */
+.code-viewer-content .view-lines {
   position: absolute;
+  width: 100%;
+}
+.code-viewer-content .view-line {
+  white-space: pre;
+  position: absolute;
+  width: 100%;
 }
 
 /* gutters */

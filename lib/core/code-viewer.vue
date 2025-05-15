@@ -1,8 +1,9 @@
 <template>
   <div class="code-viewer" :style="{ fontSize: `${lineFontSize}px` }">
-    <div class="code-viewer-gutters">
+    <!-- 在gutters算宽高 -->
+    <div class="code-viewer-gutters" :style="{ lineHeight: `${lineHeight}px` }">
       <div class="code-gutters-item" v-for="(line, number) in props.code" :key="line.id"
-        :style="{ top: `${number * lineHeight}px`, height: `${lineHeight}px`, lineHeight: `${lineHeight}px` }">
+        :style="{ top: `${number * lineHeight}px`, height: `${lineHeight}px` }">
         <div class="code-gutters-item__index">{{ number + 1 }}</div>
         <div class="code-gutters-item__after">
           <slot name="gutter-after" />
@@ -10,6 +11,7 @@
       </div>
     </div>
     <div class="code-viewer-content" ref="codeViewerContentRef">
+      <!-- 在lines算宽高 -->
       <div class="view-lines">
         <div v-for="(line, number) in props.code" :key="line.id" :data-line-id="line.id" class="view-line"
           :style="{ top: `${number * lineHeight}px`, height: `${lineHeight}px` }">

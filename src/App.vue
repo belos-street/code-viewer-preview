@@ -7,7 +7,7 @@ import demo3 from './example/demo3.vue'
 <template>
 
 
-  <div>
+  <div :style="{ width: '80vw' }">
     <demo1 />
     <demo2 />
     <demo3 />

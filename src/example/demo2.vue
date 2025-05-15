@@ -31,5 +31,8 @@ const initialCode: CodeList = [
 <style lang="css" scoped>
 .container {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 300px;
 }
 </style>
