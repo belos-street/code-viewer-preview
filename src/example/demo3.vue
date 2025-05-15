@@ -12,7 +12,7 @@ const generateLargeCode = (count: number): CodeList => {
   return code
 }
 
-const initialCode = generateLargeCode(10000) // 生成10000行代码
+const initialCode = generateLargeCode(100) // 生成10000行代码
 </script>
 
 <template>
