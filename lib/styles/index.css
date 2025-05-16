@@ -8,6 +8,7 @@
   position: relative;
   display: flex;
   gap: 12px;
+  font-family: Menlo, Monaco, 'Courier New', monospace;
 }
 
 /* content */
@@ -21,19 +22,26 @@
   width: 100%;
 }
 .code-viewer-content .view-line {
-  white-space: pre;
   position: absolute;
   width: 100%;
+  text-wrap-mode: nowrap;
+}
+
+.view-line > span {
+  bottom: 0;
+  position: absolute;
+  top: 0;
 }
 
 /* gutters */
 .code-viewer .code-viewer-gutters {
   position: relative;
+  user-select: none;
 }
 .code-viewer-gutters .code-gutters-item {
   width: 100%;
   display: flex;
-  user-select: none;
+  position: absolute;
 }
 
 .code-viewer-gutters .code-gutters-item__index {

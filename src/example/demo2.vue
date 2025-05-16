@@ -18,14 +18,14 @@ const initialCode: CodeList = [
   { id: 'line8', content: '  return true;' },
   { id: 'line9', content: '}' }
 ]
-
 </script>
 
 <template>
+  <h1>Simple Code Demo</h1>
   <div class="container">
-    <h1>Simple Code Demo</h1>
     <CodeViewer :code="initialCode" />
   </div>
+  <br />
 </template>
 
 <style lang="css" scoped>

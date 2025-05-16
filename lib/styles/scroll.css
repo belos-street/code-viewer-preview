@@ -1,5 +1,4 @@
-.code-viewer,
-.code-viewer-content {
+.code-viewer {
   overflow-y: auto; /* 只显示竖向滚动条 */
   overflow-x: hidden; /* 隐藏横向滚动条 */
 }

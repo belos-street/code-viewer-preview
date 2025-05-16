@@ -16,16 +16,16 @@ const initialCode = generateLargeCode(100) // 生成10000行代码
 </script>
 
 <template>
+  <h1>Virtual Scrolling Code Demo</h1>
   <div class="container">
-    <h1>Virtual Scrolling Code Demo</h1>
     <CodeViewer :code="initialCode" />
   </div>
+  <br />
 </template>
 
 <style lang="css" scoped>
 .container {
   width: 100%;
   height: 500px;
-  /* 固定高度以触发滚动 */
 }
 </style>
