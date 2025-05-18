@@ -1,4 +1,5 @@
 import { ref, computed, onMounted, onUnmounted, type Ref } from 'vue'
+import { throttle, debounce } from '../../utils'
 
 type UseVirtualScrollOptions<T> = {
   containerRef: Ref<HTMLElement | null>
@@ -44,21 +45,23 @@ export function useVirtualScroll<T>(options: UseVirtualScrollOptions<T>) {
   // 计算位移量（优化滚动性能）
   const transform = computed(() => `translateY(${startIndex.value * itemHeight}px)`)
 
-  // 滚动事件处理（带节流）
+  // 滚动事件处理 - 节流
   const handleScroll = () => {
     if (!containerRef.value) return
+    console.log(11)
     scrollTop.value = containerRef.value.scrollTop
   }
 
-  // 窗口 resize 处理
-  const handleResize = () => {
+  // 窗口 resize 处理 - 防抖
+  const handleResize = debounce(() => {
     if (!containerRef.value) return
     containerHeight.value = containerRef.value.clientHeight
-  }
+  }, 200)
 
   // 初始化
   onMounted(() => {
     handleResize()
+    debugger
     containerRef.value?.addEventListener('scroll', handleScroll)
     window.addEventListener('resize', handleResize)
   })

@@ -2,12 +2,8 @@
   <div class="code-viewer" :style="{ fontSize: `${lineFontSize}px` }">
     <!-- 在gutters算宽高 -->
     <div class="code-viewer-gutters" :style="{ lineHeight: `${lineHeight}px`, width: '62px' }">
-      <div
-        class="code-gutters-item"
-        v-for="(line, number) in props.code"
-        :key="line.id"
-        :style="{ top: `${number * lineHeight}px`, height: `${lineHeight}px` }"
-      >
+      <div class="code-gutters-item" v-for="(line, number) in props.code" :key="line.id"
+        :style="{ top: `${number * lineHeight}px`, height: `${lineHeight}px` }">
         <div class="code-gutters-item__index">
           <span>{{ number + 1 }}</span>
         </div>
@@ -18,14 +14,9 @@
     </div>
     <div class="code-viewer-content" ref="codeViewerContentRef">
       <!-- 在lines算宽高 -->
-      <div class="view-lines">
-        <div
-          v-for="(line, number) in props.code"
-          :key="line.id"
-          :data-line-id="line.id"
-          class="view-line"
-          :style="{ top: `${number * lineHeight}px`, height: `${lineHeight}px`, lineHeight: `${lineHeight}px` }"
-        >
+      <div class="view-lines" :style="{ height: `${totalHeight}px` }">
+        <div v-for="(line, number) in props.code" :key="line.id" :data-line-id="line.id" class="view-line"
+          :style="{ top: `${number * lineHeight}px`, height: `${lineHeight}px`, lineHeight: `${lineHeight}px` }">
           <span>
             {{ line.content }}
           </span>
@@ -34,6 +25,7 @@
     </div>
   </div>
 </template>
+继续修改dom结构 gutter合并到row里来
 
 <script setup lang="ts">
 import type { CodeLine, Plugin } from './types'
@@ -41,6 +33,7 @@ import { PluginManager } from './plugin'
 import { computed, onMounted, shallowRef } from 'vue'
 import '../styles/index.css'
 import { EventBus } from './event-bus'
+import { useVirtualScroll } from './hooks'
 
 type CodeSize = 'small' | 'medium' | 'large'
 
@@ -66,15 +59,12 @@ const CodeSizeMap: Record<CodeSize, { height: number; fontSize: number }> = {
 const lineHeight = computed(() => CodeSizeMap[props.size].height)
 const lineFontSize = computed(() => CodeSizeMap[props.size].fontSize)
 
-/** 虚拟滚动
- * 我需要实现虚拟滚动，只展示可视幕内的代码行，其他行不渲染，只占位。
- * 需要计算容器高度，计算出区域可以展示的代码行数际高度，然后计算出容器高度，然后计算出容器宽度。
- *
- * 所有虚拟滚动的信息在virtualScrollInfo
- */
-const virtualScrollInfo = shallowRef<{}>({
-  containerHeight: 0,
-  containerWidth: 0
+/** 虚拟滚动 */
+const codeViewerContentRef = shallowRef<HTMLElement | null>(null)
+const { visibleItems, totalHeight, transform } = useVirtualScroll({
+  containerRef: codeViewerContentRef,
+  itemHeight: lineHeight.value,
+  items: props.code
 })
 
 /** 插件&事件总线 */
