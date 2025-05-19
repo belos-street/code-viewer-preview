@@ -5,6 +5,7 @@ import type { EventBusType } from './event-bus'
  */
 export type CodeLine = {
   id: string | number // 每行的唯一标识
+  index: number // 代码行号
   raw?: string // 代码原始文本内容
   content: string // 代码的HTML内容
   meta?: Record<string, any> // 元数据
