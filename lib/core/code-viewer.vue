@@ -4,13 +4,8 @@
       <div class="view-scroll-placeholder" :style="{ height: `${totalHeight}px` }" />
       <!-- 在lines算宽高 -->
       <div class="view-lines">
-        <div
-          v-for="line in visibleItems"
-          :key="line.id"
-          :data-line-id="line.id"
-          class="view-line"
-          :style="{ top: `${(line.index - 1) * lineHeight}px`, height: `${lineHeight}px`, lineHeight: `${lineHeight}px` }"
-        >
+        <div v-for="line in visibleItems" :key="line.id" :data-line-id="line.id" class="view-line"
+          :style="{ top: `${(line.index - 1) * lineHeight}px`, height: `${lineHeight}px`, lineHeight: `${lineHeight}px` }">
           <span>
             {{ line.content }}
           </span>
@@ -39,9 +34,8 @@ const props = withDefaults(
   {
     code: () => [],
     plugins: () => [],
-    size: 'medium'
-  }
-)
+    size: 'large'
+  })
 
 /** 代码尺寸 */
 const CodeSizeMap: Record<CodeSize, { height: number; fontSize: number }> = {
