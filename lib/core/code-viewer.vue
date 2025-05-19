@@ -6,9 +6,13 @@
       <div class="view-lines">
         <div v-for="line in visibleItems" :key="line.id" :data-line-id="line.id" class="view-line"
           :style="{ top: `${(line.index - 1) * lineHeight}px`, height: `${lineHeight}px`, lineHeight: `${lineHeight}px` }">
-          <span>
+          <div class="code-line-gutters">
+            <div class="gutter-index">{{ line.index }}</div>
+            <slot name="gutter-after" />
+          </div>
+          <div class="code-line-content">
             {{ line.content }}
-          </span>
+          </div>
         </div>
       </div>
     </div>
@@ -62,7 +66,7 @@ const initPlugins = () => {
   props.plugins?.map((plugin) => pluginManager.registerPlugin(plugin))
 }
 
-// 渲染代码行数（通过插件）
+/** 渲染代码行数（通过插件）*/
 const renderLineNumbers = () => {
   const lineNumberPlugin = pluginManager.getPlugins().find((plugin) => plugin.name === 'line-number-plugin')
   if (lineNumberPlugin && lineNumberPlugin['renderLineNumbers']) {

@@ -37,24 +37,19 @@
   position: absolute;
   width: 100%;
   text-wrap-mode: nowrap;
+  display: flex;
+  gap: 24px;
 }
 
 /* gutters */
-.code-viewer .code-viewer-gutters {
-  position: relative;
+.code-viewer .code-line-gutters {
   user-select: none;
-}
-.code-viewer-gutters .code-gutters-item {
-  width: 100%;
-  display: flex;
-  position: absolute;
+  position: sticky;
+  left: 0;
+  z-index: 1;
 }
 
-.code-viewer-gutters .code-gutters-item__index {
+.code-viewer .gutter-index {
   text-align: right;
-  min-width: 32px;
-}
-
-.code-viewer-gutters .code-gutters-item__after {
-  width: 12px;
+  width: 42px;
 }
