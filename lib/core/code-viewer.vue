@@ -1,19 +1,19 @@
 <template>
   <div class="code-viewer" :style="{ fontSize: `${lineFontSize}px` }">
+    <div class="line-gutter-container">
+      <div class="line-gutters" :style="{ transform: `translateY(${scrollTop}px)` }">
+        <div v-for="line in visibleItems" :key="line.id" class="line-gutter"
+          :style="{ top: `${(line.index - 1) * lineHeight}px`, height: `${lineHeight}px` }">
+          <div class="gutter-index">{{ line.index }}</div>
+          <slot name="gutter-after" />
+        </div>
+      </div>
+    </div>
     <div class="code-viewer-content" ref="codeViewerContentRef">
       <div class="view-scroll-placeholder" :style="{ height: `${totalHeight}px` }" />
       <div class="view-lines">
-        <div
-          v-for="line in visibleItems"
-          :key="line.id"
-          :data-line-id="line.id"
-          class="view-line"
-          :style="{ top: `${(line.index - 1) * lineHeight}px`, height: `${lineHeight}px`, lineHeight: `${lineHeight}px` }"
-        >
-          <div class="code-line-gutters">
-            <div class="gutter-index">{{ line.index }}</div>
-            <slot name="gutter-after" />
-          </div>
+        <div v-for="line in visibleItems" :key="line.id" :data-line-id="line.id" class="view-line"
+          :style="{ top: `${(line.index - 1) * lineHeight}px`, height: `${lineHeight}px`, lineHeight: `${lineHeight}px` }">
           <div class="code-line-content">
             {{ line.content }}
           </div>
@@ -49,7 +49,7 @@ const { lineHeight, lineFontSize } = useItemSize(props.size)
 
 /** 虚拟滚动 */
 const codeViewerContentRef = ref<HTMLElement | null>(null)
-const { visibleItems, totalHeight } = useVirtualScroll<CodeLine>({
+const { visibleItems, totalHeight, scrollTop } = useVirtualScroll<CodeLine>({
   containerRef: codeViewerContentRef,
   itemHeight: lineHeight.value,
   items: props.code,

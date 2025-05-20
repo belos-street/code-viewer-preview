@@ -40,18 +40,31 @@
   text-wrap-mode: nowrap;
   display: flex;
   gap: 24px;
-  contain: layout style paint;
 }
 
 /* gutters */
-.code-viewer .code-line-gutters {
-  user-select: none;
-  position: sticky;
+.code-viewer .line-gutter-container {
+  position: relative;
+  overflow-y: hidden;
+  width: 42px;
+  height: 100%;
+}
+
+.code-viewer .line-gutters {
+  /* position: absolute; */
+  top: 0;
   left: 0;
-  z-index: 1;
+  width: 100%;
+  height: 100%;
+  transform: translateY(0);
+}
+
+.code-viewer .line-gutter {
+  /* position: absolute; */
+  left: 0;
+  right: 0;
 }
 
 .code-viewer .gutter-index {
   text-align: right;
-  width: 42px;
 }

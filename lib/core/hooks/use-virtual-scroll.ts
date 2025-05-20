@@ -93,8 +93,6 @@ export function useVirtualScroll<T>(options: UseVirtualScrollOptions<T>) {
   return {
     visibleItems,
     totalHeight,
-    containerRef,
-    startIndex, // 新增：暴露起始索引以便在模板中使用
-    endIndex // 新增：暴露结束索引以便在模板中使用
+    scrollTop
   }
 }
