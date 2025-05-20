@@ -2,10 +2,14 @@
   <div class="code-viewer" :style="{ fontSize: `${lineFontSize}px` }">
     <div class="code-viewer-content" ref="codeViewerContentRef">
       <div class="view-scroll-placeholder" :style="{ height: `${totalHeight}px` }" />
-      <!-- 在lines算宽高 -->
       <div class="view-lines">
-        <div v-for="line in visibleItems" :key="line.id" :data-line-id="line.id" class="view-line"
-          :style="{ top: `${(line.index - 1) * lineHeight}px`, height: `${lineHeight}px`, lineHeight: `${lineHeight}px` }">
+        <div
+          v-for="line in visibleItems"
+          :key="line.id"
+          :data-line-id="line.id"
+          class="view-line"
+          :style="{ top: `${(line.index - 1) * lineHeight}px`, height: `${lineHeight}px`, lineHeight: `${lineHeight}px` }"
+        >
           <div class="code-line-gutters">
             <div class="gutter-index">{{ line.index }}</div>
             <slot name="gutter-after" />
@@ -22,40 +26,36 @@
 <script setup lang="ts">
 import type { CodeLine, Plugin } from './types'
 import { PluginManager } from './plugin'
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import '../styles/index.css'
-import { EventBus } from './event-bus'
-import { useVirtualScroll } from './hooks'
-
-type CodeSize = 'small' | 'medium' | 'large'
+import { EventBus, EventName } from './event-bus'
+import { useItemSize, useVirtualScroll, type CodeItemSize } from './hooks'
 
 const props = withDefaults(
   defineProps<{
     code: CodeLine[]
     plugins?: Plugin[]
-    size?: CodeSize
+    size?: CodeItemSize
   }>(),
   {
     code: () => [],
     plugins: () => [],
     size: 'large'
-  })
+  }
+)
 
 /** 代码尺寸 */
-const CodeSizeMap: Record<CodeSize, { height: number; fontSize: number }> = {
-  small: { height: 18, fontSize: 12 },
-  medium: { height: 21, fontSize: 14 },
-  large: { height: 24, fontSize: 16 }
-}
-const lineHeight = computed(() => CodeSizeMap[props.size].height)
-const lineFontSize = computed(() => CodeSizeMap[props.size].fontSize)
+const { lineHeight, lineFontSize } = useItemSize(props.size)
 
 /** 虚拟滚动 */
 const codeViewerContentRef = ref<HTMLElement | null>(null)
 const { visibleItems, totalHeight } = useVirtualScroll<CodeLine>({
   containerRef: codeViewerContentRef,
   itemHeight: lineHeight.value,
-  items: props.code
+  items: props.code,
+  onScroll: (scrollTop: number) => {
+    eventBus.emit(EventName.SCROLL, scrollTop) // 触发自定义事件
+  }
 })
 
 /** 插件&事件总线 */

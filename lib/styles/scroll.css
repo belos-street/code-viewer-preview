@@ -1,22 +1,24 @@
 .code-viewer-content {
   overflow: auto;
+  scroll-behavior: smooth;
+  contain: strict; /* 确保滚动容器隔离布局和样式 */
 }
 
 /* Webkit 浏览器滚动条样式 */
 .code-viewer-content::-webkit-scrollbar {
-  width: 8px; /* 滚动条宽度 */
-  height: 8px; /* 滚动条高度，用于水平滚动条 */
+  width: 8px;
+  height: 8px;
 }
 
 .code-viewer-content::-webkit-scrollbar-track {
   background: var(--code-viewer-scrollbar-bg);
-  min-height: 100px; /* 设置滚动条轨道的最小高度 */
+  min-height: 100px;
 }
 
 .code-viewer-content::-webkit-scrollbar-thumb {
   background-color: var(--code-viewer-scrollbar-thumb-color);
   border-radius: 4px;
-  min-height: 100px; /* 设置滚动条滑块的最小高度 */
+  min-height: 100px;
 }
 
 .code-viewer-content::-webkit-scrollbar-thumb:hover {

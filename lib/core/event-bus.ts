@@ -37,3 +37,7 @@ export class EventBus {
 
 //EventBus 类型
 export type EventBusType = Omit<EventBus, 'handlers'>
+
+export enum EventName {
+  SCROLL = 'scroll', // 滚动事件
+}

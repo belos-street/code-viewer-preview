@@ -5,6 +5,7 @@ type UseVirtualScrollOptions<T> = {
   itemHeight: number
   items: T[]
   buffer?: number
+  onScroll?: (scrollTop: number) => void // 新增: onScroll 参数
 }
 
 /**
@@ -19,7 +20,7 @@ type UseVirtualScrollOptions<T> = {
  */
 
 export function useVirtualScroll<T>(options: UseVirtualScrollOptions<T>) {
-  const { containerRef, itemHeight, items, buffer = 10 } = options
+  const { containerRef, itemHeight, items, buffer = 10, onScroll } = options // 新增: onScroll 参数
 
   const scrollTop = ref(0)
   const containerHeight = ref(0)
@@ -40,7 +41,10 @@ export function useVirtualScroll<T>(options: UseVirtualScrollOptions<T>) {
     return Math.max(0, end)
   })
 
-  // 可见项数据切片
+  /**
+   * 可见项数据切片
+   * 如果是别的平台，如脱离dom diff的框架，需要做DOM复用池（Recycle Pool），参考monaco-editor
+   */
   const visibleItems = computed(() => {
     const start = Math.max(0, startIndex.value)
     const end = Math.min(endIndex.value, items.length)
@@ -56,6 +60,7 @@ export function useVirtualScroll<T>(options: UseVirtualScrollOptions<T>) {
     }
     scrollAnimationFrameId = requestAnimationFrame(() => {
       scrollTop.value = containerRef.value!.scrollTop
+      if (onScroll) onScroll(scrollTop.value) //  调用外部传入的滚动事件回调
     })
   }
 
