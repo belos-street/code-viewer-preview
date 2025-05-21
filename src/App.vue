@@ -5,14 +5,11 @@ import demo3 from './example/demo3.vue'
 </script>
 
 <template>
-
-
   <div id="main-container">
     <demo1 />
     <demo2 />
     <demo3 />
   </div>
-
 </template>
 
 <style scoped>

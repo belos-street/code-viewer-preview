@@ -20,10 +20,10 @@ export type PluginContext = {
 } & Record<string, any> // 允许插件上下文扩展
 
 /**
- * 插件接口定义
+ * 基础插件接口
  */
 export type Plugin = {
   name: string // 插件名称，唯一标识
-  install: (context: PluginContext) => void // 安装插件
-  uninstall: (context: PluginContext) => void // 卸载插件
+  install: (context: PluginContext) => Promise<void> | void // 安装插件
+  uninstall: (context: PluginContext) => Promise<void> | void // 卸载插件
 } & Record<string, any> // 插件可以有其他自定义方法和属性

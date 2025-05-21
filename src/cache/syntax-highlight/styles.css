@@ -1,0 +1,29 @@
+.token-keyword {
+  color: #0077cc; /* Blue */
+  font-weight: bold;
+}
+
+.token-identifier {
+  color: #333333; /* Dark Gray */
+}
+
+.token-string {
+  color: #dd1144; /* Red */
+}
+
+.token-comment {
+  color: #999988; /* Gray */
+  font-style: italic;
+}
+
+.token-number {
+  color: #ff8c00; /* DarkOrange */
+}
+
+.token-operator {
+  color: #a71d5d; /* Purple */
+}
+
+.token-unknown {
+  color: #555555;
+}

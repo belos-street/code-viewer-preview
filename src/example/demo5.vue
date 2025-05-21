@@ -1,8 +1,15 @@
 <!-- 测试 主题 -->
 
 <script setup lang="ts">
-import { CodeViewer, type CodeList } from 'lib/index'
+import { CodeViewer, type CodeList } from 'lib/index';
 import { lineNumberPlugin } from 'lib/plugin';
+import { pluginManager } from 'lib/core/shared'; // 导入共享的 pluginManager
+import { onBeforeMount } from 'vue';
+
+// 在组件挂载前注册插件
+onBeforeMount(() => {
+  pluginManager.registerPlugin(lineNumberPlugin);
+});
 
 const initialCode: CodeList = [
   { id: 'line1', content: 'const greet = (name: string) => {' },
@@ -25,7 +32,7 @@ const initialCode: CodeList = [
 <template>
   <div class="container">
     <h1>Simple Code Demo</h1>
-    <CodeViewer :code="initialCode" :plugins="[lineNumberPlugin]" />
+    <CodeViewer :code="initialCode" />
   </div>
 </template>
 

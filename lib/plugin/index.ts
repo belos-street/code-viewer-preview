@@ -1,1 +1,1 @@
-export * from './line-number'
+// lib/plugin/index.ts

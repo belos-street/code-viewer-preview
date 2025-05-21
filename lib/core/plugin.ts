@@ -17,7 +17,7 @@ export class PluginManager {
    * 注册插件
    * @param plugin 插件实例
    */
-  registerPlugin(plugin: Plugin): void {
+  async registerPlugin(plugin: Plugin): Promise<void> {
     if (this.plugins.has(plugin.name)) {
       console.warn(`Plugin "${plugin.name}" already exists. Skipping registration.`)
       return
@@ -26,15 +26,23 @@ export class PluginManager {
     const context: PluginContext = {
       eventBus: this.eventBus
     }
-    plugin.install(context)
-    console.log(`Plugin "${plugin.name}" registered and installed.`)
+    try {
+      await plugin.install(context)
+      console.log(`Plugin "${plugin.name}" registered and installed.`)
+    } catch (error) {
+      console.error(`Error installing plugin "${plugin.name}":`, error)
+      // Optionally, re-throw the error or handle it as per application's needs
+      // For now, we'll prevent the plugin from being considered 'installed' if install fails
+      this.plugins.delete(plugin.name) // Remove from map if install failed
+      throw error // Re-throw to notify the caller
+    }
   }
 
   /**
    * 卸载插件
    * @param pluginName 插件名称
    */
-  uninstallPlugin(pluginName: string): void {
+  async uninstallPlugin(pluginName: string): Promise<void> {
     const plugin = this.plugins.get(pluginName)
     if (!plugin) {
       console.warn(`Plugin "${pluginName}" does not exist. Skipping uninstallation.`)
@@ -43,9 +51,15 @@ export class PluginManager {
     const context: PluginContext = {
       eventBus: this.eventBus
     }
-    plugin.uninstall(context)
-    this.plugins.delete(pluginName)
-    console.log(`Plugin "${pluginName}" uninstalled.`)
+    try {
+      await plugin.uninstall(context)
+      this.plugins.delete(pluginName)
+      console.log(`Plugin "${pluginName}" uninstalled.`)
+    } catch (error) {
+      console.error(`Error uninstalling plugin "${pluginName}":`, error)
+      // Optionally, re-throw the error or handle it as per application's needs
+      throw error // Re-throw to notify the caller
+    }
   }
 
   /**

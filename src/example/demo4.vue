@@ -1,31 +1,35 @@
 <!-- 测试 简单组件 -->
 
 <script setup lang="ts">
-import { CodeViewer, type CodeList } from 'lib/index'
-import { lineNumberPlugin } from 'lib/plugin';
+const codeViewerRef = ref<InstanceType<typeof CodeViewer> | null>(null)
 
-const initialCode: CodeList = [
-  { id: 'line1', content: 'const greet = (name: string) => {' },
-  { id: 'line2', content: '  console.log(`Hello, ${name}!`);' },
-  { id: 'line3', content: '};' },
-  { id: 'line4', content: '' },
-  { id: 'line5', content: 'greet("World");' },
+const sampleCode: CodeList = [
+  { id: '1', index: 1, content: 'This line has no specific style.' },
+  { id: '2', index: 2, content: 'This line should have a yellow background.', meta: { backgroundColor: 'yellow' } },
+  { id: '3', index: 3, content: 'This line should have blue text.', meta: { color: 'blue' } },
   {
-    id: 'line6',
-    content:
-      '// This is a comment line with some extra long text to test wrapping and overflow behavior. Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+    id: '4',
+    index: 4,
+    content: 'This line should be bold and have a green background.',
+    meta: { backgroundColor: 'green', fontWeight: 'bold' }
   },
-  { id: 'line7', content: 'function anotherExample() {' },
-  { id: 'line8', content: '  return true;' },
-  { id: 'line9', content: '}' }
+  { id: '5', index: 5, content: 'Another normal line.' }
 ]
 
+onMounted(() => {
+  if (codeViewerRef.value) {
+    codeViewerRef.value.registerPlugin(new LineStylerPlugin())
+  }
+})
+import { ref, onMounted } from 'vue'
+import { CodeViewer, type CodeList } from 'lib/index'
+import { LineStylerPlugin } from 'lib/plugin/line-styler-plugin'
 </script>
 
 <template>
   <div class="container">
     <h1>Simple Code Demo</h1>
-    <CodeViewer :code="initialCode" :plugins="[lineNumberPlugin]" />
+    <CodeViewer ref="codeViewerRef" :code="sampleCode" />
   </div>
 </template>
 

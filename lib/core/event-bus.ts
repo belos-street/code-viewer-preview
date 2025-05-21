@@ -40,4 +40,5 @@ export type EventBusType = Omit<EventBus, 'handlers'>
 
 export enum EventName {
   SCROLL = 'scroll', // 滚动事件
+  LINE_DOM_RENDERED = 'lineDomRendered' // 代码行 DOM 渲染完成事件
 }
