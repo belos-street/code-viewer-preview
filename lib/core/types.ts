@@ -1,15 +1,23 @@
 import type { EventBusType } from './event-bus'
 
+
+/**
+ * 用户传参的代码行数据结构
+ */
+export type RawCodeLine = {
+  id: string | number // 每行的唯一标识
+  content: string // 代码原始文本内容
+  meta?: Record<string, any> // 元数据
+}
+
 /**
  * 单行代码数据结构
  */
-export type CodeLine = {
-  id: string | number // 每行的唯一标识
+export type CodeLine = RawCodeLine & {
   index: number // 代码行号
-  raw?: string // 代码原始文本内容
-  content: string // 代码的HTML内容
-  meta?: Record<string, any> // 元数据
+  html: string // 渲染用的HTML字符串
 }
+
 export type CodeList = CodeLine[]
 
 /**
