@@ -1,23 +1,22 @@
 <!-- 测试 简单渲染 -->
 
 <script setup lang="ts">
-import { CodeViewer, type CodeList } from 'lib/index'
+import { CodeViewer, type RawCodeLine } from 'lib/index'
 
-const initialCode: CodeList = [
-  { id: 'line1', content: 'const greet = (name: string) => {', index: 1 },
-  { id: 'line2', content: '  console.log(`Hello, ${name}!`);', index: 2 },
-  { id: 'line3', content: '};', index: 3 },
-  { id: 'line4', content: '', index: 4 },
-  { id: 'line5', content: 'greet("World");', index: 5 },
+const initialCode: RawCodeLine[] = [
+  { id: 'line1', content: 'const greet = (name: string) => {' },
+  { id: 'line2', content: '  console.log(`Hello, ${name}!`);' },
+  { id: 'line3', content: '};' },
+  { id: 'line4', content: '' },
+  { id: 'line5', content: 'greet("World");' },
   {
     id: 'line6',
     content:
-      '// This is a comment line with some extra long text to test wrapping and overflow behavior. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    index: 6
+      '// This is a comment line with some extra long text to test wrapping and overflow behavior. Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
   },
-  { id: 'line7', content: 'function anotherExample() {', index: 7 },
-  { id: 'line8', content: '  return true;', index: 8 },
-  { id: 'line9', content: '}', index: 9 }
+  { id: 'line7', content: 'function anotherExample() {' },
+  { id: 'line8', content: '  return true;' },
+  { id: 'line9', content: '}' }
 ]
 </script>
 

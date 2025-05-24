@@ -18,7 +18,6 @@ export type CodeLine = RawCodeLine & {
   html: string // 渲染用的HTML字符串
 }
 
-export type CodeList = CodeLine[]
 
 /**
  * 插件上下文，包含核心API和事件总线实例

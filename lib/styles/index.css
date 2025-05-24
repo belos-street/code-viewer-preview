@@ -37,9 +37,10 @@
 .code-viewer-content .view-line {
   position: absolute;
   width: 100%;
-  text-wrap-mode: nowrap;
   display: flex;
   gap: 24px;
+  text-wrap-mode: nowrap;
+  white-space: pre;
 }
 
 /* gutters */
