@@ -3,27 +3,26 @@
 <script setup lang="ts">
 const codeViewerRef = ref<InstanceType<typeof CodeViewer> | null>(null)
 
-const sampleCode: CodeList = [
-  { id: '1', index: 1, content: 'This line has no specific style.' },
-  { id: '2', index: 2, content: 'This line should have a yellow background.', meta: { backgroundColor: 'yellow' } },
-  { id: '3', index: 3, content: 'This line should have blue text.', meta: { color: 'blue' } },
+const sampleCode: RawCodeLine[] = [
+  { id: '1', content: 'This line has no specific style.' },
+  { id: '2', content: 'This line should have a yellow background.', meta: { bgColor: 'yellow' } },
+  { id: '3', content: 'This line should have blue text.', meta: { bgColor: 'blue' } },
   {
     id: '4',
-    index: 4,
     content: 'This line should be bold and have a green background.',
     meta: { backgroundColor: 'green', fontWeight: 'bold' }
   },
-  { id: '5', index: 5, content: 'Another normal line.' }
+  { id: '5', content: 'Another normal line.' }
 ]
 
 onMounted(() => {
   if (codeViewerRef.value) {
-    codeViewerRef.value.registerPlugin(new LineStylerPlugin())
+    codeViewerRef.value.registerPlugin(LineBgColorPlugin)
   }
 })
 import { ref, onMounted } from 'vue'
-import { CodeViewer, type CodeList } from 'lib/index'
-import { LineStylerPlugin } from 'lib/plugin/line-styler-plugin'
+import { CodeViewer, type RawCodeLine } from 'lib/index'
+import { LineBgColorPlugin } from 'lib/plugin'
 </script>
 
 <template>
@@ -36,5 +35,6 @@ import { LineStylerPlugin } from 'lib/plugin/line-styler-plugin'
 <style lang="css" scoped>
 .container {
   width: 100%;
+  height: 200px;
 }
 </style>

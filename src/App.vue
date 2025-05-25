@@ -2,6 +2,7 @@
 import demo1 from './example/demo1.vue'
 import demo2 from './example/demo2.vue'
 import demo3 from './example/demo3.vue'
+import demo4 from './example/demo4.vue'
 </script>
 
 <template>
@@ -9,6 +10,7 @@ import demo3 from './example/demo3.vue'
     <demo1 />
     <demo2 />
     <demo3 />
+    <demo4 />
   </div>
 </template>
 

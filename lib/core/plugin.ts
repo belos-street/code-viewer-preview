@@ -1,4 +1,4 @@
-import type { Plugin, PluginContext } from './types'
+import type { CodeLine, Plugin, PluginContext } from './types'
 import { EventBus } from './event-bus'
 
 /**
@@ -8,9 +8,19 @@ import { EventBus } from './event-bus'
  */
 export class PluginManager {
   private plugins: Map<string, Plugin> = new Map()
+  private codeLines: CodeLine[] = []
+  private visibleItems: CodeLine[] = []
 
   constructor(private eventBus: EventBus) {
     this.eventBus = eventBus
+  }
+
+  setCodeLines(codeLines: any[]) {
+    this.codeLines = codeLines
+  }
+
+  setVisibleItems(visibleItems: CodeLine[]) {
+    this.visibleItems = visibleItems
   }
 
   /**
@@ -24,15 +34,14 @@ export class PluginManager {
     }
     this.plugins.set(plugin.name, plugin)
     const context: PluginContext = {
-      eventBus: this.eventBus
+      eventBus: this.eventBus,
+      codeLines: this.codeLines,
+      visibleItems: this.visibleItems
     }
     try {
       await plugin.install(context)
       console.log(`Plugin "${plugin.name}" registered and installed.`)
     } catch (error) {
-      console.error(`Error installing plugin "${plugin.name}":`, error)
-      // Optionally, re-throw the error or handle it as per application's needs
-      // For now, we'll prevent the plugin from being considered 'installed' if install fails
       this.plugins.delete(plugin.name) // Remove from map if install failed
       throw error // Re-throw to notify the caller
     }
@@ -49,7 +58,9 @@ export class PluginManager {
       return
     }
     const context: PluginContext = {
-      eventBus: this.eventBus
+      eventBus: this.eventBus,
+      codeLines: this.codeLines,
+      visibleItems: this.visibleItems
     }
     try {
       await plugin.uninstall(context)
@@ -57,7 +68,6 @@ export class PluginManager {
       console.log(`Plugin "${pluginName}" uninstalled.`)
     } catch (error) {
       console.error(`Error uninstalling plugin "${pluginName}":`, error)
-      // Optionally, re-throw the error or handle it as per application's needs
       throw error // Re-throw to notify the caller
     }
   }

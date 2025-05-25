@@ -24,6 +24,8 @@ export type CodeLine = RawCodeLine & {
  */
 export type PluginContext = {
   eventBus: EventBusType
+  codeLines: CodeLine[] // 新增，插件可访问和修改codeLines
+  visibleItems: CodeLine[] // 新增，插件可访问当前可见行
 } & Record<string, any> // 允许插件上下文扩展
 
 /**
