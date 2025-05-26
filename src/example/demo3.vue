@@ -2,7 +2,6 @@
 
 <script setup lang="ts">
 import { CodeViewer, LineBgColorPlugin, type RawCodeLine } from 'lib/index'
-import { onMounted, ref } from 'vue'
 
 // 生成大量代码行以测试虚拟滚动
 const generateLargeCode = (count: number): RawCodeLine[] => {
@@ -18,19 +17,12 @@ const generateLargeCode = (count: number): RawCodeLine[] => {
 }
 
 const initialCode = generateLargeCode(1000) // 生成10000行代码
-
-const codeViewerRef = ref<InstanceType<typeof CodeViewer> | null>(null)
-onMounted(() => {
-  if (codeViewerRef.value) {
-    codeViewerRef.value.registerPlugin(LineBgColorPlugin)
-  }
-})
 </script>
 
 <template>
   <h1>Virtual Scrolling Code Demo</h1>
   <div class="container">
-    <CodeViewer :code="initialCode" ref="codeViewerRef" />
+    <CodeViewer :code="initialCode" :plugins="[LineBgColorPlugin]" />
   </div>
   <br />
 </template>

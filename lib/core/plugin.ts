@@ -15,7 +15,7 @@ export class PluginManager {
     this.eventBus = eventBus
   }
 
-  setCodeLines(codeLines: any[]) {
+  setCodeLines(codeLines: CodeLine[]) {
     this.codeLines = codeLines
   }
 
