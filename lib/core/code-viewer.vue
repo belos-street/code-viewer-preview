@@ -63,8 +63,8 @@ const pluginManager = new PluginManager({
   codeLines
 })
 
+//注册插件
 onMounted(() => {
-  //注册插件
   props.plugins.map(async (plugin) => await pluginManager.registerPlugin(plugin))
 })
 
