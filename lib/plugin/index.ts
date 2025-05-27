@@ -1,1 +1,1 @@
-export * from './line-bg-color.plugin'
+export * from './line-bg-color'
