@@ -1,5 +1,5 @@
+import type { Ref, VNode } from 'vue'
 import type { EventBusType } from './event-bus'
-
 
 /**
  * 用户传参的代码行数据结构
@@ -15,17 +15,15 @@ export type RawCodeLine = {
  */
 export type CodeLine = RawCodeLine & {
   index: number // 代码行号
-  html: string // 渲染用的HTML字符串
+  vNode?: VNode
 }
-
 
 /**
  * 插件上下文，包含核心API和事件总线实例
  */
 export type PluginContext = {
   eventBus: EventBusType
-  codeLines: CodeLine[] // 新增，插件可访问和修改codeLines
-  visibleItems: CodeLine[] // 新增，插件可访问当前可见行
+  codeLines: Ref<CodeLine[]> // 代码行数据的响应式引用
 } & Record<string, any> // 允许插件上下文扩展
 
 /**

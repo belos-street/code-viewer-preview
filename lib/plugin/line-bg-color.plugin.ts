@@ -1,33 +1,22 @@
 import type { Plugin, PluginContext } from '../core/types'
+import { h } from 'vue'
 
 export const LineBgColorPlugin: Plugin = {
   name: 'line-bg-color',
-  _processed: new Set<string | number>(), // 缓存已处理行
 
   install(context: PluginContext) {
-    this._processVisible(context)
-  },
+    const { codeLines } = context
 
-  _processVisible(context: PluginContext) {
-    context.visibleItems.forEach(line => {
-      if (!this._processed.has(line.id)) {
-        const bg = line.meta?.bgColor
-        if (bg) {
-          line.html = `<div style="background:${bg};width:100%;height:100%;">${line.content}</div>`
-        } else {
-          line.html = line.content
-        }
-        this._processed.add(line.id)
+    codeLines.value.map((line) => {
+      const bgColor = line.meta?.bgColor
+      // 用 h 函数生成 VNode，赋值到 line.htmlVNode
+      if (bgColor) {
+        line.vNode = h('div', { style: { background: bgColor } }, line.content)
+      } else {
+        line.vNode = h('div', {}, line.content)
       }
     })
   },
 
-  // 插件可暴露一个方法供外部调用（如滚动时）
-  onVisibleChange(context: PluginContext) {
-    this._processVisible(context)
-  },
-
-  uninstall() {
-    this._processed = new Set()
-  }
+  uninstall() {}
 }

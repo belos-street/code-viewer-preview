@@ -10,7 +10,10 @@
           class="view-line"
           :style="{ top: `${(line.index - 1) * lineHeight}px`, height: `${lineHeight}px`, lineHeight: `${lineHeight}px` }"
         >
-          <div class="code-line-content" v-html="line.html" />
+          <div class="code-line-content">
+            <component v-if="line.vNode" :is="line.vNode" />
+            <div v-else v-html="line.content" />
+          </div>
         </div>
       </div>
     </div>
@@ -40,7 +43,7 @@ const props = withDefaults(
 )
 
 // 代码行数据，并进行初始化
-const codeLines = ref<CodeLine[]>(props.code.map((line, index) => ({ ...line, index: index + 1, html: line.content }))) // html初始为content
+const codeLines = ref<CodeLine[]>(props.code.map((line, index) => ({ ...line, index: index + 1, html: line.content })))
 
 /** 代码尺寸 */
 const { lineHeight, lineFontSize } = useItemSize(props.size)
@@ -55,24 +58,15 @@ const { visibleItems, totalHeight } = useVirtualScroll<CodeLine>({
 
 /** 插件系统 */
 const eventBus = new EventBus() // 初始化事件总线
-const pluginManager = new PluginManager(eventBus)
-
-onMounted(() => {
-  props.plugins.map(async (plugin) => await pluginManager.registerPlugin(plugin))
+const pluginManager = new PluginManager({
+  eventBus,
+  codeLines
 })
 
-// 支持热更新codeLines
-// watch(
-//   () => props.code,
-//   (newCode) => {
-//     codeLines.splice(0, codeLines.length, ...newCode.map((line, index) => ({ ...line, index: index + 1, html: line.content })))
-//   }
-// )
-
-// 每次 visibleItems 变化时通知插件系统
-// watchEffect(() => {
-//   pluginManager.setVisibleItems(visibleItems)
-// })
+onMounted(() => {
+  //注册插件
+  props.plugins.map(async (plugin) => await pluginManager.registerPlugin(plugin))
+})
 
 /** 暴露给外部的API */
 defineExpose({})

@@ -1,26 +1,23 @@
 import type { CodeLine, Plugin, PluginContext } from './types'
-import { EventBus } from './event-bus'
+import type { Ref } from 'vue'
+import { type EventBusType } from './event-bus'
+
+type PluginManagerOptions = Pick<PluginContext, 'eventBus' | 'codeLines'>
 
 /**
  * 插件管理器
  * @description管理插件的安装和卸载，并提供插件的注册和获取功能。
  * @param eventBus 事件总线实例
  */
+
 export class PluginManager {
   private plugins: Map<string, Plugin> = new Map()
-  private codeLines: CodeLine[] = []
-  private visibleItems: CodeLine[] = []
+  private eventBus: EventBusType
+  private codeLines: Ref<CodeLine[]>
 
-  constructor(private eventBus: EventBus) {
-    this.eventBus = eventBus
-  }
-
-  setCodeLines(codeLines: CodeLine[]) {
-    this.codeLines = codeLines
-  }
-
-  setVisibleItems(visibleItems: CodeLine[]) {
-    this.visibleItems = visibleItems
+  constructor(options: PluginManagerOptions) {
+    this.eventBus = options.eventBus
+    this.codeLines = options.codeLines
   }
 
   /**
@@ -36,7 +33,6 @@ export class PluginManager {
     const context: PluginContext = {
       eventBus: this.eventBus,
       codeLines: this.codeLines,
-      visibleItems: this.visibleItems
     }
     try {
       await plugin.install(context)
@@ -59,8 +55,7 @@ export class PluginManager {
     }
     const context: PluginContext = {
       eventBus: this.eventBus,
-      codeLines: this.codeLines,
-      visibleItems: this.visibleItems
+      codeLines: this.codeLines
     }
     try {
       await plugin.uninstall(context)
