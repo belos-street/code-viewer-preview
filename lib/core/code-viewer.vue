@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import type { CodeLine, RawCodeLine, Plugin } from './types'
 import { onMounted, ref } from 'vue'
-import { EventBus } from './event-bus'
+import { EventBus, EventName } from './event-bus'
 import { useItemSize, useVirtualScroll, type CodeItemSize } from './hooks'
 import { PluginManager } from './plugin'
 import '../styles/index.css'
@@ -53,7 +53,10 @@ const codeViewerContentRef = ref<HTMLElement | null>(null)
 const { visibleItems, totalHeight } = useVirtualScroll<CodeLine>({
   containerRef: codeViewerContentRef,
   itemHeight: lineHeight.value,
-  items: codeLines.value
+  items: codeLines.value,
+  onScroll: (_scrollTop: number, currentVisibleItems: CodeLine[]) => {
+    eventBus.emit(EventName.SCROLL, currentVisibleItems)
+  }
 })
 
 /** 插件系统 */

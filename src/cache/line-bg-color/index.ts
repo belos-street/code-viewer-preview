@@ -1,29 +1,21 @@
 import type { Plugin, PluginContext } from 'lib/core'
-import { h, watch } from 'vue'
+import { h } from 'vue'
 
 export const LineBgColorPlugin: Plugin = {
   name: 'line-bg-color',
-  _processed: new Set<string | number>(),
 
   install(context: PluginContext) {
-    // 只处理 visibleItems
-    watch(
-      () => context.visibleItems.value,
-      (visibleItems) => {
-        visibleItems.forEach(line => {
-          if (!line.vNode) {
-            const bgColor = line.meta?.bgColor
-            if (bgColor) {
-              line.vNode = h('div', { style: { background: bgColor } }, line.content)
-            } else {
-              line.vNode = h('div', {}, line.content)
-            }
-          }
-        })
-      },
-      { immediate: true }
-    )
+    const { codeLines } = context
+    codeLines.value.map((line) => {
+      const bgColor = line.meta?.bgColor
+      // 用 h 函数生成 VNode，赋值到 line.htmlVNode
+      if (bgColor) {
+        line.vNode = h('div', { style: { background: bgColor } }, line.content)
+      } else {
+        line.vNode = h('div', {}, line.content)
+      }
+    })
   },
 
-  uninstall() { }
+  uninstall() {}
 }

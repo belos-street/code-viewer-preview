@@ -5,7 +5,7 @@ type UseVirtualScrollOptions<T> = {
   itemHeight: number
   items: T[]
   buffer?: number
-  onScroll?: (scrollTop: number) => void // 新增: onScroll 参数
+  onScroll?: (scrollTop: number, visibleItems: T[]) => void // 修改: onScroll 参数，增加 visibleItems
 }
 
 /**
@@ -60,7 +60,7 @@ export function useVirtualScroll<T>(options: UseVirtualScrollOptions<T>) {
     }
     scrollAnimationFrameId = requestAnimationFrame(() => {
       scrollTop.value = containerRef.value!.scrollTop
-      if (onScroll) onScroll(scrollTop.value) //  调用外部传入的滚动事件回调
+      if (onScroll) onScroll(scrollTop.value, visibleItems.value)
     })
   }
 
