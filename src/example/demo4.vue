@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CodeViewer, LineBgColorPlugin, type RawCodeLine } from 'lib/index'
+import { CodeViewer, createLineBgColorPlugin, type RawCodeLine } from 'lib/index'
 
 const sampleCode: RawCodeLine[] = [
   { id: '1', content: 'This line has no specific style.' },
@@ -17,7 +17,7 @@ const sampleCode: RawCodeLine[] = [
 <template>
   <div class="container">
     <h1>Plugin Test</h1>
-    <CodeViewer :code="sampleCode" :plugins="[LineBgColorPlugin]" />
+    <CodeViewer :code="sampleCode" :plugins="[createLineBgColorPlugin()]" />
   </div>
 </template>
 

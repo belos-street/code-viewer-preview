@@ -48,6 +48,9 @@ const codeLines = ref<CodeLine[]>(props.code.map((line, index) => ({ ...line, in
 /** 代码尺寸 */
 const { lineHeight, lineFontSize } = useItemSize(props.size)
 
+/** 插件系统 */
+const eventBus = new EventBus() // 初始化事件总线
+
 /** 虚拟滚动 */
 const codeViewerContentRef = ref<HTMLElement | null>(null)
 const { visibleLines, totalHeight } = useVirtualScroll<CodeLine>({
@@ -56,8 +59,6 @@ const { visibleLines, totalHeight } = useVirtualScroll<CodeLine>({
   items: codeLines.value
 })
 
-/** 插件系统 */
-const eventBus = new EventBus() // 初始化事件总线
 const pluginManager = new PluginManager({
   eventBus,
   codeLines,
