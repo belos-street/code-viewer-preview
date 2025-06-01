@@ -5,7 +5,7 @@ type UseVirtualScrollOptions<T> = {
   itemHeight: number
   items: T[]
   buffer?: number
-  onScroll?: (scrollTop: number, visibleItems: T[]) => void // 修改: onScroll 参数，增加 visibleItems
+  onScroll?: (scrollTop: number, visibleLines: T[]) => void // 修改: onScroll 参数，增加 visibleLines
 }
 
 /**
@@ -45,7 +45,7 @@ export function useVirtualScroll<T>(options: UseVirtualScrollOptions<T>) {
    * 可见项数据切片
    * 如果是别的平台，如脱离dom diff的框架，需要做DOM复用池（Recycle Pool），参考monaco-editor
    */
-  const visibleItems = computed(() => {
+  const visibleLines = computed(() => {
     const start = Math.max(0, startIndex.value)
     const end = Math.min(endIndex.value, items.length)
     return items.slice(start, end)
@@ -60,7 +60,7 @@ export function useVirtualScroll<T>(options: UseVirtualScrollOptions<T>) {
     }
     scrollAnimationFrameId = requestAnimationFrame(() => {
       scrollTop.value = containerRef.value!.scrollTop
-      if (onScroll) onScroll(scrollTop.value, visibleItems.value)
+      if (onScroll) onScroll(scrollTop.value, visibleLines.value)
     })
   }
 
@@ -91,7 +91,7 @@ export function useVirtualScroll<T>(options: UseVirtualScrollOptions<T>) {
   })
 
   return {
-    visibleItems,
+    visibleLines,
     totalHeight,
     scrollTop
   }

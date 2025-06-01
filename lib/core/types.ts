@@ -1,4 +1,4 @@
-import type { Ref, VNode } from 'vue'
+import type { ComputedRef, Ref, VNode } from 'vue'
 import type { EventBusType } from './event-bus'
 
 /**
@@ -24,6 +24,7 @@ export type CodeLine = RawCodeLine & {
 export type PluginContext = {
   eventBus: EventBusType
   codeLines: Ref<CodeLine[]> // 代码行数据的响应式引用
+  visibleLines: ComputedRef<CodeLine[]> // 可见的代码行数据的响应式引用
 } & Record<string, any> // 允许插件上下文扩展
 
 /**

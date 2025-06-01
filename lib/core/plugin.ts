@@ -1,8 +1,6 @@
-import type { CodeLine, Plugin, PluginContext } from './types'
-import type { Ref } from 'vue'
-import { type EventBusType } from './event-bus'
+import type { Plugin, PluginContext } from './types'
 
-type PluginManagerOptions = Pick<PluginContext, 'eventBus' | 'codeLines'>
+type PluginManagerOptions = Pick<PluginContext, 'eventBus' | 'codeLines' | 'visibleLines'>
 
 /**
  * 插件管理器
@@ -12,12 +10,10 @@ type PluginManagerOptions = Pick<PluginContext, 'eventBus' | 'codeLines'>
 
 export class PluginManager {
   private plugins: Map<string, Plugin> = new Map()
-  private eventBus: EventBusType
-  private codeLines: Ref<CodeLine[]>
+  private options: PluginManagerOptions
 
   constructor(options: PluginManagerOptions) {
-    this.eventBus = options.eventBus
-    this.codeLines = options.codeLines
+    this.options = options
   }
 
   /**
@@ -30,10 +26,7 @@ export class PluginManager {
       return
     }
     this.plugins.set(plugin.name, plugin)
-    const context: PluginContext = {
-      eventBus: this.eventBus,
-      codeLines: this.codeLines,
-    }
+    const context: PluginContext = { ...this.options }
     try {
       await plugin.install(context)
       console.log(`Plugin "${plugin.name}" registered and installed.`)
@@ -53,10 +46,7 @@ export class PluginManager {
       console.warn(`Plugin "${pluginName}" does not exist. Skipping uninstallation.`)
       return
     }
-    const context: PluginContext = {
-      eventBus: this.eventBus,
-      codeLines: this.codeLines
-    }
+    const context: PluginContext = { ...this.options }
     try {
       await plugin.uninstall(context)
       this.plugins.delete(pluginName)

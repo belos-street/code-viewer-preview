@@ -7,7 +7,7 @@
 
   <!-- <div class="line-gutter-container">
       <div class="line-gutters" :style="{ transform: `translateY(${scrollTop}px)` }">
-        <div v-for="line in visibleItems" :key="line.id" class="line-gutter"
+        <div v-for="line in visibleLines" :key="line.id" class="line-gutter"
           :style="{ top: `${(line.index - 1) * lineHeight}px`, height: `${lineHeight}px` }">
           <div class="gutter-index">{{ line.index }}</div>
           <slot name="gutter-after" />

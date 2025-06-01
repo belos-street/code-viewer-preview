@@ -4,7 +4,7 @@
       <div class="view-scroll-placeholder" :style="{ height: `${totalHeight}px` }" />
       <div class="view-lines">
         <div
-          v-for="line in visibleItems"
+          v-for="line in visibleLines"
           :key="line.id"
           :data-line-id="line.id"
           class="view-line"
@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import type { CodeLine, RawCodeLine, Plugin } from './types'
 import { onMounted, ref } from 'vue'
-import { EventBus, EventName } from './event-bus'
+import { EventBus } from './event-bus'
 import { useItemSize, useVirtualScroll, type CodeItemSize } from './hooks'
 import { PluginManager } from './plugin'
 import '../styles/index.css'
@@ -50,20 +50,18 @@ const { lineHeight, lineFontSize } = useItemSize(props.size)
 
 /** 虚拟滚动 */
 const codeViewerContentRef = ref<HTMLElement | null>(null)
-const { visibleItems, totalHeight } = useVirtualScroll<CodeLine>({
+const { visibleLines, totalHeight } = useVirtualScroll<CodeLine>({
   containerRef: codeViewerContentRef,
   itemHeight: lineHeight.value,
-  items: codeLines.value,
-  onScroll: (_scrollTop: number, currentVisibleItems: CodeLine[]) => {
-    eventBus.emit(EventName.SCROLL, currentVisibleItems)
-  }
+  items: codeLines.value
 })
 
 /** 插件系统 */
 const eventBus = new EventBus() // 初始化事件总线
 const pluginManager = new PluginManager({
   eventBus,
-  codeLines
+  codeLines,
+  visibleLines: visibleLines
 })
 
 //注册插件
