@@ -53,7 +53,7 @@ const eventBus = new EventBus() // 初始化事件总线
 
 /** 虚拟滚动 */
 const codeViewerContentRef = ref<HTMLElement | null>(null)
-const { visibleLines, totalHeight } = useVirtualScroll<CodeLine>({
+const { visibleLines, totalHeight, scrollToLine } = useVirtualScroll<CodeLine>({
   containerRef: codeViewerContentRef,
   itemHeight: lineHeight.value,
   items: codeLines.value
@@ -71,5 +71,7 @@ onMounted(() => {
 })
 
 /** 暴露给外部的API */
-defineExpose({})
+defineExpose({
+  scrollToLine
+})
 </script>

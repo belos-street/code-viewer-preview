@@ -90,9 +90,27 @@ export function useVirtualScroll<T>(options: UseVirtualScrollOptions<T>) {
     }
   })
 
+  // 滚动到指定行
+  const scrollToLine = (lineNumber: number) => {
+    if (!containerRef.value) return
+
+    // 确保行号在有效范围内
+    const targetLine = Math.max(1, Math.min(lineNumber, items.length))
+
+    // 计算目标滚动位置（行号从1开始，索引从0开始）
+    const targetScrollTop = (targetLine - 1) * itemHeight
+
+    // 执行滚动
+    containerRef.value.scrollTo({
+      top: targetScrollTop,
+      behavior: 'smooth'
+    })
+  }
+
   return {
     visibleLines,
     totalHeight,
-    scrollTop
+    scrollTop,
+    scrollToLine
   }
 }
