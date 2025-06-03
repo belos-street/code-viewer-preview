@@ -1,6 +1,6 @@
 <template>
   <div class="demo-container">
-    <h2>ScrollToLine 功能演示</h2>
+    <h1>ScrollToLine 功能演示</h1>
     <p>这个演示展示了如何使用 scrollToLine 方法滚动到指定的代码行</p>
 
     <div class="controls">
@@ -19,7 +19,7 @@
     </div>
 
     <div class="code-container">
-      <CodeViewer ref="codeViewerRef" :code="codeLines" :plugins="plugins" size="medium" language="javascript" />
+      <CodeViewer ref="codeViewerRef" :code="codeLines" language="javascript" />
     </div>
 
     <div class="info">
@@ -33,7 +33,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { CodeViewer } from 'lib/core'
-import { createLineBgColorPlugin } from 'lib/plugin/line-bg-color'
 import type { RawCodeLine } from 'lib/core/types'
 
 // 生成测试代码行
@@ -43,11 +42,7 @@ const generateCodeLines = (count: number): RawCodeLine[] => {
   for (let i = 1; i <= count; i++) {
     const line: RawCodeLine = {
       id: `line-${i}`,
-      content: `// 第 ${i} 行 - function example${i}() { console.log('这是第${i}行代码'); return ${i}; }`,
-      meta: {
-        // 每10行设置一个背景色，方便识别
-        bgColor: i % 10 === 0 ? '#fff3cd' : i % 25 === 0 ? '#d1ecf1' : i % 50 === 0 ? '#d4edda' : undefined
-      }
+      content: `// 第 ${i} 行 - function example${i}() { console.log('这是第${i}行代码'); return ${i}; }`
     }
     lines.push(line)
   }
@@ -56,7 +51,6 @@ const generateCodeLines = (count: number): RawCodeLine[] => {
 }
 
 const codeLines = ref<RawCodeLine[]>(generateCodeLines(200))
-const plugins = ref([createLineBgColorPlugin()])
 const codeViewerRef = ref<InstanceType<typeof CodeViewer> | null>(null)
 const targetLine = ref<number>(1)
 
@@ -83,7 +77,6 @@ const scrollToLine = (lineNumber: number) => {
 
 <style scoped>
 .demo-container {
-  padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
 }
