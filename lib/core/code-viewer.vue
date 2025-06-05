@@ -62,7 +62,8 @@ const { visibleLines, totalHeight, scrollToLine } = useVirtualScroll<CodeLine>({
 const pluginManager = new PluginManager({
   eventBus,
   codeLines,
-  visibleLines: visibleLines
+  visibleLines: visibleLines,
+  language: props.language // 将language属性传递给插件上下文
 })
 
 //注册插件

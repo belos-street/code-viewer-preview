@@ -9,8 +9,7 @@ const generateLargeCode = (count: number): RawCodeLine[] => {
   for (let i = 1; i <= count; i++) {
     code.push({
       id: `line${i}`,
-      content: `const line${i} = "This is line ${i}";`,
-      meta: { bgColor: i % 2 === 0 ? 'red' : 'blue' }
+      content: `const line${i} = "This is line ${i}";`
     })
   }
   return code

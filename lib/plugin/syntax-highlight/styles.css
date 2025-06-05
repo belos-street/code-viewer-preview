@@ -1,0 +1,93 @@
+/* 代码高亮样式 */
+
+/* 通用代码元素 */
+.token {
+  display: inline;
+}
+
+/* 注释 */
+.token.comment {
+  color: #6a9955;
+  font-style: italic;
+}
+
+/* 字符串 */
+.token.string {
+  color: #ce9178;
+}
+
+/* 数字 */
+.token.number {
+  color: #b5cea8;
+}
+
+/* 关键字 */
+.token.keyword {
+  color: #569cd6;
+  font-weight: bold;
+}
+
+/* 类名 */
+.token.class-name {
+  color: #4ec9b0;
+}
+
+/* 标识符 */
+.token.identifier {
+  color: #9cdcfe;
+}
+
+/* 标点符号 */
+.token.punctuation {
+  color: #d4d4d4;
+}
+
+/* 运算符 */
+.token.operator {
+  color: #d4d4d4;
+}
+
+/* 函数名 */
+.token.function {
+  color: #dcdcaa;
+}
+
+/* 正则表达式 */
+.token.regex {
+  color: #d16969;
+}
+
+/* 布尔值 */
+.token.boolean {
+  color: #569cd6;
+}
+
+/* 变量 */
+.token.variable {
+  color: #9cdcfe;
+}
+
+/* 属性 */
+.token.property {
+  color: #9cdcfe;
+}
+
+/* 标签 */
+.token.tag {
+  color: #569cd6;
+}
+
+/* 属性名 */
+.token.attr-name {
+  color: #9cdcfe;
+}
+
+/* 属性值 */
+.token.attr-value {
+  color: #ce9178;
+}
+
+/* 命名空间 */
+.token.namespace {
+  color: #4ec9b0;
+}
