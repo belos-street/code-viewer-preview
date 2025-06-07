@@ -6,12 +6,7 @@
     <div class="code-containers">
       <div class="code-container">
         <h3>语法高亮</h3>
-        <CodeViewer
-          :code="codeLines"
-          :plugins="[createLineBgColorPlugin(), createSyntaxHighlightPlugin()]"
-          language="javascript"
-          size="medium"
-        />
+        <CodeViewer :code="codeLines" :plugins="[createSyntaxHighlightPlugin()]" language="javascript" size="medium" />
       </div>
 
       <div class="code-container">
@@ -85,14 +80,13 @@ new Promise((resolve, reject) => {
 // 正则表达式
 const pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 const isValidEmail = pattern.test("test@example.com");
-console.log(isValidEmail);
-`
+console.log(isValidEmail);`
 
 // 将代码转换为行数据
 const codeLines = ref<RawCodeLine[]>(
   jsCode.split('\n').map((line, index) => ({
     id: `line-${index + 1}`,
-    content: line || ' ', // 空行用空格代替，避免高度塌陷
+    content: line, // 空行用空格代替，避免高度塌陷
     meta: { bgColor: 'blue' }
   }))
 )

@@ -63,7 +63,7 @@ const pluginManager = new PluginManager({
   eventBus,
   codeLines,
   visibleLines: visibleLines,
-  language: props.language // 将language属性传递给插件上下文
+  language: props.language
 })
 
 //注册插件
