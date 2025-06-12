@@ -1,0 +1,20 @@
+.line-with-number {
+  display: flex;
+  width: 100%;
+}
+
+.line-number {
+  display: inline-block;
+  min-width: 2.5em;
+  padding-right: 0.5em;
+  text-align: right;
+  color: #858585;
+  user-select: none;
+  border-right: 1px solid #e0e0e0;
+  margin-right: 0.5em;
+}
+
+.line-content {
+  flex: 1;
+  overflow: hidden;
+}

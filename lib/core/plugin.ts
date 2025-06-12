@@ -1,6 +1,6 @@
 import type { Plugin, PluginContext } from './types'
 
-type PluginManagerOptions = Pick<PluginContext, 'eventBus' | 'codeLines' | 'visibleLines'> & { language?: string }
+type PluginManagerOptions = Pick<PluginContext, 'codeLines' | 'visibleLines'> & { language?: string }
 
 /**
  * 插件管理器

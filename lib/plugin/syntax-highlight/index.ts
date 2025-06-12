@@ -1,4 +1,4 @@
-import type { Plugin, PluginContext } from 'lib/core'
+import type { CodeLine, Plugin, PluginContext } from 'lib/core'
 import { h } from 'vue'
 import { watch, type WatchStopHandle } from 'vue'
 import './styles.css'
@@ -18,7 +18,7 @@ export function createSyntaxHighlightPlugin(): Plugin {
       const language = context.language || ''
 
       // 处理可见行的函数
-      const processVisibleLines = (lines: any[]) => {
+      const processVisibleLines = (lines: CodeLine[]) => {
         lines.forEach((line) => {
           // 如果已经处理过，直接跳过
           if (processedLineIds.has(line.id)) return
@@ -26,8 +26,6 @@ export function createSyntaxHighlightPlugin(): Plugin {
           // 根据语言进行分词处理
           const tokenizedContent = tokenizeLine(line.content, language)
 
-          // 用 h 函数生成 VNode，赋值到 line.vNode
-          // 检查是否已经有背景色设置（由 line-bg-color 插件设置）
           if (line.vNode) {
             // 如果已经有 vNode，保留其样式属性，但更新内容为分词后的内容
             const existingProps = line.vNode.props || {}

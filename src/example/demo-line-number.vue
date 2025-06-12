@@ -1,17 +1,11 @@
 <template>
   <div class="demo-container">
-    <h2>语法高亮插件演示</h2>
-    <p>这个演示展示了代码语法高亮功能</p>
+    <h2>行号插件演示</h2>
+    <p>这个演示展示了代码行号功能</p>
 
     <div class="code-containers">
       <div class="code-container">
-        <h3>语法高亮</h3>
-        <CodeViewer :code="codeLines" :plugins="[createLineBgColorPlugin(),createSyntaxHighlightPlugin()]" language="javascript" size="medium" />
-      </div>
-
-      <div class="code-container">
-        <h3>原始代码（无高亮）</h3>
-        <CodeViewer :code="codeLines" size="medium" />
+        <CodeViewer :code="codeLines" :plugins="[createLineNumberPlugin()]" size="medium" />
       </div>
     </div>
   </div>
@@ -20,10 +14,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { CodeViewer } from 'lib/core'
-import { createLineBgColorPlugin, createSyntaxHighlightPlugin } from 'lib/plugin'
+import { createLineNumberPlugin } from 'lib/plugin'
 import type { RawCodeLine } from 'lib/core/types'
-
-// 选择的语言
 
 // 示例JavaScript代码
 const jsCode = `// 这是一个JavaScript示例
@@ -81,13 +73,11 @@ new Promise((resolve, reject) => {
 const pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 const isValidEmail = pattern.test("test@example.com");
 console.log(isValidEmail);`
-
 // 将代码转换为行数据
 const codeLines = ref<RawCodeLine[]>(
   jsCode.split('\n').map((line, index) => ({
     id: `line-${index + 1}`,
     content: line,
-    meta: { bgColor: '#00000050' }
   }))
 )
 </script>
@@ -97,70 +87,27 @@ const codeLines = ref<RawCodeLine[]>(
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
-}
-
-.controls {
-  margin: 20px 0;
-  padding: 15px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  border: 1px solid #dee2e6;
-}
-
-.language-selector {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.language-selector label {
-  font-weight: 500;
-}
-
-.language-selector select {
-  padding: 8px 12px;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  background-color: white;
+  height: 600px;
 }
 
 .code-containers {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 20px;
-  margin-top: 20px;
+  height: 600px;
 }
 
 .code-container {
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 10px;
+  background-color: #f8f8f8;
   height: 600px;
-  border: 1px solid #dee2e6;
-  border-radius: 8px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
 }
 
-.code-container h3 {
-  margin: 0;
-  padding: 10px 15px;
-  background: #f1f3f5;
-  border-bottom: 1px solid #dee2e6;
-  font-size: 16px;
-  font-weight: 500;
-}
-
-.code-container .code-viewer {
-  flex: 1;
-  overflow: auto;
-}
-
-h2 {
-  color: #495057;
+h3 {
+  margin-top: 0;
   margin-bottom: 10px;
-}
-
-p {
-  color: #6c757d;
-  margin-bottom: 20px;
+  color: #333;
 }
 </style>
