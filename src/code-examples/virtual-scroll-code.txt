@@ -1,0 +1,12 @@
+// 虚拟滚动示例代码
+// 这个文件包含了用于测试虚拟滚动功能的示例代码
+// 实际使用时会动态生成大量代码行
+
+const line1 = "This is line 1";
+const line2 = "This is line 2";
+const line3 = "This is line 3";
+// ... 更多行 ...
+const line999 = "This is line 999";
+const line1000 = "This is line 1000";
+
+// 在实际应用中，这些行会被动态生成并渲染

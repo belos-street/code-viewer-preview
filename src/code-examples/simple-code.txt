@@ -1,0 +1,12 @@
+// 简单代码示例
+const greet = (name: string) => {
+  console.log(`Hello, ${name}!`);
+};
+
+greet("World");
+
+// This is a comment line with some extra long text to test wrapping and overflow behavior. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+function anotherExample() {
+  return true;
+}

@@ -46,7 +46,7 @@ const codeLines = ref<CodeLine[]>(props.code.map((line, index) => ({ ...line, in
 
 /** 代码尺寸 */
 const { lineHeight, lineFontSize } = useItemSize(props.size)
-
+debugger
 /** 虚拟滚动 */
 const codeViewerContentRef = ref<HTMLElement | null>(null)
 const { visibleLines, totalHeight, scrollToLine } = useVirtualScroll<CodeLine>({
