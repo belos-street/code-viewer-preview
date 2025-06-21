@@ -1,6 +1,0 @@
-// 行背景色示例代码
-This line has no specific style.
-This line should have a red background.
-This line should have blue text.
-This line should be have a green background.
-Another normal line.

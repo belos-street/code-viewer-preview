@@ -1,10 +1,9 @@
 <!-- 滚动到指定行示例 -->
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { CodeViewer } from 'lib/core'
 import type { RawCodeLine } from 'lib/core/types'
-import scrollToLineCodeRaw from '../code-examples/scroll-to-line-code.txt?raw'
 
 // 生成测试代码行
 const generateCodeLines = (count: number): RawCodeLine[] => {
@@ -21,22 +20,9 @@ const generateCodeLines = (count: number): RawCodeLine[] => {
   return lines
 }
 
-const codeLines = ref<RawCodeLine[]>([])
+const codeLines = ref<RawCodeLine[]>(generateCodeLines(200))
 const codeViewerRef = ref<InstanceType<typeof CodeViewer> | null>(null)
 const targetLine = ref<number>(1)
-const useRawCode = ref(true)
-
-onMounted(() => {
-  // 首先加载示例代码
-  if (useRawCode.value) {
-    codeLines.value = scrollToLineCodeRaw.split('\n').map((line, index) => ({
-      id: `line-${index + 1}`,
-      content: line
-    }))
-  } else {
-    codeLines.value = generateCodeLines(200)
-  }
-})
 
 // 检查输入的行号是否有效
 const isValidLine = computed(() => {
@@ -57,19 +43,6 @@ const scrollToLine = (lineNumber: number) => {
     targetLine.value = lineNumber
   }
 }
-
-// 切换代码生成方式
-const toggleCodeGeneration = () => {
-  useRawCode.value = !useRawCode.value
-  if (useRawCode.value) {
-    codeLines.value = scrollToLineCodeRaw.split('\n').map((line, index) => ({
-      id: `line-${index + 1}`,
-      content: line
-    }))
-  } else {
-    codeLines.value = generateCodeLines(200)
-  }
-}
 </script>
 
 <template>
@@ -77,12 +50,6 @@ const toggleCodeGeneration = () => {
     <div class="mb-4">
       <div class="flex justify-between items-center mb-2">
         <h3 class="text-lg font-medium text-gray-800">滚动到指定行</h3>
-        <button
-          @click="toggleCodeGeneration"
-          class="px-3 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded text-xs transition-colors"
-        >
-          {{ useRawCode ? '使用生成代码' : '使用示例代码' }}
-        </button>
       </div>
       <p class="text-sm text-gray-600 mb-4">这个示例展示了如何使用 scrollToLine 方法滚动到指定的代码行。</p>
 
