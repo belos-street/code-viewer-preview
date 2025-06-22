@@ -1,7 +1,7 @@
 <!-- 虚拟滚动示例 -->
 
 <script setup lang="ts">
-import { CodeViewer, createLineBgColorPlugin, type RawCodeLine } from 'lib/index'
+import { CodeViewer, type RawCodeLine } from 'lib/index'
 
 // 生成大量代码行以测试虚拟滚动
 const generateLargeCode = (count: number): RawCodeLine[] => {
@@ -28,7 +28,7 @@ const codeLines: RawCodeLine[] = generateLargeCode(10000)
     </div>
 
     <div class="h-96 border border-gray-200 rounded-md overflow-hidden">
-      <CodeViewer :code="codeLines" :plugins="[createLineBgColorPlugin()]" />
+      <CodeViewer :code="codeLines" />
     </div>
   </div>
 </template>

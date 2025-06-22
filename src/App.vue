@@ -3,8 +3,8 @@ import { ref, defineAsyncComponent } from 'vue'
 
 // 定义Demo接口
 interface Demo {
-  id: 'simple' | 'virtual-scroll' | 'line-bg-color' | 'scroll-to-line' | 'syntax-highlight' | 'line-number';
-  title: string;
+  id: 'simple' | 'virtual-scroll' | 'line-bg-color' | 'scroll-to-line' | 'syntax-highlight' | 'line-number'
+  title: string
 }
 
 // 使用异步组件，只有在需要时才会加载
@@ -18,8 +18,8 @@ const LineNumberDemo = defineAsyncComponent(() => import('./example/line-number-
 const demos: Demo[] = [
   { id: 'simple', title: '简单代码示例' },
   { id: 'virtual-scroll', title: '虚拟滚动示例' },
-  { id: 'line-bg-color', title: '行背景色示例' },
   { id: 'scroll-to-line', title: '滚动到指定行示例' },
+  { id: 'line-bg-color', title: '行背景色示例' },
   { id: 'syntax-highlight', title: '语法高亮示例' },
   { id: 'line-number', title: '行号示例' }
 ]

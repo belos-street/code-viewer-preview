@@ -1,0 +1,11 @@
+<div class="code-line-content">
+   <div class="line-gutter">
+   </div>
+   <div class="line-content">
+
+    
+   </div>
+</div>
+
+1. 插件只处理对应的内容，
+2. 处理完在插件总线 中 汇集，行处理事件。
