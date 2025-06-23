@@ -1,4 +1,4 @@
-import type { Plugin, PluginContext } from './types'
+import type { Plugin, PluginContext } from '../types'
 
 type PluginManagerOptions = Pick<PluginContext, 'codeLines' | 'visibleLines'> & { language?: string }
 

@@ -11,7 +11,7 @@
           :style="{ top: `${(line.index - 1) * lineHeight}px`, height: `${lineHeight}px`, lineHeight: `${lineHeight}px` }"
         >
           <component v-if="line.vNode" :is="line.vNode" />
-          <div v-else v-html="line.content" />
+          <div v-else v-html="line.content" class="code-line-content" />
         </div>
       </div>
     </div>
