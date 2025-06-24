@@ -1,4 +1,6 @@
 import type { ComputedRef, Ref, VNode } from 'vue'
+// 这里使用前向声明，避免循环引用
+type LineProcessorBus = any
 
 /**
  * 用户传参的代码行数据结构
@@ -23,6 +25,7 @@ export type CodeLine = RawCodeLine & {
 export type PluginContext = {
   codeLines: Ref<CodeLine[]> // 代码行数据的响应式引用
   visibleLines: ComputedRef<CodeLine[]> // 可见的代码行数据的响应式引用
+  lineProcessorBus?: LineProcessorBus // 行处理总线
 } & Record<string, any> // 允许插件上下文扩展
 
 /**

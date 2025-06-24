@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 import type { CodeLine, RawCodeLine, Plugin } from './types'
-import { onMounted, ref } from 'vue'
+import { onMounted, onBeforeUnmount, ref } from 'vue'
 import { useItemSize, useVirtualScroll, type CodeItemSize } from './hooks'
 import { PluginManager } from './plugin'
 import '../styles/index.css'
@@ -53,19 +53,28 @@ const { visibleLines, totalHeight, scrollToLine } = useVirtualScroll<CodeLine>({
   items: codeLines.value
 })
 
+
+
+/** 插件管理器 */
 const pluginManager = new PluginManager({
   codeLines,
   visibleLines: visibleLines,
   language: props.language
 })
 
-//注册插件
+// 注册
 onMounted(() => {
   props.plugins.map(async (plugin) => await pluginManager.registerPlugin(plugin))
 })
 
+// 清理
+onBeforeUnmount(async () => {
+  await pluginManager.destroy()
+})
+
 /** 暴露给外部的API */
 defineExpose({
-  scrollToLine
+  scrollToLine,
+  pluginManager // 暴露插件管理器，允许外部访问
 })
 </script>

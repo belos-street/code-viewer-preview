@@ -1,3 +1,4 @@
+这是一行代码的dom结构
 <div class="code-line-content">  //在这改背景颜色
    <div class="line-gutter"> //在这里面存放行号的内容，如果没有行号，则不显示该盒子
    </div>
@@ -7,7 +8,10 @@
    </div>
 </div>
 
-1. 插件只处理对应的内容，
+帮我修改我的插件系统
+1. 插件只处理对应的内容，比如 line-bg-color 插件只接受 visibleLines 的数据，并处理 visibleLines 中的每一行的 .code-line-content 背景颜色 ，处理好后在插件总线汇集
 2. 处理完在插件总线 中 汇总，行处理事件。
 3. processedLineIds 放在总处理
-4. 在plugin管理器这 监听 变化通知
+4. 在plugin管理器这 监听visibleLines 变化， 通知插件变更
+
+目前就只改造 line-bg-color 插件
