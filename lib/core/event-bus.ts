@@ -24,13 +24,5 @@ export enum EventName {
  */
 export type EventPayloads = {
   [EventName.SCROLL]: CodeLine[]
-  [EventName.LINE_CHANGED]: { line: CodeLine; oldContent: string }
-  [EventName.LINE_ADDED]: { line: CodeLine; index: number }
-  [EventName.LINE_REMOVED]: { lineId: string | number; index: number }
-  [EventName.PLUGIN_INSTALLED]: { pluginName: string; priority: number }
-  [EventName.PLUGIN_UNINSTALLED]: { pluginName: string }
-  [EventName.THEME_CHANGED]: { theme: string }
-  [EventName.LANGUAGE_CHANGED]: { language: string }
-  [EventName.SELECTION_CHANGED]: { startLine: number; startColumn: number; endLine: number; endColumn: number }
-  [EventName.CURSOR_MOVED]: { line: number; column: number }
+  [EventName.LINE_CHANGED]: CodeLine[]
 }

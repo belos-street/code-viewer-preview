@@ -22,8 +22,10 @@
 import type { CodeLine, RawCodeLine, Plugin } from './types'
 import { onMounted, onBeforeUnmount, ref } from 'vue'
 import { useItemSize, useVirtualScroll, type CodeItemSize } from './hooks'
+import mitt from 'mitt'
 import { PluginManager } from './plugin'
 import '../styles/index.css'
+import type { EventPayloads } from './event-bus'
 
 const props = withDefaults(
   defineProps<{
@@ -53,12 +55,14 @@ const { visibleLines, totalHeight, scrollToLine } = useVirtualScroll<CodeLine>({
   items: codeLines.value
 })
 
-
+/** 事件总线 */
+const eventBus = mitt<EventPayloads>()
 
 /** 插件管理器 */
 const pluginManager = new PluginManager({
   codeLines,
   visibleLines: visibleLines,
+  eventBus,
   language: props.language
 })
 
