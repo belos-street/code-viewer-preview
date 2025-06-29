@@ -30,6 +30,13 @@ export type PluginContext = {
 
 export type PluginManagerOptions = PluginContext
 
+export type ProcessedItem = {
+  container: string
+  style: any //
+}
+
+export type ProcessedResult = Record<RawCodeLine['id'], ProcessedItem>
+
 /**
  * 基础插件接口
  */
@@ -37,4 +44,5 @@ export type Plugin = {
   name: string // 插件名称，唯一标识
   install: (context: PluginContext) => Promise<void> | void // 安装插件
   uninstall: (context: PluginContext) => Promise<void> | void // 卸载插件
+  processedLines: (context: PluginContext) => Promise<ProcessedResult> | ProcessedResult
 } & Record<string, any> // 插件可以有其他自定义方法和属性

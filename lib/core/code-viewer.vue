@@ -26,6 +26,7 @@ import mitt from 'mitt'
 import { PluginManager } from './plugin'
 import '../styles/index.css'
 import type { EventPayloads } from './event-bus'
+import { processedLinesManager } from './plugin/process-lines'
 
 const props = withDefaults(
   defineProps<{
@@ -58,13 +59,19 @@ const { visibleLines, totalHeight, scrollToLine } = useVirtualScroll<CodeLine>({
 /** 事件总线 */
 const eventBus = mitt<EventPayloads>()
 
-/** 插件管理器 */
+/**
+ * 插件管理器
+ * pluginManager - 插件管理器实例
+ * processedLinesManager - 代码行处理器
+ */
 const pluginManager = new PluginManager({
   codeLines,
   visibleLines: visibleLines,
   eventBus,
   language: props.language
 })
+
+processedLinesManager(pluginManager)
 
 // 注册
 onMounted(() => {

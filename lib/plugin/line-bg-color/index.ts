@@ -1,5 +1,5 @@
-import type { CodeLine, Plugin, PluginContext } from '../../core'
-import { watch, type WatchStopHandle } from 'vue'
+import type { Plugin, PluginContext, ProcessedResult } from '../../core'
+import { type WatchStopHandle } from 'vue'
 
 /**
  * 行背景颜色处理器
@@ -13,30 +13,22 @@ export function createLineBgColorPlugin(): Plugin {
   return {
     name: 'line-bg-color',
 
-    install(context: PluginContext) {
-      const { visibleLines, updateLines } = context
+    install() {},
 
-      const processVisibleLines = (codeLines: CodeLine[]) => {
-        const result = []
-        for (const line of codeLines) {
-          const bgColor = line.meta?.bgColor
-          if (!bgColor) continue
-          result.push({
-            id: line.id,
-            container: 'code-line-content',
-            style: { backgroundColor: bgColor }
-          })
+    processedLines(context: PluginContext) {
+      const { visibleLines } = context
+
+      const processedResult: ProcessedResult = {}
+      for (const line of visibleLines.value) {
+        const bgColor = line.meta?.bgColor
+        if (!bgColor) continue
+        processedResult[line.id] = {
+          container: 'view-line-content',
+          style: { backgroundColor: bgColor }
         }
-        updateLines(result)
       }
 
-      watchStopHandle = watch(
-        visibleLines,
-        (newVisibleLines) => {
-          processVisibleLines(newVisibleLines)
-        },
-        { immediate: true, deep: false }
-      )
+      return processedResult
     },
 
     uninstall() {

@@ -1,5 +1,5 @@
-import type { CodeLine, Plugin, PluginContext, PluginManagerOptions } from '../types'
-import { type WatchStopHandle } from 'vue'
+import { h } from 'vue'
+import type { Plugin, PluginContext, PluginManagerOptions } from '../types'
 
 /**
  * 插件管理器
@@ -8,9 +8,8 @@ import { type WatchStopHandle } from 'vue'
  */
 
 export class PluginManager {
-  private plugins: Map<string, Plugin> = new Map()
-  private options: PluginManagerOptions
-  private watchStopHandle: WatchStopHandle | null = null
+  public plugins: Map<string, Plugin> = new Map()
+  public options: PluginManagerOptions
 
   constructor(options: PluginManagerOptions) {
     this.options = options
@@ -77,12 +76,6 @@ export class PluginManager {
     for (const plugin of this.getPlugins()) {
       await this.uninstallPlugin(plugin.name)
     }
-
-    // 停止监听 visibleLines 变化
-    if (this.watchStopHandle) {
-      this.watchStopHandle()
-      this.watchStopHandle = null
-    }
   }
 
   /**
@@ -90,7 +83,26 @@ export class PluginManager {
    * @param lines 行内容
    */
 
-  async updateLines(lines: CodeLine[]): Promise<void> {
+  updateLines(lines: any) {
+    ///222
+
+    for (const item of this.options.visibleLines.value) {
+      const currentLine = lines[item.id]
+      if (!currentLine) continue
+
+      const { container } = currentLine
+
+      let viewContainerStyle = {}
+      if (container === 'view-line-content') {
+        viewContainerStyle = { style: currentLine.style }
+      }
+      item.vNode = h(
+        'div',
+        { ...viewContainerStyle, class: 'view-line-content' },
+        h('div', { class: 'line-content' }, item.content)
+      )
+    }
+
     debugger
   }
 }
