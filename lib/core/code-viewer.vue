@@ -20,13 +20,13 @@
 
 <script setup lang="ts">
 import type { CodeLine, RawCodeLine, Plugin } from './types'
-import { onMounted, onBeforeUnmount, ref } from 'vue'
+import { onBeforeUnmount, ref } from 'vue'
 import { useItemSize, useVirtualScroll, type CodeItemSize } from './hooks'
 import mitt from 'mitt'
 import { PluginManager } from './plugin'
 import '../styles/index.css'
 import type { EventPayloads } from './event-bus'
-import { processedLinesManager } from './plugin/process-lines'
+import { useProcessedLines } from './plugin/use-process-lines'
 
 const props = withDefaults(
   defineProps<{
@@ -53,7 +53,10 @@ const codeViewerContentRef = ref<HTMLElement | null>(null)
 const { visibleLines, totalHeight, scrollToLine } = useVirtualScroll<CodeLine>({
   containerRef: codeViewerContentRef,
   itemHeight: lineHeight.value,
-  items: codeLines.value
+  items: codeLines.value,
+  onScroll: () => {
+    updateProcessedLines()
+  }
 })
 
 /** 事件总线 */
@@ -62,7 +65,8 @@ const eventBus = mitt<EventPayloads>()
 /**
  * 插件管理器
  * pluginManager - 插件管理器实例
- * processedLinesManager - 代码行处理器
+ * registerPlugin - 注册插件
+ * useProcessedLines - 代码行处理器
  */
 const pluginManager = new PluginManager({
   codeLines,
@@ -70,17 +74,13 @@ const pluginManager = new PluginManager({
   eventBus,
   language: props.language
 })
-
-processedLinesManager(pluginManager)
-
-// 注册
-onMounted(() => {
-  props.plugins.map(async (plugin) => await pluginManager.registerPlugin(plugin))
-})
+props.plugins.map(async (plugin) => await pluginManager.registerPlugin(plugin))
+const { updateProcessedLines, destroyProcessedLines } = useProcessedLines(pluginManager)
 
 // 清理
 onBeforeUnmount(async () => {
   await pluginManager.destroy()
+  destroyProcessedLines()
 })
 
 /** 暴露给外部的API */

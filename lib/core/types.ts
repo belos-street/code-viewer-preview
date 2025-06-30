@@ -1,5 +1,5 @@
 import type { Emitter } from 'mitt'
-import type { ComputedRef, Ref, VNode } from 'vue'
+import type { ComputedRef, CSSProperties, Ref, VNode } from 'vue'
 import type { EventPayloads } from './event-bus'
 
 /**
@@ -31,11 +31,12 @@ export type PluginContext = {
 export type PluginManagerOptions = PluginContext
 
 export type ProcessedItem = {
-  container: string
-  style: any //
+  container: 'view-line-content' | 'line-number' | 'line-content'
+  style?: CSSProperties // CSS 样式对象，如 { backgroundColor: 'red' }
+  content?: string // 行内容
 }
 
-export type ProcessedResult = Record<RawCodeLine['id'], ProcessedItem>
+export type ProcessedResult = Record<RawCodeLine['id'], ProcessedItem[]>
 
 /**
  * 基础插件接口

@@ -1,10 +1,8 @@
-import { h } from 'vue'
 import type { Plugin, PluginContext, PluginManagerOptions } from '../types'
 
 /**
  * 插件管理器
- * @description管理插件的安装和卸载，并提供插件的注册和获取功能。
- * 监听 visibleLines 变化，通知插件处理行内容
+ * @description 管理插件的安装和卸载，并提供插件的注册和获取功能。
  */
 
 export class PluginManager {
@@ -25,8 +23,7 @@ export class PluginManager {
     }
     this.plugins.set(plugin.name, plugin)
     const context: PluginContext = {
-      ...this.options,
-      updateLines: this.updateLines.bind(this)
+      ...this.options
     }
     try {
       await plugin.install(context)
@@ -76,33 +73,5 @@ export class PluginManager {
     for (const plugin of this.getPlugins()) {
       await this.uninstallPlugin(plugin.name)
     }
-  }
-
-  /**
-   * 更新行内容
-   * @param lines 行内容
-   */
-
-  updateLines(lines: any) {
-    ///222
-
-    for (const item of this.options.visibleLines.value) {
-      const currentLine = lines[item.id]
-      if (!currentLine) continue
-
-      const { container } = currentLine
-
-      let viewContainerStyle = {}
-      if (container === 'view-line-content') {
-        viewContainerStyle = { style: currentLine.style }
-      }
-      item.vNode = h(
-        'div',
-        { ...viewContainerStyle, class: 'view-line-content' },
-        h('div', { class: 'line-content' }, item.content)
-      )
-    }
-
-    debugger
   }
 }

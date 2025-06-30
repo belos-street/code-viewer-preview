@@ -1,4 +1,5 @@
 import { ref, computed, onMounted, onUnmounted, type Ref } from 'vue'
+import { debounce } from '../../utils/debounce'
 
 type UseVirtualScrollOptions<T> = {
   containerRef: Ref<HTMLElement | null>
@@ -21,6 +22,11 @@ type UseVirtualScrollOptions<T> = {
 
 export function useVirtualScroll<T>(options: UseVirtualScrollOptions<T>) {
   const { containerRef, itemHeight, items, buffer = 10, onScroll } = options // 新增: onScroll 参数
+
+  // 使用防抖包装 onScroll 回调函数，延迟 200 毫秒执行
+  const debouncedOnScroll = onScroll ? debounce((scrollTop: number, visibleLines: T[]) => {
+    onScroll(scrollTop, visibleLines)
+  }, 200) : undefined
 
   const scrollTop = ref(0)
   const containerHeight = ref(0)
@@ -60,7 +66,7 @@ export function useVirtualScroll<T>(options: UseVirtualScrollOptions<T>) {
     }
     scrollAnimationFrameId = requestAnimationFrame(() => {
       scrollTop.value = containerRef.value!.scrollTop
-      if (onScroll) onScroll(scrollTop.value, visibleLines.value)
+      if (debouncedOnScroll) debouncedOnScroll(scrollTop.value, visibleLines.value)
     })
   }
 
