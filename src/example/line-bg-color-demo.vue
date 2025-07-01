@@ -1,7 +1,7 @@
 <!-- 行背景色插件示例 -->
 
 <script setup lang="ts">
-import { CodeViewer, createLineBgColorPlugin, type RawCodeLine } from 'lib/index'
+import { CodeViewer, LineBgColorPlugin, type RawCodeLine } from 'lib/index'
 
 const codeLines: RawCodeLine[] = [
   { id: '1', content: 'This line has no specific style.' },
@@ -19,8 +19,8 @@ const codeLines: RawCodeLine[] = [
       <p class="text-sm text-gray-600">这个示例展示了如何使用行背景色插件为不同的代码行设置不同的背景颜色。</p>
     </div>
 
-    <div class="h-60 border border-gray-200 rounded-md overflow-hidden">
-      <CodeViewer :code="codeLines" :plugins="[createLineBgColorPlugin()]" />
+    <div class="h-60 border border-gray-200">
+      <CodeViewer :code="codeLines" :plugins="[LineBgColorPlugin]" />
     </div>
   </div>
 </template>

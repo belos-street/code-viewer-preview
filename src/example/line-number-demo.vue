@@ -2,14 +2,13 @@
 
 <script setup lang="ts">
 import { CodeViewer } from 'lib/core'
-import { createLineNumberPlugin, createLineBgColorPlugin } from 'lib/plugin'
+import { LineNumberPlugin } from 'lib/plugin'
 import type { RawCodeLine } from 'lib/core/types'
 import lineNumberCodeRaw from '../code-examples/line-number-code.txt?raw'
 
 const codeLines: RawCodeLine[] = lineNumberCodeRaw.split('\n').map((line, index) => ({
   id: `line-${index + 1}`,
-  content: line,
-  meta: { bgColor: index % 2 === 0 ? 'red' : 'blue' }
+  content: line
 }))
 </script>
 
@@ -21,12 +20,7 @@ const codeLines: RawCodeLine[] = lineNumberCodeRaw.split('\n').map((line, index)
     </div>
 
     <div class="h-96">
-      <CodeViewer
-        :code="codeLines"
-        :plugins="[createLineBgColorPlugin(), createLineNumberPlugin()]"
-        language="javascript"
-        size="medium"
-      />
+      <CodeViewer :code="codeLines" :plugins="[LineNumberPlugin]" language="javascript" size="medium" />
     </div>
   </div>
 </template>

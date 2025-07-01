@@ -2,6 +2,8 @@ import type { Emitter } from 'mitt'
 import type { ComputedRef, CSSProperties, Ref, VNode } from 'vue'
 import type { EventPayloads } from './event-bus'
 
+export type LanguageProps = 'javascript' | 'typescript' | 'python' | 'java' | 'go' | 'c' | 'html'
+
 /**
  * 用户传参的代码行数据结构
  */
@@ -26,6 +28,7 @@ export type PluginContext = {
   codeLines: Ref<CodeLine[]> // 代码行数据的响应式引用
   visibleLines: ComputedRef<CodeLine[]> // 可见的代码行数据的响应式引用
   eventBus: Emitter<EventPayloads>
+  language?: LanguageProps
 } & Record<string, any> // 允许插件上下文扩展
 
 export type PluginManagerOptions = PluginContext
@@ -33,7 +36,7 @@ export type PluginManagerOptions = PluginContext
 export type ProcessedItem = {
   container: 'view-line-content' | 'line-number' | 'line-content'
   style?: CSSProperties // CSS 样式对象，如 { backgroundColor: 'red' }
-  content?: string // 行内容
+  content?: string | VNode[] // 行内容，可以是字符串或VNode数组
 }
 
 export type ProcessedResult = Record<RawCodeLine['id'], ProcessedItem[]>

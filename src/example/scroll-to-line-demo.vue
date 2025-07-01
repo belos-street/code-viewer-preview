@@ -111,7 +111,7 @@ const scrollToLine = (lineNumber: number) => {
       </div>
     </div>
 
-    <div class="h-96 border border-gray-200 rounded-md overflow-hidden">
+    <div class="h-96 border border-gray-200">
       <CodeViewer ref="codeViewerRef" :code="codeLines" language="javascript" />
     </div>
 

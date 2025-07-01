@@ -17,7 +17,7 @@ const codeLines: RawCodeLine[] = simpleCodeRaw.split('\n').map((line, index) => 
       <p class="text-sm text-gray-600">这个示例展示了基本的代码渲染功能，没有使用任何插件。</p>
     </div>
 
-    <div class="h-80 border border-gray-200 rounded-md overflow-hidden">
+    <div class="h-80 border border-gray-200">
       <CodeViewer :code="codeLines" />
     </div>
   </div>

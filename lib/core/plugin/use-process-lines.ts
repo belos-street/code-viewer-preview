@@ -51,6 +51,7 @@ export function useProcessedLines(pluginManager: PluginManager) {
   const createLineVNode = (codeLine: CodeLine, lineProcessors: ProcessedItem[]): void => {
     const childNodes: VNode[] = []
     let viewStyles = {}
+    let lineContentDom: string | VNode[] = ''
 
     // 处理各种容器的样式和内容
     for (const processor of lineProcessors) {
@@ -63,10 +64,14 @@ export function useProcessedLines(pluginManager: PluginManager) {
       if (container === 'line-number' && processor.content) {
         childNodes.push(h('span', { class: 'line-number' }, processor.content))
       }
+
+      if (container === 'line-content' && processor.content) {
+        lineContentDom = processor.content
+      }
     }
 
     // 添加代码内容
-    childNodes.push(h('div', { class: 'line-content' }, codeLine.content))
+    childNodes.push(h('div', { class: 'line-content' }, lineContentDom ? lineContentDom : codeLine.content))
 
     // 创建最终的行节点
     codeLine.vNode = h('div', { ...viewStyles, class: 'view-line-content' }, childNodes)
@@ -100,8 +105,6 @@ export function useProcessedLines(pluginManager: PluginManager) {
     // 清理缓存
     processedLineIds.clear()
   }
-
-  updateProcessedLines() //初始化
 
   return {
     destroyProcessedLines,

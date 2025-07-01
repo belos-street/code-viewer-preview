@@ -23,11 +23,6 @@ type UseVirtualScrollOptions<T> = {
 export function useVirtualScroll<T>(options: UseVirtualScrollOptions<T>) {
   const { containerRef, itemHeight, items, buffer = 10, onScroll } = options // 新增: onScroll 参数
 
-  // 使用防抖包装 onScroll 回调函数，延迟 200 毫秒执行
-  const debouncedOnScroll = onScroll ? debounce((scrollTop: number, visibleLines: T[]) => {
-    onScroll(scrollTop, visibleLines)
-  }, 200) : undefined
-
   const scrollTop = ref(0)
   const containerHeight = ref(0)
   const visibleCount = computed(() => Math.ceil(containerHeight.value / itemHeight) + buffer * 2)
@@ -57,7 +52,15 @@ export function useVirtualScroll<T>(options: UseVirtualScrollOptions<T>) {
     return items.slice(start, end)
   })
 
-  // 处理滚动事件
+  /**
+   * 处理滚动事件
+   * 使用防抖包装 onScroll 回调函数
+   */
+  const debouncedOnScroll = onScroll
+    ? debounce((scrollTop: number, visibleLines: T[]) => {
+        onScroll(scrollTop, visibleLines)
+      }, 100)
+    : undefined
   let scrollAnimationFrameId: number | null = null
   const handleScroll = () => {
     if (!containerRef.value) return

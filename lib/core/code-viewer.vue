@@ -10,8 +10,7 @@
           class="view-line"
           :style="{ top: `${(line.index - 1) * lineHeight}px`, height: `${lineHeight}px`, lineHeight: `${lineHeight}px` }"
         >
-          <component v-if="line.vNode" :is="line.vNode" />
-          <div v-else v-html="line.content" class="code-line-content" />
+          <component :is="line.vNode" />
         </div>
       </div>
     </div>
@@ -19,8 +18,8 @@
 </template>
 
 <script setup lang="ts">
-import type { CodeLine, RawCodeLine, Plugin } from './types'
-import { onBeforeUnmount, ref } from 'vue'
+import type { CodeLine, RawCodeLine, Plugin, LanguageProps } from './types'
+import { h, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useItemSize, useVirtualScroll, type CodeItemSize } from './hooks'
 import mitt from 'mitt'
 import { PluginManager } from './plugin'
@@ -33,7 +32,7 @@ const props = withDefaults(
     code: RawCodeLine[]
     plugins?: Plugin[]
     size?: CodeItemSize
-    language?: string
+    language?: LanguageProps
   }>(),
   {
     code: () => [],
@@ -43,7 +42,13 @@ const props = withDefaults(
 )
 
 // 代码行数据，并进行初始化
-const codeLines = ref<CodeLine[]>(props.code.map((line, index) => ({ ...line, index: index + 1, html: line.content })))
+const codeLines = ref<CodeLine[]>(
+  props.code.map((line, index) => ({
+    ...line,
+    index: index + 1,
+    vNode: h('div', { class: 'line-content' }, [h('div', { class: 'line-content' }, line.content)])
+  }))
+)
 
 /** 代码尺寸 */
 const { lineHeight, lineFontSize } = useItemSize(props.size)
@@ -76,6 +81,9 @@ const pluginManager = new PluginManager({
 })
 props.plugins.map(async (plugin) => await pluginManager.registerPlugin(plugin))
 const { updateProcessedLines, destroyProcessedLines } = useProcessedLines(pluginManager)
+onMounted(() => {
+  updateProcessedLines()
+})
 
 // 清理
 onBeforeUnmount(async () => {
