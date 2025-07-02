@@ -5,6 +5,20 @@ import type { EventPayloads } from './event-bus'
 export type LanguageProps = 'javascript' | 'typescript' | 'python' | 'java' | 'go' | 'c' | 'html'
 
 /**
+ * 代码查看器主题枚举
+ */
+export enum CodeViewerTheme {
+  VSCode = 'vscode',
+  Dracula = 'dracula',
+  Eva = 'eva',
+  Github = 'github',
+  VSCodeDark = 'vscode-dark',
+  DraculaDark = 'dracula-dark',
+  EvaDark = 'eva-dark',
+  GithubDark = 'github-dark'
+}
+
+/**
  * 用户传参的代码行数据结构
  */
 export type RawCodeLine = {

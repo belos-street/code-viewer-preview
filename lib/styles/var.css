@@ -5,6 +5,18 @@
   --code-viewer-scrollbar-thumb-hover-color: rgba(100, 100, 100, 0.7); /* 滑块悬停颜色 */
 }
 
+/* 默认主题变量 */
 :root {
   --code-viewer-border-color: #e5e7eb;
+  --code-viewer-bg-color: #ffffff;
+  --code-viewer-text-color: #24292f;
+}
+
+/* 确保默认主题与 VSCode 主题一致 */
+[data-theme='vscode'] {
+  --code-viewer-border-color: #e5e7eb;
+  --code-viewer-bg-color: #ffffff;
+  --code-viewer-text-color: #24292f;
+  --code-viewer-scrollbar-thumb-color: rgba(100, 100, 100, 0.4);
+  --code-viewer-scrollbar-thumb-hover-color: rgba(100, 100, 100, 0.7);
 }

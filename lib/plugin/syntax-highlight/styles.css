@@ -1,93 +1,462 @@
-/* 代码高亮样式 */
+/* 代码高亮样式 - 主题系统 */
+
+/* VSCode 主题 */
+[data-theme='vscode'] {
+  --code-viewer-border-color: #e5e7eb;
+  --code-viewer-bg-color: #ffffff;
+  --code-viewer-text-color: #24292f;
+  --code-viewer-scrollbar-thumb-color: rgba(100, 100, 100, 0.4);
+  --code-viewer-scrollbar-thumb-hover-color: rgba(100, 100, 100, 0.7);
+}
+
+/* VSCode 暗黑主题 */
+[data-theme='vscode-dark'] {
+  --code-viewer-border-color: #1e1e1e;
+  --code-viewer-bg-color: #1e1e1e;
+  --code-viewer-text-color: #d4d4d4;
+  --code-viewer-scrollbar-thumb-color: rgba(200, 200, 200, 0.4);
+  --code-viewer-scrollbar-thumb-hover-color: rgba(200, 200, 200, 0.7);
+}
+
+/* Dracula 主题 */
+[data-theme='dracula'] {
+  --code-viewer-border-color: #f8f8f2;
+  --code-viewer-bg-color: #f8f8f2;
+  --code-viewer-text-color: #282a36;
+  --code-viewer-scrollbar-thumb-color: rgba(100, 100, 100, 0.4);
+  --code-viewer-scrollbar-thumb-hover-color: rgba(100, 100, 100, 0.7);
+}
+
+/* Dracula 暗黑主题 */
+[data-theme='dracula-dark'] {
+  --code-viewer-border-color: #282a36;
+  --code-viewer-bg-color: #282a36;
+  --code-viewer-text-color: #f8f8f2;
+  --code-viewer-scrollbar-thumb-color: rgba(200, 200, 200, 0.4);
+  --code-viewer-scrollbar-thumb-hover-color: rgba(200, 200, 200, 0.7);
+}
+
+/* Eva 主题 */
+[data-theme='eva'] {
+  --code-viewer-border-color: #f2f2f2;
+  --code-viewer-bg-color: #f2f2f2;
+  --code-viewer-text-color: #393a34;
+  --code-viewer-scrollbar-thumb-color: rgba(100, 100, 100, 0.4);
+  --code-viewer-scrollbar-thumb-hover-color: rgba(100, 100, 100, 0.7);
+}
+
+/* Eva 暗黑主题 */
+[data-theme='eva-dark'] {
+  --code-viewer-border-color: #2d2d2d;
+  --code-viewer-bg-color: #2d2d2d;
+  --code-viewer-text-color: #e5e9f0;
+  --code-viewer-scrollbar-thumb-color: rgba(200, 200, 200, 0.4);
+  --code-viewer-scrollbar-thumb-hover-color: rgba(200, 200, 200, 0.7);
+}
+
+/* GitHub 主题 */
+[data-theme='github'] {
+  --code-viewer-border-color: #e5e7eb;
+  --code-viewer-bg-color: #ffffff;
+  --code-viewer-text-color: #24292f;
+  --code-viewer-scrollbar-thumb-color: rgba(100, 100, 100, 0.4);
+  --code-viewer-scrollbar-thumb-hover-color: rgba(100, 100, 100, 0.7);
+}
+
+/* GitHub 暗黑主题 */
+[data-theme='github-dark'] {
+  --code-viewer-border-color: #0d1117;
+  --code-viewer-bg-color: #0d1117;
+  --code-viewer-text-color: #c9d1d9;
+  --code-viewer-scrollbar-thumb-color: rgba(200, 200, 200, 0.4);
+  --code-viewer-scrollbar-thumb-hover-color: rgba(200, 200, 200, 0.7);
+}
 
 /* 通用代码元素 */
 .token {
   display: inline;
 }
 
-/* 注释 */
+/* 通用代码元素 */
+.token {
+  display: inline;
+}
+
+/* ===== VSCode 主题 (默认) ===== */
+/* VSCode */
+[data-theme='vscode'] .token {
+  /* 注释 */
+  --comment-color: #448844;
+  /* 字符串 */
+  --string-color: #a31515;
+  /* 数字 */
+  --number-color: #098658;
+  /* 关键字 */
+  --keyword-color: #0000ff;
+  /* 类名 */
+  --class-name-color: #267f99;
+  /* 标识符 */
+  --identifier-color: #001080;
+  /* 标点符号 */
+  --punctuation-color: #000000;
+  /* 运算符 */
+  --operator-color: #000000;
+  /* 函数名 */
+  --function-color: #795e26;
+  /* 正则表达式 */
+  --regex-color: #811f3f;
+  /* 布尔值 */
+  --boolean-color: #0000ff;
+  /* 变量 */
+  --variable-color: #001080;
+  /* 属性 */
+  --property-color: #001080;
+  /* 标签 */
+  --tag-color: #0000ff;
+  /* 属性名 */
+  --attr-name-color: #001080;
+  /* 属性值 */
+  --attr-value-color: #a31515;
+  /* 命名空间 */
+  --namespace-color: #267f99;
+}
+
+/* VSCode Dark */
+[data-theme='vscode-dark'] .token {
+  /* 注释 */
+  --comment-color: #6a9955;
+  /* 字符串 */
+  --string-color: #ce9178;
+  /* 数字 */
+  --number-color: #b5cea8;
+  /* 关键字 */
+  --keyword-color: #569cd6;
+  /* 类名 */
+  --class-name-color: #4ec9b0;
+  /* 标识符 */
+  --identifier-color: #9cdcfe;
+  /* 标点符号 */
+  --punctuation-color: #d4d4d4;
+  /* 运算符 */
+  --operator-color: #d4d4d4;
+  /* 函数名 */
+  --function-color: #dcdcaa;
+  /* 正则表达式 */
+  --regex-color: #d16969;
+  /* 布尔值 */
+  --boolean-color: #569cd6;
+  /* 变量 */
+  --variable-color: #9cdcfe;
+  /* 属性 */
+  --property-color: #9cdcfe;
+  /* 标签 */
+  --tag-color: #569cd6;
+  /* 属性名 */
+  --attr-name-color: #9cdcfe;
+  /* 属性值 */
+  --attr-value-color: #ce9178;
+  /* 命名空间 */
+  --namespace-color: #4ec9b0;
+}
+
+/* ===== Dracula 主题 ===== */
+/* Dracula */
+[data-theme='dracula'] .token {
+  /* 注释 */
+  --comment-color: #4d5a7d;
+  /* 字符串 */
+  --string-color: #8a8500;
+  /* 数字 */
+  --number-color: #7852b8;
+  /* 关键字 */
+  --keyword-color: #c71585;
+  /* 类名 */
+  --class-name-color: #0099b3;
+  /* 标识符 */
+  --identifier-color: #282a36;
+  /* 标点符号 */
+  --punctuation-color: #282a36;
+  /* 运算符 */
+  --operator-color: #c71585;
+  /* 函数名 */
+  --function-color: #008b45;
+  /* 正则表达式 */
+  --regex-color: #c41a16;
+  /* 布尔值 */
+  --boolean-color: #7852b8;
+  /* 变量 */
+  --variable-color: #282a36;
+  /* 属性 */
+  --property-color: #0099b3;
+  /* 标签 */
+  --tag-color: #c71585;
+  /* 属性名 */
+  --attr-name-color: #008b45;
+  /* 属性值 */
+  --attr-value-color: #8a8500;
+  /* 命名空间 */
+  --namespace-color: #0099b3;
+}
+
+/* Dracula Dark */
+[data-theme='dracula-dark'] .token {
+  /* 注释 */
+  --comment-color: #6272a4;
+  /* 字符串 */
+  --string-color: #f1fa8c;
+  /* 数字 */
+  --number-color: #bd93f9;
+  /* 关键字 */
+  --keyword-color: #ff79c6;
+  /* 类名 */
+  --class-name-color: #8be9fd;
+  /* 标识符 */
+  --identifier-color: #f8f8f2;
+  /* 标点符号 */
+  --punctuation-color: #f8f8f2;
+  /* 运算符 */
+  --operator-color: #ff79c6;
+  /* 函数名 */
+  --function-color: #50fa7b;
+  /* 正则表达式 */
+  --regex-color: #ff5555;
+  /* 布尔值 */
+  --boolean-color: #bd93f9;
+  /* 变量 */
+  --variable-color: #f8f8f2;
+  /* 属性 */
+  --property-color: #66d9ef;
+  /* 标签 */
+  --tag-color: #ff79c6;
+  /* 属性名 */
+  --attr-name-color: #50fa7b;
+  /* 属性值 */
+  --attr-value-color: #f1fa8c;
+  /* 命名空间 */
+  --namespace-color: #8be9fd;
+}
+
+/* ===== Eva 主题 ===== */
+/* Eva */
+[data-theme='eva'] .token {
+  /* 注释 */
+  --comment-color: #7a8181;
+  /* 字符串 */
+  --string-color: #4d9375;
+  /* 数字 */
+  --number-color: #aa5d00;
+  /* 关键字 */
+  --keyword-color: #5a67d8;
+  /* 类名 */
+  --class-name-color: #c18401;
+  /* 标识符 */
+  --identifier-color: #393a34;
+  /* 标点符号 */
+  --punctuation-color: #393a34;
+  /* 运算符 */
+  --operator-color: #393a34;
+  /* 函数名 */
+  --function-color: #6f42c1;
+  /* 正则表达式 */
+  --regex-color: #e45649;
+  /* 布尔值 */
+  --boolean-color: #5a67d8;
+  /* 变量 */
+  --variable-color: #393a34;
+  /* 属性 */
+  --property-color: #393a34;
+  /* 标签 */
+  --tag-color: #5a67d8;
+  /* 属性名 */
+  --attr-name-color: #393a34;
+  /* 属性值 */
+  --attr-value-color: #4d9375;
+  /* 命名空间 */
+  --namespace-color: #c18401;
+}
+
+/* Eva Dark */
+[data-theme='eva-dark'] .token {
+  /* 注释 */
+  --comment-color: #7a8181;
+  /* 字符串 */
+  --string-color: #7ee787;
+  /* 数字 */
+  --number-color: #f9c859;
+  /* 关键字 */
+  --keyword-color: #c586c0;
+  /* 类名 */
+  --class-name-color: #f9c859;
+  /* 标识符 */
+  --identifier-color: #e5e9f0;
+  /* 标点符号 */
+  --punctuation-color: #e5e9f0;
+  /* 运算符 */
+  --operator-color: #e5e9f0;
+  /* 函数名 */
+  --function-color: #dcdcaa;
+  /* 正则表达式 */
+  --regex-color: #f44747;
+  /* 布尔值 */
+  --boolean-color: #c586c0;
+  /* 变量 */
+  --variable-color: #e5e9f0;
+  /* 属性 */
+  --property-color: #e5e9f0;
+  /* 标签 */
+  --tag-color: #c586c0;
+  /* 属性名 */
+  --attr-name-color: #e5e9f0;
+  /* 属性值 */
+  --attr-value-color: #7ee787;
+  /* 命名空间 */
+  --namespace-color: #f9c859;
+}
+
+/* ===== GitHub 主题 ===== */
+/* GitHub */
+[data-theme='github'] .token {
+  /* 注释 */
+  --comment-color: #6e7781;
+  /* 字符串 */
+  --string-color: #0a3069;
+  /* 数字 */
+  --number-color: #0550ae;
+  /* 关键字 */
+  --keyword-color: #cf222e;
+  /* 类名 */
+  --class-name-color: #953800;
+  /* 标识符 */
+  --identifier-color: #24292f;
+  /* 标点符号 */
+  --punctuation-color: #24292f;
+  /* 运算符 */
+  --operator-color: #24292f;
+  /* 函数名 */
+  --function-color: #8250df;
+  /* 正则表达式 */
+  --regex-color: #116329;
+  /* 布尔值 */
+  --boolean-color: #0550ae;
+  /* 变量 */
+  --variable-color: #24292f;
+  /* 属性 */
+  --property-color: #953800;
+  /* 标签 */
+  --tag-color: #116329;
+  /* 属性名 */
+  --attr-name-color: #953800;
+  /* 属性值 */
+  --attr-value-color: #0a3069;
+  /* 命名空间 */
+  --namespace-color: #953800;
+}
+
+/* GitHub Dark */
+[data-theme='github-dark'] .token {
+  /* 注释 */
+  --comment-color: #8b949e;
+  /* 字符串 */
+  --string-color: #a5d6ff;
+  /* 数字 */
+  --number-color: #79c0ff;
+  /* 关键字 */
+  --keyword-color: #ff7b72;
+  /* 类名 */
+  --class-name-color: #ffa657;
+  /* 标识符 */
+  --identifier-color: #c9d1d9;
+  /* 标点符号 */
+  --punctuation-color: #c9d1d9;
+  /* 运算符 */
+  --operator-color: #c9d1d9;
+  /* 函数名 */
+  --function-color: #d2a8ff;
+  /* 正则表达式 */
+  --regex-color: #7ee787;
+  /* 布尔值 */
+  --boolean-color: #79c0ff;
+  /* 变量 */
+  --variable-color: #c9d1d9;
+  /* 属性 */
+  --property-color: #ffa657;
+  /* 标签 */
+  --tag-color: #7ee787;
+  /* 属性名 */
+  --attr-name-color: #ffa657;
+  /* 属性值 */
+  --attr-value-color: #a5d6ff;
+  /* 命名空间 */
+  --namespace-color: #ffa657;
+}
+
+/* 应用CSS变量到具体元素 */
 .token.comment {
-  color: #6a9955;
+  color: var(--comment-color);
   font-style: italic;
 }
 
-/* 字符串 */
 .token.string {
-  color: #ce9178;
+  color: var(--string-color);
 }
 
-/* 数字 */
 .token.number {
-  color: #b5cea8;
+  color: var(--number-color);
 }
 
-/* 关键字 */
 .token.keyword {
-  color: #569cd6;
+  color: var(--keyword-color);
   font-weight: bold;
 }
 
-/* 类名 */
 .token.class-name {
-  color: #4ec9b0;
+  color: var(--class-name-color);
 }
 
-/* 标识符 */
 .token.identifier {
-  color: #9cdcfe;
+  color: var(--identifier-color);
 }
 
-/* 标点符号 */
 .token.punctuation {
-  color: #d4d4d4;
+  color: var(--punctuation-color);
 }
 
-/* 运算符 */
 .token.operator {
-  color: #d4d4d4;
+  color: var(--operator-color);
 }
 
-/* 函数名 */
 .token.function {
-  color: #dcdcaa;
+  color: var(--function-color);
 }
 
-/* 正则表达式 */
 .token.regex {
-  color: #d16969;
+  color: var(--regex-color);
 }
 
-/* 布尔值 */
 .token.boolean {
-  color: #569cd6;
+  color: var(--boolean-color);
 }
 
-/* 变量 */
 .token.variable {
-  color: #9cdcfe;
+  color: var(--variable-color);
 }
 
-/* 属性 */
 .token.property {
-  color: #9cdcfe;
+  color: var(--property-color);
 }
 
-/* 标签 */
 .token.tag {
-  color: #569cd6;
+  color: var(--tag-color);
 }
 
-/* 属性名 */
 .token.attr-name {
-  color: #9cdcfe;
+  color: var(--attr-name-color);
 }
 
-/* 属性值 */
 .token.attr-value {
-  color: #ce9178;
+  color: var(--attr-value-color);
 }
 
-/* 命名空间 */
 .token.namespace {
-  color: #4ec9b0;
+  color: var(--namespace-color);
 }

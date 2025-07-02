@@ -1,5 +1,5 @@
 <template>
-  <div class="code-viewer" :style="{ fontSize: `${lineFontSize}px` }">
+  <div class="code-viewer" :style="{ fontSize: `${lineFontSize}px` }" :data-theme="theme">
     <div class="code-viewer-content" ref="codeViewerContentRef">
       <div class="view-scroll-placeholder" :style="{ height: `${totalHeight}px` }" />
       <div class="view-lines">
@@ -19,6 +19,7 @@
 
 <script setup lang="ts">
 import type { CodeLine, RawCodeLine, Plugin, LanguageProps } from './types'
+import { CodeViewerTheme } from './types'
 import { h, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useItemSize, useVirtualScroll, type CodeItemSize } from './hooks'
 import mitt from 'mitt'
@@ -33,11 +34,13 @@ const props = withDefaults(
     plugins?: Plugin[]
     size?: CodeItemSize
     language?: LanguageProps
+    theme?: CodeViewerTheme
   }>(),
   {
     code: () => [],
     plugins: () => [],
-    size: 'large'
+    size: 'large',
+    theme: CodeViewerTheme.VSCode
   }
 )
 

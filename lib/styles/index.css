@@ -11,6 +11,12 @@
   padding: 12px;
   border: 1px solid var(--code-viewer-border-color);
   border-radius: 4px;
+  background-color: var(--code-viewer-bg-color);
+  color: var(--code-viewer-text-color);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
 }
 
 /* content */
@@ -55,7 +61,6 @@
 }
 
 .code-viewer .line-gutters {
-  /* position: absolute; */
   top: 0;
   left: 0;
   width: 100%;
@@ -64,7 +69,6 @@
 }
 
 .code-viewer .line-gutter {
-  /* position: absolute; */
   left: 0;
   right: 0;
 }

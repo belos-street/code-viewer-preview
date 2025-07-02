@@ -3,7 +3,7 @@ import { ref, defineAsyncComponent } from 'vue'
 
 // 定义Demo接口
 interface Demo {
-  id: 'simple' | 'virtual-scroll' | 'line-bg-color' | 'scroll-to-line' | 'syntax-highlight' | 'line-number'
+  id: 'simple' | 'virtual-scroll' | 'line-bg-color' | 'scroll-to-line' | 'syntax-highlight' | 'line-number' | 'theme-switch'
   title: string
 }
 
@@ -14,6 +14,7 @@ const LineBgColorDemo = defineAsyncComponent(() => import('./example/line-bg-col
 const ScrollToLineDemo = defineAsyncComponent(() => import('./example/scroll-to-line-demo.vue'))
 const SyntaxHighlightDemo = defineAsyncComponent(() => import('./example/syntax-highlight-demo.vue'))
 const LineNumberDemo = defineAsyncComponent(() => import('./example/line-number-demo.vue'))
+const ThemeSwitchDemo = defineAsyncComponent(() => import('./example/theme-switch-demo.vue'))
 
 const demos: Demo[] = [
   { id: 'simple', title: '简单代码示例' },
@@ -21,6 +22,7 @@ const demos: Demo[] = [
   { id: 'scroll-to-line', title: '滚动到指定行示例' },
   { id: 'line-bg-color', title: '行背景色示例' },
   { id: 'syntax-highlight', title: '语法高亮示例' },
+  { id: 'theme-switch', title: '主题切换示例' },
   { id: 'line-number', title: '行号示例' }
 ]
 
@@ -70,6 +72,7 @@ const setActiveDemo = (demo: Demo): void => {
               <ScrollToLineDemo v-else-if="activeDemo.id === 'scroll-to-line'" />
               <SyntaxHighlightDemo v-else-if="activeDemo.id === 'syntax-highlight'" />
               <LineNumberDemo v-else-if="activeDemo.id === 'line-number'" />
+              <ThemeSwitchDemo v-else-if="activeDemo.id === 'theme-switch'" />
             </div>
           </div>
         </div>
