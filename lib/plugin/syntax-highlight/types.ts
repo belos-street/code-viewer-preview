@@ -32,4 +32,4 @@ export type TokenizerMap = Record<string, TokenizerFactory>
 /**
  * 对代码行进行分词处理的函数类型
  */
-export type TokenizeFunction = (content: string, language?: LanguageProps) => any
+export type TokenizeFunction = (content: string, language?: LanguageProps) => VNode[]

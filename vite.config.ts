@@ -14,5 +14,10 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       lib: fileURLToPath(new URL('./lib', import.meta.url))
     }
+  },
+  server: {
+    host: '0.0.0.0',
+    hmr: true,
+    port: 5173
   }
 })

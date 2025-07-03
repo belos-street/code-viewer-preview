@@ -1,0 +1,171 @@
+/**
+ * C语法高亮示例代码
+ * 展示C语言的语法高亮功能
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+
+// 宏定义
+#define MAX_LENGTH 100
+#define SQUARE(x) ((x) * (x))
+#define DEBUG_MODE
+
+// 结构体定义
+typedef struct {
+    char name[MAX_LENGTH];
+    int age;
+    float score;
+} Student;
+
+// 枚举定义
+enum Color {
+    RED,
+    GREEN,
+    BLUE,
+    YELLOW,
+    BLACK,
+    WHITE
+};
+
+// 函数原型声明
+void printStudent(const Student* student);
+int compareStudents(const Student* s1, const Student* s2);
+Student* createStudent(const char* name, int age, float score);
+void freeStudent(Student* student);
+int factorial(int n);
+
+/**
+ * 主函数
+ */
+int main(int argc, char* argv[]) {
+    // 打印欢迎信息
+    printf("Welcome to C Example Program!\n");
+    
+    // 变量声明和初始化
+    int numbers[5] = {1, 2, 3, 4, 5};
+    char message[] = "Hello, C!";
+    bool isActive = true;
+    
+    // 使用宏
+    int squared = SQUARE(5);
+    printf("5 squared is: %d\n", squared);
+    
+    // 条件语句
+    if (isActive) {
+        printf("Program is active\n");
+    } else {
+        printf("Program is inactive\n");
+    }
+    
+    // 循环示例
+    printf("Numbers: ");
+    for (int i = 0; i < 5; i++) {
+        printf("%d ", numbers[i]);
+    }
+    printf("\n");
+    
+    // 使用枚举
+    enum Color selectedColor = BLUE;
+    switch (selectedColor) {
+        case RED:
+            printf("Selected color: Red\n");
+            break;
+        case GREEN:
+            printf("Selected color: Green\n");
+            break;
+        case BLUE:
+            printf("Selected color: Blue\n");
+            break;
+        default:
+            printf("Other color selected\n");
+    }
+    
+    // 使用结构体
+    Student student1;
+    strcpy(student1.name, "John Doe");
+    student1.age = 20;
+    student1.score = 85.5;
+    
+    printf("Student information:\n");
+    printStudent(&student1);
+    
+    // 动态内存分配
+    Student* student2 = createStudent("Jane Smith", 22, 92.0);
+    printf("\nDynamically allocated student:\n");
+    printStudent(student2);
+    
+    // 计算阶乘
+    int num = 5;
+    printf("\nFactorial of %d is %d\n", num, factorial(num));
+    
+    // 指针操作
+    int value = 10;
+    int* ptr = &value;
+    printf("\nValue: %d\n", value);
+    printf("Pointer points to: %d\n", *ptr);
+    *ptr = 20;
+    printf("After modification, value: %d\n", value);
+    
+    // 释放动态分配的内存
+    freeStudent(student2);
+    
+    // 条件编译
+#ifdef DEBUG_MODE
+    printf("\nDebug mode is enabled\n");
+#endif
+    
+    return 0;
+}
+
+/**
+ * 打印学生信息
+ */
+void printStudent(const Student* student) {
+    printf("Name: %s\n", student->name);
+    printf("Age: %d\n", student->age);
+    printf("Score: %.1f\n", student->score);
+}
+
+/**
+ * 比较两个学生的分数
+ */
+int compareStudents(const Student* s1, const Student* s2) {
+    if (s1->score > s2->score) return 1;
+    if (s1->score < s2->score) return -1;
+    return 0;
+}
+
+/**
+ * 创建学生对象
+ */
+Student* createStudent(const char* name, int age, float score) {
+    Student* student = (Student*)malloc(sizeof(Student));
+    if (student == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        exit(1);
+    }
+    
+    strcpy(student->name, name);
+    student->age = age;
+    student->score = score;
+    
+    return student;
+}
+
+/**
+ * 释放学生对象内存
+ */
+void freeStudent(Student* student) {
+    free(student);
+}
+
+/**
+ * 计算阶乘（递归实现）
+ */
+int factorial(int n) {
+    if (n <= 1) return 1;
+    return n * factorial(n - 1);
+}

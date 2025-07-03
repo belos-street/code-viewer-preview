@@ -1,0 +1,210 @@
+/**
+ * C++语法高亮示例代码
+ * 展示C++语言的语法高亮功能
+ */
+
+#include <iostream>
+#include <vector>
+#include <string>
+#include <memory>
+#include <algorithm>
+#include <map>
+
+// 命名空间
+namespace Example {
+
+// 常量定义
+const int MAX_STUDENTS = 100;
+
+// 类定义
+class Person {
+protected:
+    std::string name;
+    int age;
+
+public:
+    // 构造函数
+    Person(const std::string& name, int age) : name(name), age(age) {}
+    
+    // 虚析构函数
+    virtual ~Person() {
+        std::cout << "Person destructor called" << std::endl;
+    }
+    
+    // 虚函数
+    virtual void display() const {
+        std::cout << "Name: " << name << ", Age: " << age << std::endl;
+    }
+    
+    // Getter方法
+    std::string getName() const { return name; }
+    int getAge() const { return age; }
+    
+    // Setter方法
+    void setName(const std::string& newName) { name = newName; }
+    void setAge(int newAge) { age = newAge; }
+};
+
+// 继承
+class Student : public Person {
+private:
+    std::string studentId;
+    std::vector<double> grades;
+    
+public:
+    // 构造函数
+    Student(const std::string& name, int age, const std::string& id)
+        : Person(name, age), studentId(id) {}
+    
+    // 析构函数
+    ~Student() override {
+        std::cout << "Student destructor called" << std::endl;
+    }
+    
+    // 重写虚函数
+    void display() const override {
+        std::cout << "Student - Name: " << name << ", Age: " << age
+                  << ", ID: " << studentId << std::endl;
+        
+        if (!grades.empty()) {
+            std::cout << "Grades: ";
+            for (const auto& grade : grades) {
+                std::cout << grade << " ";
+            }
+            std::cout << std::endl;
+            
+            double average = calculateAverage();
+            std::cout << "Average: " << average << std::endl;
+        }
+    }
+    
+    // 添加成绩
+    void addGrade(double grade) {
+        grades.push_back(grade);
+    }
+    
+    // 计算平均成绩
+    double calculateAverage() const {
+        if (grades.empty()) return 0.0;
+        
+        double sum = 0.0;
+        for (const auto& grade : grades) {
+            sum += grade;
+        }
+        
+        return sum / grades.size();
+    }
+    
+    // 获取学生ID
+    std::string getStudentId() const { return studentId; }
+};
+
+// 模板类
+template<typename T>
+class Container {
+private:
+    std::vector<T> elements;
+    
+public:
+    // 添加元素
+    void add(const T& element) {
+        elements.push_back(element);
+    }
+    
+    // 获取元素
+    T& get(size_t index) {
+        if (index >= elements.size()) {
+            throw std::out_of_range("Index out of range");
+        }
+        return elements[index];
+    }
+    
+    // 获取大小
+    size_t size() const {
+        return elements.size();
+    }
+    
+    // 排序元素
+    void sort() {
+        std::sort(elements.begin(), elements.end());
+    }
+};
+
+} // namespace Example
+
+// 主函数
+int main() {
+    using namespace Example;
+    
+    std::cout << "C++ Example Program" << std::endl;
+    
+    // 创建智能指针
+    auto student1 = std::make_shared<Student>("Alice", 20, "S12345");
+    auto student2 = std::make_shared<Student>("Bob", 22, "S67890");
+    
+    // 添加成绩
+    student1->addGrade(85.5);
+    student1->addGrade(92.0);
+    student1->addGrade(78.5);
+    
+    student2->addGrade(90.0);
+    student2->addGrade(88.5);
+    student2->addGrade(95.0);
+    
+    // 显示学生信息
+    std::cout << "\nStudent Information:" << std::endl;
+    student1->display();
+    std::cout << std::endl;
+    student2->display();
+    
+    // 使用容器
+    Container<std::string> nameContainer;
+    nameContainer.add("Alice");
+    nameContainer.add("Bob");
+    nameContainer.add("Charlie");
+    
+    std::cout << "\nNames in container:" << std::endl;
+    for (size_t i = 0; i < nameContainer.size(); ++i) {
+        std::cout << nameContainer.get(i) << std::endl;
+    }
+    
+    // 使用Lambda表达式
+    std::vector<int> numbers = {5, 2, 8, 1, 9, 3};
+    std::cout << "\nOriginal numbers:";
+    for (const auto& num : numbers) {
+        std::cout << " " << num;
+    }
+    
+    // 使用Lambda排序
+    std::sort(numbers.begin(), numbers.end(), 
+              [](int a, int b) { return a < b; });
+    
+    std::cout << "\nSorted numbers:";
+    for (const auto& num : numbers) {
+        std::cout << " " << num;
+    }
+    
+    // 使用map
+    std::map<std::string, int> scores;
+    scores["Alice"] = 95;
+    scores["Bob"] = 89;
+    scores["Charlie"] = 92;
+    
+    std::cout << "\n\nScores:" << std::endl;
+    for (const auto& [name, score] : scores) {
+        std::cout << name << ": " << score << std::endl;
+    }
+    
+    // 异常处理
+    try {
+        Container<int> intContainer;
+        intContainer.add(10);
+        std::cout << "\nElement at index 0: " << intContainer.get(0) << std::endl;
+        std::cout << "Element at index 1: " << intContainer.get(1) << std::endl; // 将抛出异常
+    } catch (const std::exception& e) {
+        std::cerr << "Exception caught: " << e.what() << std::endl;
+    }
+    
+    std::cout << "\nProgram completed successfully" << std::endl;
+    return 0;
+}

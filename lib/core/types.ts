@@ -2,7 +2,7 @@ import type { Emitter } from 'mitt'
 import type { ComputedRef, CSSProperties, Ref, VNode } from 'vue'
 import type { EventPayloads } from './event-bus'
 
-export type LanguageProps = 'javascript' | 'typescript' | 'python' | 'java' | 'go' | 'c' | 'html'
+export type LanguageProps = 'javascript' | 'typescript' | 'python' | 'java' | 'go' | 'c' | 'cpp' | 'html'
 
 /**
  * 代码查看器主题枚举

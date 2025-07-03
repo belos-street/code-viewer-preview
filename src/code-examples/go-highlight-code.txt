@@ -1,0 +1,141 @@
+// Go语法高亮示例代码
+// 展示Go语言的语法高亮功能
+
+package main
+
+import (
+	"fmt"
+	"math/rand"
+	"time"
+)
+
+// 常量定义
+const (
+	MaxCount = 100
+	AppName  = "Go Example"
+)
+
+// 结构体定义
+type Person struct {
+	Name    string
+	Age     int
+	Address string
+}
+
+// 为Person结构体定义方法
+func (p *Person) SayHello() string {
+	return fmt.Sprintf("Hello, my name is %s and I am %d years old.", p.Name, p.Age)
+}
+
+// 接口定义
+type Speaker interface {
+	SayHello() string
+}
+
+// 实现接口的另一个结构体
+type Robot struct {
+	ID      string
+	Version float64
+}
+
+func (r *Robot) SayHello() string {
+	return fmt.Sprintf("Greetings, I am robot %s, version %.1f", r.ID, r.Version)
+}
+
+// 自定义错误类型
+type CustomError struct {
+	Message string
+	Code    int
+}
+
+func (e *CustomError) Error() string {
+	return fmt.Sprintf("Error %d: %s", e.Code, e.Message)
+}
+
+// 生成随机数的函数
+func generateRandomNumber(max int) int {
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	return r.Intn(max)
+}
+
+// 主函数
+func main() {
+	// 打印欢迎信息
+	fmt.Println("Welcome to", AppName)
+
+	// 创建Person实例
+	person := &Person{
+		Name:    "Alice",
+		Age:     28,
+		Address: "123 Main St",
+	}
+
+	// 创建Robot实例
+	robot := &Robot{
+		ID:      "R2D2",
+		Version: 2.1,
+	}
+
+	// 使用接口
+	speakers := []Speaker{person, robot}
+	for _, speaker := range speakers {
+		fmt.Println(speaker.SayHello())
+	}
+
+	// 使用goroutine和channel
+	ch := make(chan int, 5)
+	go func() {
+		for i := 0; i < 5; i++ {
+			ch <- generateRandomNumber(MaxCount)
+		}
+		close(ch)
+	}()
+
+	// 从channel读取数据
+	fmt.Println("Random numbers:")
+	for num := range ch {
+		fmt.Printf("%d ", num)
+	}
+	fmt.Println()
+
+	// 错误处理示例
+	if err := processData("sample"); err != nil {
+		fmt.Println("Error occurred:", err)
+	} else {
+		fmt.Println("Data processed successfully")
+	}
+
+	// 使用defer
+	defer fmt.Println("Program finished")
+
+	// 切片操作
+	numbers := []int{1, 2, 3, 4, 5}
+	fmt.Println("Original slice:", numbers)
+	numbers = append(numbers, 6, 7, 8)
+	fmt.Println("After append:", numbers)
+
+	// Map操作
+	userRoles := map[string]string{
+		"alice": "admin",
+		"bob":   "user",
+		"carol": "manager",
+	}
+
+	fmt.Println("User roles:")
+	for user, role := range userRoles {
+		fmt.Printf("%s: %s\n", user, role)
+	}
+}
+
+// 可能返回错误的函数
+func processData(data string) error {
+	if len(data) == 0 {
+		return &CustomError{
+			Message: "Empty data provided",
+			Code:    400,
+		}
+	}
+
+	// 处理数据...
+	return nil
+}

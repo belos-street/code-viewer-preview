@@ -2,56 +2,25 @@ import { h } from 'vue'
 import type { TokenizerInterface, TokenizerFactory } from '../types'
 
 /**
- * JavaScript代码语法高亮处理器
+ * C代码语法高亮处理器
  */
-export class JavaScriptTokenizer implements TokenizerInterface {
-  // JavaScript关键字列表
+export class CTokenizer implements TokenizerInterface {
+  // C关键字列表
   private keywords = [
-    'var',
-    'let',
-    'const',
-    'function',
-    'class',
-    'extends',
-    'return',
-    'if',
-    'else',
-    'for',
-    'while',
-    'do',
-    'switch',
-    'case',
-    'default',
-    'break',
-    'continue',
-    'new',
-    'try',
-    'catch',
-    'finally',
-    'throw',
-    'typeof',
-    'instanceof',
-    'in',
-    'of',
-    'delete',
-    'void',
-    'async',
-    'await',
-    'yield',
-    'import',
-    'export',
-    'from',
-    'as',
-    'default',
-    'get',
-    'set',
-    'static',
-    'super',
-    'this',
-    'null',
-    'undefined',
-    'true',
-    'false'
+    'auto', 'break', 'case', 'char', 'const',
+    'continue', 'default', 'do', 'double', 'else',
+    'enum', 'extern', 'float', 'for', 'goto',
+    'if', 'int', 'long', 'register', 'return',
+    'short', 'signed', 'sizeof', 'static', 'struct',
+    'switch', 'typedef', 'union', 'unsigned', 'void',
+    'volatile', 'while', 'NULL', 'true', 'false'
+  ]
+
+  // C预处理指令
+  private preprocessor = [
+    'include', 'define', 'undef', 'if', 'ifdef',
+    'ifndef', 'else', 'elif', 'endif', 'line',
+    'error', 'pragma'
   ]
 
   /**
@@ -62,9 +31,9 @@ export class JavaScriptTokenizer implements TokenizerInterface {
   tokenize(content: string) {
     const tokens = []
 
-    // 使用正则表达式匹配JavaScript代码元素
+    // 使用正则表达式匹配C代码元素
     const regex =
-      /(\/\/.*|\/\*[\s\S]*?\*\/|"(?:\\.|[^"])*"|'(?:\\.|[^'])*'|`(?:\\.|[^`])*`|[\w$]+|[\(\)\[\]\{\}\;\:\,\.\+\-\*\/\%\!\=\<\>\&\|\^\~\?]|\s+|.)/g
+      /(#[\w]+|\b[\w]+\b|\/\/.*|\/\*[\s\S]*?\*\/|"(?:\\.|[^"])*"|'(?:\\.|[^'])*'|[\w\.]+|[\(\)\[\]\{\}\;\:\,\.\+\-\*\/\%\!\=\<\>\&\|\^\~\?]|\s+|.)/g
     let match
 
     while ((match = regex.exec(content)) !== null) {
@@ -74,10 +43,18 @@ export class JavaScriptTokenizer implements TokenizerInterface {
       if (/^\s+$/.test(text)) {
         // 空白字符
         tokens.push(h('span', {}, text))
+      } else if (/^#([\w]+)/.test(text)) {
+        // 预处理指令
+        const directive = text.substring(1)
+        if (this.preprocessor.includes(directive)) {
+          tokens.push(h('span', { class: 'token preprocessor' }, text))
+        } else {
+          tokens.push(h('span', {}, text))
+        }
       } else if (/^\/\/.*$/.test(text) || /^\/\*[\s\S]*?\*\/$/.test(text)) {
         // 注释
         tokens.push(h('span', { class: 'token comment' }, text))
-      } else if (/^"(?:\\.|[^"])*"$/.test(text) || /^'(?:\\.|[^'])*'$/.test(text) || /^`(?:\\.|[^`])*`$/.test(text)) {
+      } else if (/^"(?:\\.|[^"])*"$/.test(text) || /^'(?:\\.|[^'])*'$/.test(text)) {
         // 字符串
         tokens.push(h('span', { class: 'token string' }, text))
       } else if (/^\d+(?:\.\d+)?$/.test(text)) {
@@ -86,10 +63,10 @@ export class JavaScriptTokenizer implements TokenizerInterface {
       } else if (this.keywords.includes(text)) {
         // 关键字
         tokens.push(h('span', { class: 'token keyword' }, text))
-      } else if (/^[\w$]+$/.test(text) && /^[A-Z]/.test(text)) {
-        // 类名（首字母大写）
-        tokens.push(h('span', { class: 'token class-name' }, text))
-      } else if (/^[\w$]+$/.test(text)) {
+      } else if (/^[\w]+(?=\s*\()/.test(text)) {
+        // 函数名（后面跟括号）
+        tokens.push(h('span', { class: 'token function' }, text))
+      } else if (/^[\w\.]+$/.test(text)) {
         // 标识符
         tokens.push(h('span', { class: 'token identifier' }, text))
       } else if (/^[\(\)\[\]\{\}\;\:\,\.]$/.test(text)) {
@@ -109,14 +86,14 @@ export class JavaScriptTokenizer implements TokenizerInterface {
 }
 
 /**
- * JavaScript代码语法高亮处理器工厂
+ * C代码语法高亮处理器工厂
  */
-export class JavaScriptTokenizerFactory implements TokenizerFactory {
+export class CTokenizerFactory implements TokenizerFactory {
   /**
-   * 创建JavaScript语法高亮处理器
+   * 创建C语法高亮处理器
    * @returns TokenizerInterface 语法高亮处理器实例
    */
   create(): TokenizerInterface {
-    return new JavaScriptTokenizer()
+    return new CTokenizer()
   }
 }

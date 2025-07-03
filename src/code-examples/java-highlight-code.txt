@@ -1,0 +1,99 @@
+/**
+ * Java语法高亮示例代码
+ * 展示Java语言的语法高亮功能
+ */
+public class JavaExample {
+    // 常量定义
+    private static final String GREETING = "Hello, Java!";
+    private static final int MAX_COUNT = 100;
+    
+    // 实例变量
+    private String name;
+    private int count;
+    
+    /**
+     * 构造函数
+     * @param name 名称
+     */
+    public JavaExample(String name) {
+        this.name = name;
+        this.count = 0;
+    }
+    
+    /**
+     * 主方法
+     * @param args 命令行参数
+     */
+    public static void main(String[] args) {
+        // 创建对象实例
+        JavaExample example = new JavaExample("Example");
+        
+        // 调用方法
+        example.printGreeting();
+        
+        // 循环示例
+        for (int i = 0; i < 5; i++) {
+            example.incrementCount();
+        }
+        
+        // 条件语句示例
+        if (example.getCount() > 3) {
+            System.out.println("Count is greater than 3");
+        } else {
+            System.out.println("Count is not greater than 3");
+        }
+        
+        // 数组示例
+        int[] numbers = {1, 2, 3, 4, 5};
+        int sum = example.calculateSum(numbers);
+        System.out.println("Sum: " + sum);
+    }
+    
+    // 实例方法
+    public void printGreeting() {
+        System.out.println(GREETING + " My name is " + this.name);
+    }
+    
+    // 增加计数器
+    public void incrementCount() {
+        this.count++;
+        System.out.println("Current count: " + this.count);
+    }
+    
+    // 获取计数值
+    public int getCount() {
+        return this.count;
+    }
+    
+    // 计算数组元素和
+    public int calculateSum(int[] numbers) {
+        int sum = 0;
+        for (int num : numbers) {
+            sum += num;
+        }
+        return sum;
+    }
+    
+    // 内部类示例
+    class InnerClass {
+        private String description;
+        
+        public InnerClass(String description) {
+            this.description = description;
+        }
+        
+        public void display() {
+            System.out.println("Inner class: " + this.description);
+            System.out.println("Outer class name: " + JavaExample.this.name);
+        }
+    }
+    
+    // 枚举类型示例
+    enum Status {
+        ACTIVE, INACTIVE, PENDING, COMPLETED;
+        
+        public boolean isActive() {
+            return this == ACTIVE;
+        }
+    }
+}

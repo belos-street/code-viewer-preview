@@ -2,56 +2,32 @@ import { h } from 'vue'
 import type { TokenizerInterface, TokenizerFactory } from '../types'
 
 /**
- * JavaScript代码语法高亮处理器
+ * Go代码语法高亮处理器
  */
-export class JavaScriptTokenizer implements TokenizerInterface {
-  // JavaScript关键字列表
+export class GoTokenizer implements TokenizerInterface {
+  // Go关键字列表
   private keywords = [
-    'var',
-    'let',
-    'const',
-    'function',
-    'class',
-    'extends',
-    'return',
-    'if',
-    'else',
-    'for',
-    'while',
-    'do',
-    'switch',
-    'case',
-    'default',
-    'break',
-    'continue',
-    'new',
-    'try',
-    'catch',
-    'finally',
-    'throw',
-    'typeof',
-    'instanceof',
-    'in',
-    'of',
-    'delete',
-    'void',
-    'async',
-    'await',
-    'yield',
-    'import',
-    'export',
-    'from',
-    'as',
-    'default',
-    'get',
-    'set',
-    'static',
-    'super',
-    'this',
-    'null',
-    'undefined',
-    'true',
-    'false'
+    'break', 'default', 'func', 'interface', 'select',
+    'case', 'defer', 'go', 'map', 'struct',
+    'chan', 'else', 'goto', 'package', 'switch',
+    'const', 'fallthrough', 'if', 'range', 'type',
+    'continue', 'for', 'import', 'return', 'var',
+    'nil', 'true', 'false'
+  ]
+
+  // Go内置类型
+  private builtinTypes = [
+    'bool', 'byte', 'complex64', 'complex128', 'error',
+    'float32', 'float64', 'int', 'int8', 'int16',
+    'int32', 'int64', 'rune', 'string', 'uint',
+    'uint8', 'uint16', 'uint32', 'uint64', 'uintptr'
+  ]
+
+  // Go内置函数
+  private builtinFuncs = [
+    'append', 'cap', 'close', 'complex', 'copy',
+    'delete', 'imag', 'len', 'make', 'new',
+    'panic', 'print', 'println', 'real', 'recover'
   ]
 
   /**
@@ -62,9 +38,9 @@ export class JavaScriptTokenizer implements TokenizerInterface {
   tokenize(content: string) {
     const tokens = []
 
-    // 使用正则表达式匹配JavaScript代码元素
+    // 使用正则表达式匹配Go代码元素
     const regex =
-      /(\/\/.*|\/\*[\s\S]*?\*\/|"(?:\\.|[^"])*"|'(?:\\.|[^'])*'|`(?:\\.|[^`])*`|[\w$]+|[\(\)\[\]\{\}\;\:\,\.\+\-\*\/\%\!\=\<\>\&\|\^\~\?]|\s+|.)/g
+      /(\/\/.*|\/\*[\s\S]*?\*\/|"(?:\\.|[^"])*"|'(?:\\.|[^'])*'|`(?:\\.|[^`])*`|[\w\.]+|[\(\)\[\]\{\}\;\:\,\.\+\-\*\/\%\!\=\<\>\&\|\^\~\?]|\s+|.)/g
     let match
 
     while ((match = regex.exec(content)) !== null) {
@@ -86,10 +62,19 @@ export class JavaScriptTokenizer implements TokenizerInterface {
       } else if (this.keywords.includes(text)) {
         // 关键字
         tokens.push(h('span', { class: 'token keyword' }, text))
-      } else if (/^[\w$]+$/.test(text) && /^[A-Z]/.test(text)) {
-        // 类名（首字母大写）
+      } else if (this.builtinTypes.includes(text)) {
+        // 内置类型
+        tokens.push(h('span', { class: 'token builtin-type' }, text))
+      } else if (this.builtinFuncs.includes(text)) {
+        // 内置函数
+        tokens.push(h('span', { class: 'token builtin' }, text))
+      } else if (/^func\s+([\w$]+)/.test(text)) {
+        // 函数定义
+        tokens.push(h('span', { class: 'token function' }, text))
+      } else if (/^type\s+([\w$]+)/.test(text)) {
+        // 类型定义
         tokens.push(h('span', { class: 'token class-name' }, text))
-      } else if (/^[\w$]+$/.test(text)) {
+      } else if (/^[\w\.]+$/.test(text)) {
         // 标识符
         tokens.push(h('span', { class: 'token identifier' }, text))
       } else if (/^[\(\)\[\]\{\}\;\:\,\.]$/.test(text)) {
@@ -109,14 +94,14 @@ export class JavaScriptTokenizer implements TokenizerInterface {
 }
 
 /**
- * JavaScript代码语法高亮处理器工厂
+ * Go代码语法高亮处理器工厂
  */
-export class JavaScriptTokenizerFactory implements TokenizerFactory {
+export class GoTokenizerFactory implements TokenizerFactory {
   /**
-   * 创建JavaScript语法高亮处理器
+   * 创建Go语法高亮处理器
    * @returns TokenizerInterface 语法高亮处理器实例
    */
   create(): TokenizerInterface {
-    return new JavaScriptTokenizer()
+    return new GoTokenizer()
   }
 }

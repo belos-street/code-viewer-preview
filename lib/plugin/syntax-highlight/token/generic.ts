@@ -1,5 +1,5 @@
 import { h } from 'vue'
-import type { TokenizerInterface, TokenizerFactory } from './types'
+import type { TokenizerInterface, TokenizerFactory } from '../types'
 
 /**
  * 通用代码语法高亮处理器
