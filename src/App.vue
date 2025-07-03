@@ -3,7 +3,7 @@ import { ref, defineAsyncComponent } from 'vue'
 
 // 定义Demo接口
 interface Demo {
-  id: 'simple' | 'virtual-scroll' | 'line-bg-color' | 'scroll-to-line' | 'syntax-highlight' | 'line-number' | 'theme-switch'
+  id: 'simple' | 'virtual-scroll' | 'line-bg-color' | 'scroll-to-line' | 'syntax-highlight' | 'line-number' | 'theme-switch' | 'search-code'
   title: string
 }
 
@@ -15,11 +15,13 @@ const ScrollToLineDemo = defineAsyncComponent(() => import('./example/scroll-to-
 const SyntaxHighlightDemo = defineAsyncComponent(() => import('./example/syntax-highlight-demo.vue'))
 const LineNumberDemo = defineAsyncComponent(() => import('./example/line-number-demo.vue'))
 const ThemeSwitchDemo = defineAsyncComponent(() => import('./example/theme-switch-demo.vue'))
+const SearchCodeDemo = defineAsyncComponent(() => import('./example/search-code-demo.vue'))
 
 const demos: Demo[] = [
   { id: 'simple', title: '简单代码示例' },
   { id: 'virtual-scroll', title: '虚拟滚动示例' },
   { id: 'scroll-to-line', title: '滚动到指定行示例' },
+  { id: 'search-code', title: '搜索代码关键字示例' },
   { id: 'line-bg-color', title: '行背景色示例' },
   { id: 'syntax-highlight', title: '语法高亮示例' },
   { id: 'theme-switch', title: '主题切换示例' },
@@ -42,7 +44,6 @@ const setActiveDemo = (demo: Demo): void => {
     <main class="flex-1 p-4 md:p-6 lg:p-8">
       <div class="max-w-7xl mx-auto bg-white rounded-lg shadow-sm overflow-hidden">
         <div class="flex flex-col md:flex-row">
-          <!-- 侧边导航 -->
           <nav class="w-full md:w-64 bg-gray-100 p-4">
             <h2 class="text-lg font-medium mb-4 text-gray-700">示例列表</h2>
             <ul class="space-y-2">
@@ -61,15 +62,14 @@ const setActiveDemo = (demo: Demo): void => {
             </ul>
           </nav>
 
-          <!-- 内容区域 -->
           <div class="flex-1 p-4 md:p-6">
             <h2 class="text-xl font-semibold mb-4 text-gray-800">{{ activeDemo.title }}</h2>
             <div class="border border-gray-200 rounded-lg overflow-hidden">
-              <!-- 根据activeDemo.id动态渲染对应组件 -->
               <SimpleCodeDemo v-if="activeDemo.id === 'simple'" />
               <VirtualScrollDemo v-else-if="activeDemo.id === 'virtual-scroll'" />
               <LineBgColorDemo v-else-if="activeDemo.id === 'line-bg-color'" />
               <ScrollToLineDemo v-else-if="activeDemo.id === 'scroll-to-line'" />
+              <SearchCodeDemo v-else-if="activeDemo.id === 'search-code'" />
               <SyntaxHighlightDemo v-else-if="activeDemo.id === 'syntax-highlight'" />
               <LineNumberDemo v-else-if="activeDemo.id === 'line-number'" />
               <ThemeSwitchDemo v-else-if="activeDemo.id === 'theme-switch'" />

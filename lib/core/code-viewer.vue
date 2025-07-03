@@ -27,6 +27,7 @@ import { PluginManager } from './plugin'
 import '../styles/index.css'
 import type { EventPayloads } from './event-bus'
 import { useProcessedLines } from './plugin/use-process-lines'
+import { searchCodeLines, type SearchOptions, type SearchResult } from './search-code'
 
 const props = withDefaults(
   defineProps<{
@@ -94,9 +95,18 @@ onBeforeUnmount(async () => {
   destroyProcessedLines()
 })
 
+/**
+ * 搜索代码行
+ * @param options 搜索选项
+ * @returns 搜索结果
+ */
+const search = (options: SearchOptions): SearchResult[] => {
+  return searchCodeLines(codeLines.value, options)
+}
+
 /** 暴露给外部的API */
 defineExpose({
   scrollToLine,
-  pluginManager // 暴露插件管理器，允许外部访问
+  search // 关键字搜索功能
 })
 </script>

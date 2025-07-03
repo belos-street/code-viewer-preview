@@ -63,7 +63,7 @@ const changeTheme = (theme: CodeViewerTheme) => {
       </div>
     </div>
 
-    <div class="h-96 border border-gray-200 rounded-lg overflow-hidden">
+    <div class="h-96 border border-gray-200">
       <CodeViewer :code="codeLines" :plugins="plugins" :theme="currentTheme" language="javascript" size="medium" />
     </div>
 
