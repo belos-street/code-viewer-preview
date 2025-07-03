@@ -8,9 +8,22 @@
           :key="line.id"
           :data-line-id="line.id"
           class="view-line"
-          :style="{ top: `${(line.index - 1) * lineHeight}px`, height: `${lineHeight}px`, lineHeight: `${lineHeight}px` }"
+          :style="{
+            top: `${getLinePosition(line.index - 1)}px`,
+            height: `${lineHeight * (1 + (line.meta?.boxHeightMultiplier || 0))}px`,
+            lineHeight: `${lineHeight}px`
+          }"
         >
           <component :is="line.vNode" />
+          <div
+            v-if="line.meta?.boxContent"
+            class="line-box"
+            :style="{
+              height: `${lineHeight * (line.meta?.boxHeightMultiplier || 0)}px`
+            }"
+          >
+            <component :is="line.meta.boxContent" />
+          </div>
         </div>
       </div>
     </div>
@@ -50,7 +63,7 @@ const codeLines = ref<CodeLine[]>(
   props.code.map((line, index) => ({
     ...line,
     index: index + 1,
-    vNode: h('div', { class: 'line-content' }, [h('div', { class: 'line-content' }, line.content)])
+    vNode: h('div', { class: 'view-line-content' }, [h('div', { class: 'line-content' }, line.content)])
   }))
 )
 
@@ -59,7 +72,7 @@ const { lineHeight, lineFontSize } = useItemSize(props.size)
 
 /** 虚拟滚动 */
 const codeViewerContentRef = ref<HTMLElement | null>(null)
-const { visibleLines, totalHeight, scrollToLine } = useVirtualScroll<CodeLine>({
+const { visibleLines, totalHeight, scrollToLine, getLinePosition } = useVirtualScroll<CodeLine>({
   containerRef: codeViewerContentRef,
   itemHeight: lineHeight.value,
   items: codeLines.value,

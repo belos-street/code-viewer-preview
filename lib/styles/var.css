@@ -10,6 +10,7 @@
   --code-viewer-border-color: #e5e7eb;
   --code-viewer-bg-color: #ffffff;
   --code-viewer-text-color: #24292f;
+  --code-viewer-line-box-bg: rgba(0, 0, 0, 0.03);
 }
 
 /* 确保默认主题与 VSCode 主题一致 */
@@ -17,6 +18,7 @@
   --code-viewer-border-color: #e5e7eb;
   --code-viewer-bg-color: #ffffff;
   --code-viewer-text-color: #24292f;
+  --code-viewer-line-box-bg: rgba(0, 0, 0, 0.03);
   --code-viewer-scrollbar-thumb-color: rgba(100, 100, 100, 0.4);
   --code-viewer-scrollbar-thumb-hover-color: rgba(100, 100, 100, 0.7);
 }

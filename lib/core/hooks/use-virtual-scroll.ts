@@ -1,7 +1,17 @@
 import { ref, computed, onMounted, onUnmounted, type Ref } from 'vue'
 import { debounce } from '../../utils/debounce'
 
-type UseVirtualScrollOptions<T> = {
+// 定义一个通用的元数据接口
+interface ItemMeta {
+  boxHeightMultiplier?: number
+}
+
+// 定义一个通用的项目接口
+interface ItemWithMeta {
+  meta?: ItemMeta
+}
+
+type UseVirtualScrollOptions<T extends ItemWithMeta> = {
   containerRef: Ref<HTMLElement | null>
   itemHeight: number
   items: T[]
@@ -20,26 +30,74 @@ type UseVirtualScrollOptions<T> = {
  *
  */
 
-export function useVirtualScroll<T>(options: UseVirtualScrollOptions<T>) {
+export function useVirtualScroll<T extends ItemWithMeta>(options: UseVirtualScrollOptions<T>) {
   const { containerRef, itemHeight, items, buffer = 10, onScroll } = options // 新增: onScroll 参数
 
   const scrollTop = ref(0)
   const containerHeight = ref(0)
-  const visibleCount = computed(() => Math.ceil(containerHeight.value / itemHeight) + buffer * 2)
 
-  // 计算总高度（用于占位）
-  const totalHeight = computed(() => items.length * itemHeight)
+  // 计算总高度
+  const totalHeight = computed(() => {
+    let total = 0
+    for (let i = 0; i < items.length; i++) {
+      total += itemHeight
+      const multiplier = items[i]?.meta?.boxHeightMultiplier ?? 0
+      if (multiplier > 0) {
+        total += itemHeight * multiplier
+      }
+    }
+    return total
+  })
+
+  // 计算行位置（考虑前面行的盒子高度）
+  const getLinePosition = (index: number) => {
+    let position = 0
+    for (let i = 0; i < index; i++) {
+      position += itemHeight
+      const multiplier = items[i]?.meta?.boxHeightMultiplier ?? 0
+      if (multiplier > 0) {
+        position += itemHeight * multiplier
+      }
+    }
+    return position
+  }
 
   // 计算起始索引（带缓冲区）
   const startIndex = computed(() => {
-    const index = Math.max(0, Math.floor(scrollTop.value / itemHeight) - buffer)
-    return Math.min(index, items.length - 1)
+    // 二分查找找到第一个位置大于等于scrollTop的行
+    let low = 0
+    let high = items.length - 1
+
+    while (low <= high) {
+      const mid = Math.floor((low + high) / 2)
+      const pos = getLinePosition(mid)
+
+      if (pos < scrollTop.value - buffer * itemHeight) {
+        low = mid + 1
+      } else {
+        high = mid - 1
+      }
+    }
+
+    return Math.max(0, Math.min(low - buffer, items.length - 1))
   })
 
   // 计算结束索引（带缓冲区）
   const endIndex = computed(() => {
-    const end = Math.min(startIndex.value + visibleCount.value, items.length)
-    return Math.max(0, end)
+    // 从起始索引开始，找到第一个超出可视区域的行
+    let index = startIndex.value
+    let totalHeight = 0
+
+    while (index < items.length && totalHeight < containerHeight.value + buffer * 2 * itemHeight) {
+      totalHeight += itemHeight
+      const multiplier = items[index]?.meta?.boxHeightMultiplier ?? 0
+      if (multiplier > 0) {
+        totalHeight += itemHeight * multiplier
+      }
+      index++
+    }
+
+    return Math.min(index + buffer, items.length)
   })
 
   /**
@@ -106,8 +164,8 @@ export function useVirtualScroll<T>(options: UseVirtualScrollOptions<T>) {
     // 确保行号在有效范围内
     const targetLine = Math.max(1, Math.min(lineNumber, items.length))
 
-    // 计算目标滚动位置（行号从1开始，索引从0开始）
-    const targetScrollTop = (targetLine - 1) * itemHeight
+    // 计算目标滚动位置（考虑前面行的盒子高度）
+    const targetScrollTop = getLinePosition(targetLine - 1)
 
     // 执行滚动
     containerRef.value.scrollTo({
@@ -120,6 +178,7 @@ export function useVirtualScroll<T>(options: UseVirtualScrollOptions<T>) {
     visibleLines,
     totalHeight,
     scrollTop,
-    scrollToLine
+    scrollToLine,
+    getLinePosition
   }
 }
