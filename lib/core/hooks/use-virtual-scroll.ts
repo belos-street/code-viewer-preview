@@ -1,22 +1,12 @@
 import { ref, computed, onMounted, onUnmounted, type Ref } from 'vue'
-import { debounce } from '../../utils/debounce'
 
-// 定义一个通用的元数据接口
-interface ItemMeta {
-  boxHeightMultiplier?: number
-}
-
-// 定义一个通用的项目接口
-interface ItemWithMeta {
-  meta?: ItemMeta
-}
-
-type UseVirtualScrollOptions<T extends ItemWithMeta> = {
+type UseVirtualScrollOptions<T> = {
   containerRef: Ref<HTMLElement | null>
   itemHeight: number
   items: T[]
   buffer?: number
-  onScroll?: (scrollTop: number, visibleLines: T[]) => void // 修改: onScroll 参数，增加 visibleLines
+  onScroll?: (scrollTop: number, visibleLines: T[]) => void
+  getItemHeight?: (item: T, defaultHeight: number) => number // 新增：自定义高度计算函数
 }
 
 /**
@@ -30,34 +20,48 @@ type UseVirtualScrollOptions<T extends ItemWithMeta> = {
  *
  */
 
-export function useVirtualScroll<T extends ItemWithMeta>(options: UseVirtualScrollOptions<T>) {
-  const { containerRef, itemHeight, items, buffer = 10, onScroll } = options // 新增: onScroll 参数
+export function useVirtualScroll<T>(options: UseVirtualScrollOptions<T>) {
+  const { containerRef, itemHeight, items, buffer = 10, onScroll, getItemHeight } = options
 
   const scrollTop = ref(0)
   const containerHeight = ref(0)
+
+  // 计算单个项目的高度
+  const calculateItemHeight = (item: T) => (getItemHeight ? getItemHeight(item, itemHeight) : itemHeight)
+
+  // 为每个可见行生成样式对象
+  const getLineStyle = (item: T, index: number) => {
+    const position = getLinePosition(index)
+    const height = calculateItemHeight(item)
+    return {
+      top: `${position}px`,
+      height: `${height}px`,
+      lineHeight: `${itemHeight}px`
+    }
+  }
+
+  // 为盒子内容生成样式对象
+  const getBoxStyle = (item: T) => {
+    const height = calculateItemHeight(item) - itemHeight
+    return {
+      height: `${height}px`
+    }
+  }
 
   // 计算总高度
   const totalHeight = computed(() => {
     let total = 0
     for (let i = 0; i < items.length; i++) {
-      total += itemHeight
-      const multiplier = items[i]?.meta?.boxHeightMultiplier ?? 0
-      if (multiplier > 0) {
-        total += itemHeight * multiplier
-      }
+      total += calculateItemHeight(items[i])
     }
     return total
   })
 
-  // 计算行位置（考虑前面行的盒子高度）
+  // 计算行位置
   const getLinePosition = (index: number) => {
     let position = 0
     for (let i = 0; i < index; i++) {
-      position += itemHeight
-      const multiplier = items[i]?.meta?.boxHeightMultiplier ?? 0
-      if (multiplier > 0) {
-        position += itemHeight * multiplier
-      }
+      position += calculateItemHeight(items[i])
     }
     return position
   }
@@ -89,11 +93,7 @@ export function useVirtualScroll<T extends ItemWithMeta>(options: UseVirtualScro
     let totalHeight = 0
 
     while (index < items.length && totalHeight < containerHeight.value + buffer * 2 * itemHeight) {
-      totalHeight += itemHeight
-      const multiplier = items[index]?.meta?.boxHeightMultiplier ?? 0
-      if (multiplier > 0) {
-        totalHeight += itemHeight * multiplier
-      }
+      totalHeight += calculateItemHeight(items[index])
       index++
     }
 
@@ -112,13 +112,7 @@ export function useVirtualScroll<T extends ItemWithMeta>(options: UseVirtualScro
 
   /**
    * 处理滚动事件
-   * 使用防抖包装 onScroll 回调函数
    */
-  const debouncedOnScroll = onScroll
-    ? debounce((scrollTop: number, visibleLines: T[]) => {
-        onScroll(scrollTop, visibleLines)
-      }, 100)
-    : undefined
   let scrollAnimationFrameId: number | null = null
   const handleScroll = () => {
     if (!containerRef.value) return
@@ -127,7 +121,7 @@ export function useVirtualScroll<T extends ItemWithMeta>(options: UseVirtualScro
     }
     scrollAnimationFrameId = requestAnimationFrame(() => {
       scrollTop.value = containerRef.value!.scrollTop
-      if (debouncedOnScroll) debouncedOnScroll(scrollTop.value, visibleLines.value)
+      if (onScroll) onScroll(scrollTop.value, visibleLines.value)
     })
   }
 
@@ -179,6 +173,8 @@ export function useVirtualScroll<T extends ItemWithMeta>(options: UseVirtualScro
     totalHeight,
     scrollTop,
     scrollToLine,
-    getLinePosition
+    getLinePosition,
+    getLineStyle,
+    getBoxStyle
   }
 }

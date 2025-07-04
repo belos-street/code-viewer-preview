@@ -3,7 +3,7 @@ import { ref, defineAsyncComponent } from 'vue'
 
 // 定义Demo接口
 interface Demo {
-  id: 'simple' | 'virtual-scroll' | 'line-bg-color' | 'scroll-to-line' | 'syntax-highlight' | 'line-number' | 'theme-switch' | 'search-code' | 'box-height'
+  id: 'simple' | 'virtual-scroll' | 'line-bg-color' | 'scroll-to-line' | 'syntax-highlight' | 'line-number' | 'theme-switch' | 'search-code' | 'box-height' | 'column-highlight'
   title: string
 }
 
@@ -17,6 +17,7 @@ const LineNumberDemo = defineAsyncComponent(() => import('./example/line-number-
 const ThemeSwitchDemo = defineAsyncComponent(() => import('./example/theme-switch-demo.vue'))
 const SearchCodeDemo = defineAsyncComponent(() => import('./example/search-code-demo.vue'))
 const BoxHeightDemo = defineAsyncComponent(() => import('./example/box-height-demo.vue'))
+const ColumnHighlightDemo = defineAsyncComponent(() => import('./example/column-highlight-demo.vue'))
 
 const demos: Demo[] = [
   { id: 'simple', title: '简单代码示例' },
@@ -24,6 +25,7 @@ const demos: Demo[] = [
   { id: 'scroll-to-line', title: '滚动到指定行示例' },
   { id: 'search-code', title: '搜索代码关键字示例' },
   { id: 'line-bg-color', title: '行背景色示例' },
+  { id: 'column-highlight', title: '列高亮示例' },
   { id: 'syntax-highlight', title: '语法高亮示例' },
   { id: 'theme-switch', title: '主题切换示例' },
   { id: 'line-number', title: '行号示例' },
@@ -76,6 +78,7 @@ const setActiveDemo = (demo: Demo): void => {
               <LineNumberDemo v-else-if="activeDemo.id === 'line-number'" />
               <ThemeSwitchDemo v-else-if="activeDemo.id === 'theme-switch'" />
               <BoxHeightDemo v-else-if="activeDemo.id === 'box-height'" />
+              <ColumnHighlightDemo v-else-if="activeDemo.id === 'column-highlight'" />
             </div>
           </div>
         </div>

@@ -8,20 +8,10 @@
           :key="line.id"
           :data-line-id="line.id"
           class="view-line"
-          :style="{
-            top: `${getLinePosition(line.index - 1)}px`,
-            height: `${lineHeight * (1 + (line.meta?.boxHeightMultiplier || 0))}px`,
-            lineHeight: `${lineHeight}px`
-          }"
+          :style="getLineStyle(line, line.index - 1)"
         >
           <component :is="line.vNode" />
-          <div
-            v-if="line.meta?.boxContent"
-            class="line-box"
-            :style="{
-              height: `${lineHeight * (line.meta?.boxHeightMultiplier || 0)}px`
-            }"
-          >
+          <div v-if="line.meta?.boxContent" class="line-box" :style="getBoxStyle(line)">
             <component :is="line.meta.boxContent" />
           </div>
         </div>
@@ -31,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import type { CodeLine, RawCodeLine, Plugin, LanguageProps } from './types'
+import type { CodeLine, RawCodeLine, Plugin, LanguageProps, PluginMeta } from './types'
 import { CodeViewerTheme } from './types'
 import { h, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useItemSize, useVirtualScroll, type CodeItemSize } from './hooks'
@@ -41,6 +31,7 @@ import '../styles/index.css'
 import type { EventPayloads } from './event-bus'
 import { useProcessedLines } from './plugin/use-process-lines'
 import { searchCodeLines, type SearchOptions, type SearchResult } from './search-code'
+import { debounce } from '../utils/debounce'
 
 const props = withDefaults(
   defineProps<{
@@ -53,7 +44,7 @@ const props = withDefaults(
   {
     code: () => [],
     plugins: () => [],
-    size: 'large',
+    size: 'medium',
     theme: CodeViewerTheme.VSCode
   }
 )
@@ -70,15 +61,22 @@ const codeLines = ref<CodeLine[]>(
 /** 代码尺寸 */
 const { lineHeight, lineFontSize } = useItemSize(props.size)
 
+/** 计算代码行高度（包含盒子高度） */
+const getCodeLineHeight = (line: CodeLine, defaultHeight: number) => {
+  const multiplier = line.meta?.boxHeightMultiplier ?? 0
+  return defaultHeight * (1 + multiplier)
+}
+
 /** 虚拟滚动 */
 const codeViewerContentRef = ref<HTMLElement | null>(null)
-const { visibleLines, totalHeight, scrollToLine, getLinePosition } = useVirtualScroll<CodeLine>({
+const { visibleLines, totalHeight, scrollToLine, getLineStyle, getBoxStyle } = useVirtualScroll<CodeLine>({
   containerRef: codeViewerContentRef,
   itemHeight: lineHeight.value,
   items: codeLines.value,
-  onScroll: () => {
+  onScroll: debounce(() => {
     updateProcessedLines()
-  }
+  }, 100),
+  getItemHeight: getCodeLineHeight // 传入自定义高度计算函数
 })
 
 /** 事件总线 */

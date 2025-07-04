@@ -1,6 +1,6 @@
 import { h, type VNode } from 'vue'
 import type { PluginManager } from '.'
-import type { CodeLine, ProcessedItem, ProcessedResult } from '../types'
+import type { CodeLine, ColumnHighlight, ProcessedItem, ProcessedResult } from '../types'
 
 export function useProcessedLines(pluginManager: PluginManager) {
   const processedLineIds = new Set<string | number>() // 记录代码行是否已经处理过了
@@ -44,6 +44,30 @@ export function useProcessedLines(pluginManager: PluginManager) {
   }
 
   /**
+   * 创建列高亮元素
+   * @param columnHighlights 列高亮配置
+   * @returns 列高亮VNode数组
+   */
+  const createColumnHighlights = (columnHighlights: ColumnHighlight[]): VNode[] => {
+    return columnHighlights.map((highlight, index) => {
+      const { startColumn, endColumn, style } = highlight
+      // 使用ch单位精确定位列位置
+      const left = `${startColumn}ch`
+      const width = `${endColumn - startColumn}ch`
+
+      return h('span', {
+        class: 'column-highlight',
+        key: `col-highlight-${index}`,
+        style: {
+          left,
+          width,
+          ...style
+        }
+      })
+    })
+  }
+
+  /**
    * 为单行代码创建视图节点
    * @param codeLine 代码行
    * @param lineProcessors 行处理器结果
@@ -52,6 +76,7 @@ export function useProcessedLines(pluginManager: PluginManager) {
     const childNodes: VNode[] = []
     let viewStyles = {}
     let lineContentDom: string | VNode[] = ''
+    let columnHighlights: VNode[] = []
 
     // 处理各种容器的样式和内容
     for (const processor of lineProcessors) {
@@ -65,13 +90,28 @@ export function useProcessedLines(pluginManager: PluginManager) {
         childNodes.push(h('span', { class: 'line-number' }, processor.content))
       }
 
-      if (container === 'line-content' && processor.content) {
-        lineContentDom = processor.content
+      if (container === 'line-content') {
+        if (processor.content) {
+          lineContentDom = processor.content
+        }
+
+        // 处理列高亮
+        if (processor.columnHighlights && processor.columnHighlights.length > 0) {
+          columnHighlights = createColumnHighlights(processor.columnHighlights)
+        }
       }
     }
 
-    // 添加代码内容
-    childNodes.push(h('div', { class: 'line-content' }, lineContentDom ? lineContentDom : codeLine.content))
+    // 创建行内容容器，包含代码内容和列高亮
+    const lineContentContainer = h('div', { class: 'line-content' }, [
+      // 先渲染列高亮层
+      ...columnHighlights,
+      // 再渲染代码内容
+      ...(Array.isArray(lineContentDom) ? lineContentDom : [lineContentDom || codeLine.content])
+    ])
+
+    // 添加行内容容器到子节点
+    childNodes.push(lineContentContainer)
 
     // 创建最终的行节点
     codeLine.vNode = h('div', { ...viewStyles, class: 'view-line-content' }, childNodes)

@@ -9,6 +9,9 @@ export const SyntaxHighlightPlugin: Plugin = {
     const { visibleLines, language } = context
     const processedResult: ProcessedResult = {}
     for (const line of visibleLines.value) {
+      // 如果行元数据中禁用了语法高亮，则跳过
+      if (line.meta?.disableSyntaxHighlight) continue
+      
       // 根据语言进行分词处理
       const tokenizedContent = tokenizeLine(line.content, language)
       processedResult[line.id] = [

@@ -1,0 +1,10 @@
+/* 列高亮样式 */
+.code-viewer .column-highlight {
+  position: absolute;
+  height: 100%;
+  pointer-events: none; /* 确保不会干扰文本选择和点击 */
+  z-index: 1; /* 确保在文本之上，但在其他UI元素之下 */
+  font-size: 1em;
+  line-height: inherit;
+  box-sizing: border-box;
+}

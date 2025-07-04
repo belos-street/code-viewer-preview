@@ -68,27 +68,7 @@
   box-sizing: border-box;
 }
 
-/* gutters */
-.code-viewer .line-gutter-container {
+.code-viewer .line-content {
+  flex: 1;
   position: relative;
-  overflow-y: hidden;
-  width: 42px;
-  height: 100%;
-}
-
-.code-viewer .line-gutters {
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  transform: translateY(0);
-}
-
-.code-viewer .line-gutter {
-  left: 0;
-  right: 0;
-}
-
-.code-viewer .gutter-index {
-  text-align: right;
 }
