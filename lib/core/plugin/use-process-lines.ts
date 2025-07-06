@@ -1,6 +1,9 @@
 import { h, type VNode } from 'vue'
 import type { PluginManager } from '.'
-import type { CodeLine, ColumnHighlight, ProcessedItem, ProcessedResult } from '../types'
+import type { CodeLine, ColumnHighlight, ProcessedItem, ProcessedResult, Plugin } from '../types'
+
+type ProcessStatus = 'processed' | 'pending' | 'dirty' // 已处理、待处理、需要重新处理
+type ProcessedLineCache = Map<CodeLine['id'], Map<Plugin['name'], ProcessStatus>>
 
 export function useProcessedLines(pluginManager: PluginManager) {
   const processedLineIds = new Set<string | number>() // 记录代码行是否已经处理过了

@@ -3,7 +3,17 @@ import { ref, defineAsyncComponent } from 'vue'
 
 // 定义Demo接口
 interface Demo {
-  id: 'simple' | 'virtual-scroll' | 'line-bg-color' | 'scroll-to-line' | 'syntax-highlight' | 'line-number' | 'theme-switch' | 'search-code' | 'box-height' | 'column-highlight'
+  id:
+    | 'simple'
+    | 'virtual-scroll'
+    | 'line-bg-color'
+    | 'scroll-to-line'
+    | 'syntax-highlight'
+    | 'line-number'
+    | 'theme-switch'
+    | 'search-code'
+    | 'box-height'
+    | 'column-highlight'
   title: string
 }
 
