@@ -1,7 +1,11 @@
 import { h, type VNode } from 'vue'
 import type { PluginManager } from '.'
-import type { CodeLine, ColumnHighlight, ProcessedItem, ProcessedResult, Plugin } from '../types'
+import type { CodeLine, ColumnHighlight, ProcessedItem, ProcessedResult, Plugin, PluginMeta } from '../types'
 
+/**
+ * 处理行插件
+ * @param pluginManager 插件管理器
+ */
 export function useProcessedLines(pluginManager: PluginManager) {
   /**
    * processedLineCache
@@ -154,9 +158,18 @@ export function useProcessedLines(pluginManager: PluginManager) {
     processedLineCache.clear()
   }
 
-  // const deleteLineCache = (lineId: CodeLine['id'], pluginName: Plugin['name']) => {
-  //   processedLineCache.get(lineId)?.delete(pluginName)
-  // }
+  /**
+   * 更新行元数据
+   *
+   */
+  type LineMetaData = {
+    [key in CodeLine['id']]: PluginMeta
+  }
+  const updateLinesMeta = (lineMetas: LineMetaData[]) => {
+    // 1. 遍历lineMetas
+    // 2. 将pluginMeta合并到pluginManager.options.lineMetas.value中
+    // 3. 更新processedLineCache
+  }
 
   return {
     destroyProcessedLines,
