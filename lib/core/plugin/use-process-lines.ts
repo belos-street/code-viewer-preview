@@ -2,11 +2,12 @@ import { h, type VNode } from 'vue'
 import type { PluginManager } from '.'
 import type { CodeLine, ColumnHighlight, ProcessedItem, ProcessedResult, Plugin } from '../types'
 
-type ProcessStatus = 'processed' | 'pending' | 'dirty' // 已处理、待处理、需要重新处理
-type ProcessedLineCache = Map<CodeLine['id'], Map<Plugin['name'], ProcessStatus>>
-
 export function useProcessedLines(pluginManager: PluginManager) {
-  const processedLineIds = new Set<string | number>() // 记录代码行是否已经处理过了
+  /**
+   * processedLineCache
+   * 记录插件处理状态
+   */
+  const processedLineCache = new Map<CodeLine['id'], Set<Plugin['name']>>()
 
   const plugins = pluginManager.getPlugins()
 
@@ -81,9 +82,16 @@ export function useProcessedLines(pluginManager: PluginManager) {
     let lineContentDom: string | VNode[] = ''
     let columnHighlights: VNode[] = []
 
+    let processedLine = processedLineCache.get(codeLine.id)
+    if (!processedLine) {
+      processedLineCache.set(codeLine.id, new Set())
+      processedLine = processedLineCache.get(codeLine.id)
+    }
+
     // 处理各种容器的样式和内容
     for (const processor of lineProcessors) {
-      const { container } = processor
+      const { container, pluginName } = processor
+      if (processedLine?.has(pluginName)) continue
 
       if (container === 'view-line-content') {
         viewStyles = { style: processor.style }
@@ -103,6 +111,9 @@ export function useProcessedLines(pluginManager: PluginManager) {
           columnHighlights = createColumnHighlights(processor.columnHighlights)
         }
       }
+
+      // 标记为已处理
+      processedLine?.add(pluginName)
     }
 
     // 创建行内容容器，包含代码内容和列高亮
@@ -118,9 +129,6 @@ export function useProcessedLines(pluginManager: PluginManager) {
 
     // 创建最终的行节点
     codeLine.vNode = h('div', { ...viewStyles, class: 'view-line-content' }, childNodes)
-
-    // 标记为已处理
-    processedLineIds.add(codeLine.id)
   }
 
   /**
@@ -129,12 +137,8 @@ export function useProcessedLines(pluginManager: PluginManager) {
   const processedLines = async () => {
     // 收集所有插件的处理结果
     const processedResult = await collectPluginResults()
-
     // 处理每一行可见代码
     for (const codeLine of pluginManager.options.visibleLines.value) {
-      // 跳过已处理的行
-      if (processedLineIds.has(codeLine.id)) continue
-
       // 获取当前行的处理结果
       const lineProcessors = processedResult[codeLine.id]
       if (!lineProcessors) continue
@@ -142,12 +146,17 @@ export function useProcessedLines(pluginManager: PluginManager) {
       // 创建行的视图节点
       createLineVNode(codeLine, lineProcessors)
     }
+    console.log(processedLineCache)
   }
 
   const destroyProcessedLines = () => {
     // 清理缓存
-    processedLineIds.clear()
+    processedLineCache.clear()
   }
+
+  // const deleteLineCache = (lineId: CodeLine['id'], pluginName: Plugin['name']) => {
+  //   processedLineCache.get(lineId)?.delete(pluginName)
+  // }
 
   return {
     destroyProcessedLines,

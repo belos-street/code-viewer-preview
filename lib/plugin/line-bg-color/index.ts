@@ -14,7 +14,9 @@ export const LineBgColorPlugin: Plugin = {
     for (const line of visibleLines.value) {
       const bgColor = line.meta?.bgColor
       if (!bgColor) continue
-      processedResult[line.id] = [{ container: 'view-line-content', style: { backgroundColor: bgColor } }]
+      processedResult[line.id] = [
+        { container: 'view-line-content', style: { backgroundColor: bgColor }, pluginName: LineBgColorPlugin.name }
+      ]
     }
 
     return processedResult

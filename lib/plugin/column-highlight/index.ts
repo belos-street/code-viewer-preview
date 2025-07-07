@@ -22,6 +22,7 @@ export const ColumnHighlightPlugin: Plugin = {
       // 创建处理项
       const processedItem: ProcessedItem = {
         container: 'line-content',
+        pluginName: ColumnHighlightPlugin.name,
         // 将列高亮信息传递给处理器
         columnHighlights: columnHighlights.map((highlight) => ({
           startColumn: highlight.startColumn,

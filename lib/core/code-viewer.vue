@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import type { CodeLine, RawCodeLine, Plugin, LanguageProps, PluginMeta } from './types'
+import type { CodeLine, RawCodeLine, Plugin, LanguageProps } from './types'
 import { CodeViewerTheme } from './types'
 import { h, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useItemSize, useVirtualScroll, type CodeItemSize } from './hooks'

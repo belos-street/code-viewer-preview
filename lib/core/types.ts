@@ -80,6 +80,7 @@ export type ProcessedItem = {
   style?: CSSProperties // CSS 样式对象，如 { backgroundColor: 'red' }
   content?: string | VNode[] // 行内容，可以是字符串或VNode数组
   columnHighlights?: ColumnHighlight[] // 列高亮配置
+  pluginName: Plugin['name']
 }
 
 export type ProcessedResult = Record<RawCodeLine['id'], ProcessedItem[]>

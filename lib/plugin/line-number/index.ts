@@ -12,11 +12,12 @@ export const LineNumberPlugin: Plugin = {
     for (const line of visibleLines.value) {
       // 如果行元数据中隐藏了行号，则跳过
       if (line.meta?.hideLineNumber) continue
-      
+
       processedResult[line.id] = [
         {
           container: 'line-number',
-          content: String(line.index)
+          content: String(line.index),
+          pluginName: LineNumberPlugin.name
         }
       ]
     }
