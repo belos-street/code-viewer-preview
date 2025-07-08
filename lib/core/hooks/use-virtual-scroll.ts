@@ -1,4 +1,4 @@
-import { ref, computed, onMounted, onUnmounted, type Ref } from 'vue'
+import { shallowRef, computed, onMounted, onUnmounted, type Ref } from 'vue'
 
 type UseVirtualScrollOptions<T> = {
   containerRef: Ref<HTMLElement | null>
@@ -23,8 +23,8 @@ type UseVirtualScrollOptions<T> = {
 export function useVirtualScroll<T>(options: UseVirtualScrollOptions<T>) {
   const { containerRef, itemHeight, items, buffer = 10, onScroll, getItemHeight } = options
 
-  const scrollTop = ref(0)
-  const containerHeight = ref(0)
+  const scrollTop = shallowRef(0)
+  const containerHeight = shallowRef(0)
 
   // 计算单个项目的高度
   const calculateItemHeight = (item: T) => (getItemHeight ? getItemHeight(item, itemHeight) : itemHeight)
