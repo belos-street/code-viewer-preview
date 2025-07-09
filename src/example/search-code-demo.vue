@@ -128,8 +128,6 @@ const clearColumnHighlights = () => {
     meta: { columnHighlights: [] } // 清空列高亮
   }))
 
-  debugger
-
   if (highlightedLines.length > 0) {
     codeViewerRef.value.updateLinesMeta(highlightedLines)
   }
