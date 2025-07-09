@@ -44,7 +44,7 @@ export interface PluginMeta {
  * 用户传参的代码行数据结构
  */
 export type RawCodeLine = {
-  id: string | number // 每行的唯一标识
+  id: string // 每行的唯一标识
   content: string // 代码原始文本内容
   meta?: Partial<PluginMeta> // 元数据，使用 PluginMeta 接口
 }

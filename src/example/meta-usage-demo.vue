@@ -24,19 +24,19 @@ import { ref } from 'vue'
 // 创建示例代码行
 const codeLines = ref([
   {
-    id: 1,
+    id: '1',
     content: '// 普通代码行 - 默认样式',
     meta: {}
   },
   {
-    id: 2,
+    id: '2',
     content: '// 带背景色的代码行',
     meta: {
       bgColor: 'rgba(173, 216, 230, 0.2)' // 浅蓝色背景
     }
   },
   {
-    id: 3,
+    id: '3',
     content: 'function calculateSum(a, b) {',
     meta: {
       // 列高亮示例
@@ -50,7 +50,7 @@ const codeLines = ref([
     }
   },
   {
-    id: 4,
+    id: '4',
     content: '  return a + b; // 禁用语法高亮的行',
     meta: {
       // 禁用语法高亮
@@ -60,12 +60,12 @@ const codeLines = ref([
     }
   },
   {
-    id: 5,
+    id: '5',
     content: '}',
     meta: {}
   },
   {
-    id: 6,
+    id: '6',
     content: '// 隐藏行号的代码行',
     meta: {
       // 隐藏行号
@@ -75,7 +75,7 @@ const codeLines = ref([
     }
   },
   {
-    id: 7,
+    id: '7',
     content: 'const result = calculateSum(10, 20);',
     meta: {
       // 组合多种特性

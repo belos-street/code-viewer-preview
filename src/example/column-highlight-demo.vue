@@ -24,17 +24,17 @@ import { ref } from 'vue'
 // 创建示例代码行
 const codeLines = ref([
   {
-    id: 1,
+    id: '1',
     content: 'function calculateSum(a, b) {',
     meta: {}
   },
   {
-    id: 2,
+    id: '2',
     content: '  // 计算两个数的和',
     meta: {}
   },
   {
-    id: 3,
+    id: '3',
     content: '  return a + b;',
     meta: {
       // 为第3行添加列高亮，高亮 "a + b" 部分
@@ -48,17 +48,17 @@ const codeLines = ref([
     }
   },
   {
-    id: 4,
+    id: '4',
     content: '}',
     meta: {}
   },
   {
-    id: 5,
+    id: '5',
     content: '',
     meta: {}
   },
   {
-    id: 6,
+    id: '6',
     content: 'const result = calculateSum(10, 20);',
     meta: {
       // 为第6行添加多个列高亮
@@ -77,7 +77,7 @@ const codeLines = ref([
     }
   },
   {
-    id: 7,
+    id: '7',
     content: 'console.log(`The sum is: ${result}`);',
     meta: {
       // 为第7行添加列高亮，使用不同样式

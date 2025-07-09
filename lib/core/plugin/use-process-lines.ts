@@ -10,8 +10,16 @@ export function useProcessedLines(pluginManager: PluginManager) {
   /**
    * processedLineCache
    * 记录插件处理状态
+   *
+   * LineIdToIndexMap
+   * 行id到行号的映射
    */
   const processedLineCache = new Set<CodeLine['id']>()
+
+  const LineIdToIndexMap: Record<CodeLine['id'], CodeLine['index']> = pluginManager.options.codeLines.value.reduce(
+    (data, item) => ({ [item.id]: item.index, ...data }),
+    {}
+  )
 
   const plugins = pluginManager.getPlugins()
 
@@ -144,7 +152,6 @@ export function useProcessedLines(pluginManager: PluginManager) {
 
       // 创建行的视图节点
       createLineVNode(codeLine, lineProcessors)
-      console.log(processedLineCache)
     }
   }
 
@@ -155,23 +162,28 @@ export function useProcessedLines(pluginManager: PluginManager) {
 
   /**
    * 更新行元数据
-   *
    */
-  type LineMetaData = Record<CodeLine['id'], PluginMeta>
+  type LineMetaData = {
+    id: CodeLine['id']
+    meta: PluginMeta
+  }
+
   const updateLinesMeta = (lineMetas: LineMetaData[]) => {
-    // 1. 遍历lineMetas
-    // 2. 将pluginMeta合并到pluginManager.options.lineMetas.value中
-    // 3. 更新processedLineCache
-
-    for (const lineMeta of lineMetas) {
-      const { id, pluginMeta } = lineMeta
-
-      // processedLineCache.delete(id)
+    const { codeLines } = pluginManager.options
+    for (const item of lineMetas) {
+      const { id, meta } = item
+      const codeLine = codeLines.value[LineIdToIndexMap[id] - 1]
+      if (!codeLine) continue
+      codeLine.meta = { ...meta }
+      processedLineCache.delete(codeLine.id)
     }
+
+    updateProcessedLines()
   }
 
   return {
     destroyProcessedLines,
-    updateProcessedLines
+    updateProcessedLines,
+    updateLinesMeta
   }
 }

@@ -95,7 +95,7 @@ const pluginManager = new PluginManager({
   language: props.language
 })
 props.plugins.map(async (plugin) => await pluginManager.registerPlugin(plugin))
-const { updateProcessedLines, destroyProcessedLines } = useProcessedLines(pluginManager)
+const { updateProcessedLines, updateLinesMeta, destroyProcessedLines } = useProcessedLines(pluginManager)
 onMounted(() => {
   updateProcessedLines()
 })
@@ -118,6 +118,7 @@ const search = (options: SearchOptions): SearchResult[] => {
 /** 暴露给外部的API */
 defineExpose({
   scrollToLine,
-  search // 关键字搜索功能
+  search, // 关键字搜索功能
+  updateLinesMeta
 })
 </script>

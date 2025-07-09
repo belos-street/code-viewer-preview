@@ -3,7 +3,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { CodeViewer } from 'lib/core'
-import { SyntaxHighlightPlugin, LineNumberPlugin } from 'lib/plugin'
+import { SyntaxHighlightPlugin, LineNumberPlugin, ColumnHighlightPlugin } from 'lib/plugin'
 import type { RawCodeLine } from 'lib/core/types'
 import type { SearchOptions, SearchResult } from 'lib/core/search-code'
 import syntaxHighlightCodeRaw from '../code-examples/syntax-highlight-code.txt?raw'
@@ -40,12 +40,16 @@ const performSearch = () => {
   if (!keyword.value.trim() || !codeViewerRef.value) {
     searchResults.value = []
     currentResultIndex.value = -1
+    clearColumnHighlights()
     return
   }
 
   isSearching.value = true
 
   try {
+    // 清除之前的高亮
+    clearColumnHighlights()
+
     // 构建搜索选项
     const searchOptions: SearchOptions = {
       keyword: keyword.value,
@@ -59,7 +63,7 @@ const performSearch = () => {
     searchResults.value = codeViewerRef.value.search(searchOptions)
     currentResultIndex.value = searchResults.value.length > 0 ? 0 : -1
 
-    // 如果有结果，跳转到第一个结果
+    // 如果有结果，跳转到第一个结果并高亮列
     if (currentResultIndex.value >= 0) {
       navigateToResult(currentResultIndex.value)
     }
@@ -67,6 +71,7 @@ const performSearch = () => {
     console.error('搜索出错:', error)
     searchResults.value = []
     currentResultIndex.value = -1
+    clearColumnHighlights()
   } finally {
     isSearching.value = false
   }
@@ -76,6 +81,14 @@ const performSearch = () => {
 const navigateToResult = (index: number) => {
   if (index >= 0 && index < searchResults.value.length && codeViewerRef.value) {
     const result = searchResults.value[index]
+
+    // 更新所有行的元数据，清除之前的高亮
+    clearColumnHighlights()
+
+    // 添加当前搜索结果的列高亮
+    addColumnHighlights(result)
+
+    // 滚动到匹配行
     codeViewerRef.value.scrollToLine(result.line.index)
     currentResultIndex.value = index
   }
@@ -100,20 +113,62 @@ const navigateToPrevResult = () => {
 // 清除搜索
 const clearSearch = () => {
   keyword.value = ''
+  clearColumnHighlights()
   searchResults.value = []
   currentResultIndex.value = -1
+}
+
+// 清除所有列高亮
+const clearColumnHighlights = () => {
+  if (!codeViewerRef.value) return
+
+  // 获取所有有高亮的行ID
+  const highlightedLines = searchResults.value.map((result) => ({
+    id: result.line.id,
+    meta: { columnHighlights: [] } // 清空列高亮
+  }))
+
+  debugger
+
+  if (highlightedLines.length > 0) {
+    codeViewerRef.value.updateLinesMeta(highlightedLines)
+  }
+}
+
+// 添加列高亮
+const addColumnHighlights = (result: SearchResult) => {
+  if (!codeViewerRef.value) return
+
+  // 为匹配的位置创建列高亮配置
+  const columnHighlights = result.matches.map(([start, end]) => ({
+    startColumn: start,
+    endColumn: end,
+    style: {
+      backgroundColor: 'rgba(255, 215, 0, 0.3)', // 金色半透明背景
+      borderRadius: '2px',
+      zIndex: 1
+    }
+  }))
+
+  // 更新行元数据
+  codeViewerRef.value.updateLinesMeta([
+    {
+      id: result.line.id,
+      meta: { columnHighlights }
+    }
+  ])
 }
 
 // 高亮匹配文本
 const highlightMatches = (content: string, matches: [number, number][]) => {
   if (!matches || matches.length === 0) return content
-  
+
   // 对匹配位置按照起始位置排序
   const sortedMatches = [...matches].sort((a, b) => a[0] - b[0])
-  
+
   let result = ''
   let lastIndex = 0
-  
+
   // 处理每个匹配项
   for (const [start, end] of sortedMatches) {
     // 添加匹配前的文本
@@ -122,21 +177,16 @@ const highlightMatches = (content: string, matches: [number, number][]) => {
     result += `<span class="bg-yellow-200 text-black px-0.5 rounded">${escapeHtml(content.substring(start, end))}</span>`
     lastIndex = end
   }
-  
+
   // 添加最后一个匹配后的文本
   result += escapeHtml(content.substring(lastIndex))
-  
+
   return result
 }
 
 // 转义HTML特殊字符
 const escapeHtml = (text: string) => {
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;')
+  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;')
 }
 </script>
 
@@ -221,7 +271,7 @@ const escapeHtml = (text: string) => {
       <CodeViewer
         ref="codeViewerRef"
         :code="codeLines"
-        :plugins="[SyntaxHighlightPlugin, LineNumberPlugin]"
+        :plugins="[SyntaxHighlightPlugin, LineNumberPlugin, ColumnHighlightPlugin]"
         language="javascript"
         size="medium"
       />
