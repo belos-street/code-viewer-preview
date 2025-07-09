@@ -100,7 +100,10 @@ const setActiveDemo = (demo: Demo): void => {
     </main>
 
     <footer class="bg-gray-800 text-white text-center p-4 text-sm">
-      <p>Code Viewer 示例 &copy; {{ new Date().getFullYear() }}</p>
+      <p>
+        Code Viewer 示例
+        <a href="https://github.com/belos-street/code-viewer-preview" class="text-blue-400 hover:underline">GitHub</a>
+      </p>
     </footer>
   </div>
 </template>
