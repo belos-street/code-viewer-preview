@@ -1,0 +1,1 @@
+const t={name:"line-bg-color",install(){},processedLines(i){var e;const{visibleLines:s}=i,n={};for(const o of s.value){const l=(e=o.meta)==null?void 0:e.bgColor;l&&(n[o.id]=[{container:"view-line-content",style:{backgroundColor:l},pluginName:t.name}])}return n},uninstall(){}};export{t as L};
