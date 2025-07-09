@@ -4,6 +4,7 @@ import { ref, defineAsyncComponent } from 'vue'
 // 定义Demo接口
 interface Demo {
   id:
+    | 'code-defect'
     | 'simple'
     | 'virtual-scroll'
     | 'line-bg-color'
@@ -18,6 +19,7 @@ interface Demo {
 }
 
 // 使用异步组件，只有在需要时才会加载
+const CodeDefectDemo = defineAsyncComponent(() => import('./example/code-defect-demo.vue'))
 const SimpleCodeDemo = defineAsyncComponent(() => import('./example/simple-code-demo.vue'))
 const VirtualScrollDemo = defineAsyncComponent(() => import('./example/virtual-scroll-demo.vue'))
 const LineBgColorDemo = defineAsyncComponent(() => import('./example/line-bg-color-demo.vue'))
@@ -30,6 +32,7 @@ const BoxHeightDemo = defineAsyncComponent(() => import('./example/box-height-de
 const ColumnHighlightDemo = defineAsyncComponent(() => import('./example/column-highlight-demo.vue'))
 
 const demos: Demo[] = [
+  { id: 'code-defect', title: '代码缺陷检测示例' },
   { id: 'simple', title: '简单代码示例' },
   { id: 'virtual-scroll', title: '虚拟滚动示例' },
   { id: 'scroll-to-line', title: '滚动到指定行示例' },
@@ -79,7 +82,8 @@ const setActiveDemo = (demo: Demo): void => {
           <div class="flex-1 p-4 md:p-6">
             <h2 class="text-xl font-semibold mb-4 text-gray-800">{{ activeDemo.title }}</h2>
             <div class="border border-gray-200 rounded-lg overflow-hidden">
-              <SimpleCodeDemo v-if="activeDemo.id === 'simple'" />
+              <CodeDefectDemo v-if="activeDemo.id === 'code-defect'" />
+              <SimpleCodeDemo v-else-if="activeDemo.id === 'simple'" />
               <VirtualScrollDemo v-else-if="activeDemo.id === 'virtual-scroll'" />
               <LineBgColorDemo v-else-if="activeDemo.id === 'line-bg-color'" />
               <ScrollToLineDemo v-else-if="activeDemo.id === 'scroll-to-line'" />
