@@ -15,7 +15,7 @@ const generateLargeCode = (count: number): RawCodeLine[] => {
   return code
 }
 
-const codeLines: RawCodeLine[] = generateLargeCode(10000)
+const codeLines: RawCodeLine[] = generateLargeCode(1000)
 </script>
 
 <template>

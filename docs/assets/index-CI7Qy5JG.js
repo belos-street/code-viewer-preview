@@ -1,0 +1,1 @@
+/* empty css               */const o={name:"line-number",install(){},processedLines(t){var i;const{visibleLines:s}=t,n={};for(const e of s.value)(i=e.meta)!=null&&i.hideLineNumber||(n[e.id]=[{container:"line-number",content:String(e.index),pluginName:o.name}]);return n},uninstall(){}};export{o as L};
