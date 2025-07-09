@@ -1,4 +1,4 @@
-import{_ as r}from"./code-viewer.vue_vue_type_script_setup_true_lang-BYpU-SkN.js";import{S as i}from"./index-COAt9MiN.js";/* empty css               */import{s as g}from"./syntax-highlight-code-DgCuU-5Z.js";import{d as f,c as b,o as h,a as t,b as a,u as e}from"./index-CCsrM5Sh.js";const _=`// 这是一个TypeScript示例
+import{_ as r}from"./code-viewer.vue_vue_type_script_setup_true_lang-DmCRNCzt.js";import{S as i}from"./index-u-8nR-tc.js";/* empty css               */import{s as g}from"./syntax-highlight-code-DgCuU-5Z.js";import{d as f,c as b,o as h,a as t,b as a,u as e}from"./index-Dhdpvayi.js";const _=`// 这是一个TypeScript示例
 interface User {
   id: number;
   name: string;

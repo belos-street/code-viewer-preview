@@ -8,6 +8,7 @@ import UnoCSS from 'unocss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/code-viewer-preview/',
   plugins: [vue(), vueJsx(), vueDevTools(), UnoCSS()],
   resolve: {
     alias: {
