@@ -1,4 +1,4 @@
-import{_ as a}from"./code-viewer.vue_vue_type_script_setup_true_lang-DMnYP0d1.js";/* empty css               */import{d as r,c as i,o as c,a as t,b as m,u as n}from"./index-6P_m874L.js";const l=`// 简单代码示例
+import{_ as a}from"./code-viewer.vue_vue_type_script_setup_true_lang-B6ZiQW4p.js";/* empty css               */import{d as r,c as i,o as c,a as t,b as m,u as n}from"./index-BQWKhZBY.js";const l=`// 简单代码示例
 const greet = (name: string) => {
   console.log(\`Hello, \${name}!\`);
 };

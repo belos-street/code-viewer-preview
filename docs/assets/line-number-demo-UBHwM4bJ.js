@@ -1,4 +1,4 @@
-import{_ as t}from"./code-viewer.vue_vue_type_script_setup_true_lang-DMnYP0d1.js";/* empty css               */import{L as l}from"./index-CI7Qy5JG.js";import{d as r,c,o as m,a as e,b as i,u as o}from"./index-6P_m874L.js";const u=`// 这是一个JavaScript示例
+import{_ as t}from"./code-viewer.vue_vue_type_script_setup_true_lang-B6ZiQW4p.js";/* empty css               */import{L as l}from"./index-CI7Qy5JG.js";import{d as r,c,o as m,a as e,b as i,u as o}from"./index-BQWKhZBY.js";const u=`// 这是一个JavaScript示例
 function calculateSum(a, b) {
   // 计算两个数的和
   return a + b;
